@@ -1,7 +1,7 @@
 
 const fs = require('fs');
 
-// add url-route in /controllers:
+// add url-route in /controllers:在controllers文件夹中读取文件，注册路由。
 
 function addMapping(router, mapping) {
     for (var url in mapping) {

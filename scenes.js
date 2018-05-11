@@ -1,32 +1,41 @@
 // store products as database:
 //在这里操作数据库拿数据
+//对一张表的所有操作都写在这一个js中
 
 const db = require('./handleDB');
 
-var id = 0;
+const model = require('./database/model');
 
-function nextId() {
-    id++;
-    return 'p' + id;
-}
+let Scene = model.Scene;
+// var id = 0;
 
-function Product(name, manufacturer, price) {
-    this.id = nextId();
-    this.name = name;
-    this.manufacturer = manufacturer;
-    this.price = price;
-}
+// function nextId() {
+//     id++;
+//     return 'p' + id;
+// }
 
-var products = [
-    new Product('iPhone 7', 'Apple', 6800),
-    new Product('ThinkPad T440', 'Lenovo', 5999),
-    new Product('LBP2900', 'Canon', 1099)
-];
+// function Product(name, manufacturer, price) {
+//     this.id = nextId();
+//     this.name = name;
+//     this.manufacturer = manufacturer;
+//     this.price = price;
+// }
+
+// var products = [
+//     new Product('iPhone 7', 'Apple', 6800),
+//     new Product('ThinkPad T440', 'Lenovo', 5999),
+//     new Product('LBP2900', 'Canon', 1099)
+// ];
 
 module.exports = {
-    getProducts: () => {
-        db.createItem();              //这里可以调用数据库操作方法
-        return products;
+    getProducts: async () => {
+        var scenes = await Scene.findAll();              //这里可以调用数据库操作方法
+        //console.log(JSON.stringify(scenes));
+        
+        var res = new Array(scenes);
+        //db.createItem();
+        //return products;
+        return scenes[0];
     },
 
     getProduct: (id) => {

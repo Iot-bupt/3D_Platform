@@ -1,10 +1,10 @@
 
 var config = {
     dialect: 'mysql',
-    database: 'test',
-    username: 'www',
-    password: 'www',
-    host: 'localhost',
+    database: 'BUPT_IOT',
+    username: 'root',
+    password: 'root',
+    host: '10.112.233.200',
     port: 3306
 };
 

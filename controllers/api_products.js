@@ -1,7 +1,8 @@
 //处理rest相关的URL
-//数据库返回的数据返给前端，放在.rest({})里面
+//在这里数据库返回的数据返给前端，放在.rest({})里面  
+//对于不同表的api接口操作，就在controllers下面建不同的api.js文件
 
-const products = require('../products');
+const products = require('../scenes.js');
 
 const APIError = require('../rest').APIError;
 
