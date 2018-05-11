@@ -1,4 +1,5 @@
 //处理rest相关的URL
+//数据库返回的数据返给前端，放在.rest({})里面
 
 const products = require('../products');
 

@@ -1,4 +1,7 @@
 // store products as database:
+//在这里操作数据库拿数据
+
+const db = require('./handleDB');
 
 var id = 0;
 
@@ -22,6 +25,7 @@ var products = [
 
 module.exports = {
     getProducts: () => {
+        db.createItem();              //这里可以调用数据库操作方法
         return products;
     },
 

@@ -8,6 +8,8 @@ const templating = require('./templating');
 
 const rest = require('./rest');
 
+const db = require('./handleDB');
+
 const app = new Koa();
 
 // log request URL:
@@ -34,6 +36,9 @@ app.use(rest.restify());
 
 // add controllers:
 app.use(controller());
+
+//app.use(db.createItem());
+//db.createItem();
 
 app.listen(3000);
 console.log('app started at port 3000...');

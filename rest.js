@@ -8,7 +8,7 @@ module.exports = {
         return async (ctx, next) => {
             if (ctx.request.path.startsWith(pathPrefix)) {
                 console.log(`Process API ${ctx.request.method} ${ctx.request.url}...`);
-                ctx.rest = (data) => {
+                ctx.rest = (data) => {         //给ctx对象绑定rest方法，就是后面的内容
                     ctx.response.type = 'application/json';
                     ctx.response.body = data;
                 }
