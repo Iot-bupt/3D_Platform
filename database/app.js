@@ -18,12 +18,6 @@ let
         gender: false,
         birth: '2007-07-07',
     });
-    console.log('created: ' + JSON.stringify(cat));
-    var dog = await Pet.create({
-        ownerId: user.id,
-        name: 'Odie',
-        gender: false,
-        birth: '2008-08-08',
-    });
-    console.log('created: ' + JSON.stringify(dog));
+    
+    
 })();

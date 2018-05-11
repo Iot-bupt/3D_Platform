@@ -9,7 +9,8 @@ const config = require('./config');
 console.log('init sequelize...');
 
 function generateId() {
-    return uuid.v4();
+    
+    return uuid.v1();   //根据时间戳生成id
 }
 
 var sequelize = new Sequelize(config.database, config.username, config.password, {
@@ -38,10 +39,10 @@ function defineModel(name, attributes) {
             };
         }
     }
-    attrs.id = {
-        type: ID_TYPE,
-        primaryKey: true
-    };
+    // attrs.id = {
+    //     type: ID_TYPE,
+    //     primaryKey: true
+    // };
     attrs.createdAt = {
         type: Sequelize.BIGINT,
         allowNull: false
@@ -79,14 +80,16 @@ function defineModel(name, attributes) {
     return sequelize.define(name, attrs, {
         tableName: name,
         timestamps: false,
+        initialAutoIncrement: 1,
+        autoIncrement: true,
         hooks: {
             beforeValidate: function (obj) {
                 let now = Date.now();
                 if (obj.isNewRecord) {
                     console.log('will create entity...' + obj);
-                    if (!obj.id) {
-                        obj.id = generateId();
-                    }
+                    // if (!obj.id) {
+                    //     obj.id = generateId();
+                    // }
                     obj.createdAt = now;
                     obj.updatedAt = now;
                     obj.version = 0;
