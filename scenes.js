@@ -28,15 +28,16 @@ let Scene = model.Scene;
 // ];
 
 module.exports = {
-    getProducts: async () => {
+    getScenes: async () => {
         var scenes = await Scene.findAll();              //这里可以调用数据库操作方法
-        //console.log(JSON.stringify(scenes));
+        console.log(JSON.stringify(scenes));
         
-        var res = new Array(scenes);
         //db.createItem();
-        //return products;
-        return scenes[0];
+       
+        return scenes;     //async函数return的时候会返回一个promise对象
     },
+
+
 
     getProduct: (id) => {
         var i;
