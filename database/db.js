@@ -55,6 +55,7 @@ function defineModel(name, attributes) {
         type: Sequelize.BIGINT,
         allowNull: false
     };
+    /*
     console.log('model defined for table: ' + name + '\n' + JSON.stringify(attrs, function (k, v) {
         if (k === 'type') {
             for (let key in Sequelize) {
@@ -76,7 +77,7 @@ function defineModel(name, attributes) {
             }
         }
         return v;
-    }, '  '));
+    }, '  '));   */
     return sequelize.define(name, attrs, {
         tableName: name,
         timestamps: false,

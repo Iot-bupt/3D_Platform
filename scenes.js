@@ -76,20 +76,7 @@ module.exports = {
     },
 
     deleteScene: async (id) => {
-        // var
-        //     index = -1,
-        //     i;
-        // for (i = 0; i < products.length; i++) {
-        //     if (products[i].id === id) {
-        //         index = i;
-        //         break;
-        //     }
-        // }
-        // if (index >= 0) {
-        //     // remove products[index]:
-        //     return products.splice(index, 1)[0];
-        // }
-        // return null;
+        
         var scene = await Scene.destroy({
             where: {
                 id:id
@@ -98,5 +85,25 @@ module.exports = {
         console.log(scene);    //删除成功返回1，失败返回0
 
         return scene;
-    }
+    },
+
+    renameScene: async (id,name) => {
+        
+        var scene = await Scene.update(
+            {
+                name:name,
+                updateAt:Date.now(),
+                // version:version++
+            },
+            {
+                where: {
+                id:id
+                }
+        }
+        );     //返回一个一维数组，表示每个更新的失败或成功，0表示失败，1表示成功
+        
+        console.log(scene);    //删除成功返回1，失败返回0
+
+        return scene;
+    },
 };
