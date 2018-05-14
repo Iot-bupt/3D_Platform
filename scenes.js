@@ -75,20 +75,28 @@ module.exports = {
         return scene;
     },
 
-    deleteScene: (id) => {
-        var
-            index = -1,
-            i;
-        for (i = 0; i < products.length; i++) {
-            if (products[i].id === id) {
-                index = i;
-                break;
+    deleteScene: async (id) => {
+        // var
+        //     index = -1,
+        //     i;
+        // for (i = 0; i < products.length; i++) {
+        //     if (products[i].id === id) {
+        //         index = i;
+        //         break;
+        //     }
+        // }
+        // if (index >= 0) {
+        //     // remove products[index]:
+        //     return products.splice(index, 1)[0];
+        // }
+        // return null;
+        var scene = await Scene.destroy({
+            where: {
+                id:id
             }
-        }
-        if (index >= 0) {
-            // remove products[index]:
-            return products.splice(index, 1)[0];
-        }
-        return null;
+        });
+        console.log(scene);    //删除成功返回1，失败返回0
+
+        return scene;
     }
 };

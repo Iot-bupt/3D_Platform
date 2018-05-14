@@ -47,13 +47,13 @@ module.exports = {
         ctx.rest(res);
     },
 
-    'DELETE /api/scenes/:id': async (ctx, next) => {   //删除场景
+    'DELETE /api/scenes/:id': async (ctx, next) => {   //删除场景，失败res=0,成功=1
         console.log(`delete scene ${ctx.params.id}...`);
-        var p = scenes.deleteScene(ctx.params.id);
-        if (p) {
-            ctx.rest(p);
+        var s = await scenes.deleteScene(ctx.params.id);
+        if (s) {
+            ctx.rest(s);
         } else {
-            throw new APIError('product:not_found', 'product not found by id.');
+            throw new APIError('scene:not_found', 'scene not found by id.');
         }
     }
 };
