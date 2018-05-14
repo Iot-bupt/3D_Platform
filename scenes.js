@@ -7,19 +7,12 @@ const db = require('./handleDB');
 const model = require('./database/model');
 
 let Scene = model.Scene;
-// var id = 0;
 
-// function nextId() {
-//     id++;
-//     return 'p' + id;
-// }
 
-// function Product(name, manufacturer, price) {
-//     this.id = nextId();
-//     this.name = name;
-//     this.manufacturer = manufacturer;
-//     this.price = price;
-// }
+function Scenes(name,tenantId) {
+    this.name = name;
+    this.tenantId = tenantId;
+}
 
 // var products = [
 //     new Product('iPhone 7', 'Apple', 6800),
@@ -38,24 +31,51 @@ module.exports = {
     },
 
 
-
-    getProduct: (id) => {
-        var i;
-        for (i = 0; i < products.length; i++) {
-            if (products[i].id === id) {
-                return products[i];
+    getSceneById: async (id) => {
+        
+        var scene = await Scene.findAll({
+            where:{
+                id: id
             }
-        }
-        return null;
+        });
+        console.log(JSON.stringify(scene));
+        
+        return scene;
     },
 
-    createProduct: (name, manufacturer, price) => {
-        var p = new Product(name, manufacturer, price);
-        products.push(p);
-        return p;
+    getSceneByTenentId: async (id) => {
+        
+        var scene = await Scene.findAll({
+            where:{
+                tenantId: id
+            }
+        });
+        console.log(JSON.stringify(scene));
+        
+        return scene;
     },
 
-    deleteProduct: (id) => {
+    getSceneByName: async (name) => {
+        
+        var scene = await Scene.findAll({
+            where:{
+                name: name
+            }
+        });
+        console.log(JSON.stringify(scene));
+        
+        return scene;
+    },
+
+    createScene: async (name, tenantId) => {
+        
+        var s = new Scenes(name,tenantId);
+        var scene = await Scene.create(s);
+        
+        return scene;
+    },
+
+    deleteScene: (id) => {
         var
             index = -1,
             i;

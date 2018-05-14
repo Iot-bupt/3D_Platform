@@ -10,19 +10,46 @@ module.exports = {
     'GET /api/scenes': async (ctx, next) => {
         var res = await scenes.getScenes();     //通过await执行promise对象，拿到结果
         ctx.rest({
-            products: res
+            scenes: res
+        });
+    },
+
+    'GET /api/scenes/:id':async (ctx,next) =>{
+        var sceneId = ctx.params.id;
+        var res = await scenes.getSceneById(sceneId);
+
+        ctx.rest({
+            scenes: res
+        });
+    },
+
+    'GET /api/scenesname/:name': async (ctx,next)=>{
+        var sceneName = ctx.params.name;
+        var res = await scenes.getSceneByName(sceneName);
+
+        ctx.rest({
+            scenes: res
+        });
+    },
+
+    'GET /api/tenantscenes/:id': async (ctx,next)=>{
+        var tenantId = ctx.params.id;
+        var res = await scenes.getSceneByTenentId(tenantId);
+
+        ctx.rest({
+            scenes: res
         });
     },
 
 
-    'POST /api/products': async (ctx, next) => {
-        var p = products.createProduct(ctx.request.body.name, ctx.request.body.manufacturer, parseFloat(ctx.request.body.price));
-        ctx.rest(p);
+    'POST /api/scenes': async (ctx, next) => {     //创建场景
+        var res = await scenes.createScene(ctx.request.body.name, ctx.request.body.tenantId);
+        ctx.rest(res);
     },
 
-    'DELETE /api/products/:id': async (ctx, next) => {
-        console.log(`delete product ${ctx.params.id}...`);
-        var p = products.deleteProduct(ctx.params.id);
+    'DELETE /api/scenes/:id': async (ctx, next) => {   //删除场景
+        console.log(`delete scene ${ctx.params.id}...`);
+        var p = scenes.deleteScene(ctx.params.id);
         if (p) {
             ctx.rest(p);
         } else {

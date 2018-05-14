@@ -15,7 +15,10 @@ module.exports = db.defineModel('scenes', {
     // },
     tenantId: db.ID,    //即租户ID
     name: db.STRING(50),
-    sceneUrl: db.STRING(100),
+    sceneUrl: {
+        type: db.STRING(100),
+        allowNull : true
+    },
     compressStatus:{
         type: db.BOOLEAN,
         comment:"compressed or not",
