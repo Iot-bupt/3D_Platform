@@ -1,7 +1,7 @@
 
 var config = {
     dialect: 'mysql',
-    database: 'nihao',
+    database: 'test',
     username: 'www',
     password: 'www',
     host: 'localhost',

@@ -2,9 +2,9 @@
 //在这里操作数据库拿数据
 //对一张表的所有操作都写在这一个js中
 
-const db = require('./handleDB');
+const db = require('../handleDB');
 
-const model = require('./database/model');
+const model = require('../database/model');
 
 let Scene = model.Scene;
 let Site = model.Site;
