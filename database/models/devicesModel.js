@@ -12,9 +12,9 @@ module.exports = db.defineModel('devicesModel', {
     //     }
         
     // },
-    tenantId: db.ID,
+    tenantId: db.INTEGER,
     deviceId: db.STRING(50),
-    sceneModelId:db.ID,   //外键
+    sceneModelId:db.INTEGER,   //外键
     deviceModelUrl: db.STRING(100),
     compressStatus: {
         type: db.BOOLEAN,

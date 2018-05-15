@@ -2,7 +2,7 @@
 
 const db = require('../db');
 
-module.exports = db.defineModel('scenes', {
+module.exports = db.defineModel('scenes', {     //第一个参数是表名
     
     // sceneId: {
     //         type:db.STRING(50),
@@ -13,7 +13,7 @@ module.exports = db.defineModel('scenes', {
     //         //     autoIncrement: true
     //         // }
     // },
-    tenantId: db.ID,    //即租户ID
+    tenantId: db.INTEGER,    //即租户ID
     name: db.STRING(50),
     sceneUrl: {
         type: db.STRING(100),

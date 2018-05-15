@@ -79,7 +79,7 @@ function defineModel(name, attributes) {
         return v;
     }, '  '));   */
     return sequelize.define(name, attrs, {
-        tableName: name,
+        tableName: name,        //表名
         timestamps: false,
         initialAutoIncrement: 1,
         autoIncrement: true,

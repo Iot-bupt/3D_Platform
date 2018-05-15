@@ -75,6 +75,13 @@ module.exports = {
         
     //     console.log(id+' '+name);
     // },
-
+    // 'GET /api/sites': async (ctx, next) => {
+    //          //通过await执行promise对象，拿到结果
+    //     var res = await scenes.getSites(); 
+    //     console.log('cnm');
+    //     ctx.rest({
+    //         scenes: res
+    //     });
+    // },
 
 };

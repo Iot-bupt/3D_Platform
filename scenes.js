@@ -7,6 +7,7 @@ const db = require('./handleDB');
 const model = require('./database/model');
 
 let Scene = model.Scene;
+let Site = model.Site;
 
 
 function Scenes(name,tenantId) {
@@ -106,4 +107,15 @@ module.exports = {
 
         return scene;
     },
+
+    // getSites: async () => {
+    //     var sites = await Site.findAll({
+    //         // 'attributes': ['id', 'name','longtitude','updatedAt']
+    //     });              //这里可以调用数据库操作方法
+    //     console.log(JSON.stringify(sites));
+        
+    //     //db.createItem();
+       
+    //     return sites;     //async函数return的时候会返回一个promise对象
+    // },
 };
