@@ -2,17 +2,16 @@
 //在这里操作数据库拿数据
 //对一张表的所有操作都写在这一个js中
 
-const db = require('../handleDB');
-
 const model = require('../database/model');
 
-let Scene = model.Scene;
 let Site = model.Site;
 
 
-function Scenes(name,tenantId) {
+function Sites(name,tenantId,longtitude,latitude) {
     this.name = name;
     this.tenantId = tenantId;
+    this.longtitude = longtitude;
+    this.latitude = latitude;
 }
 
 // var products = [
@@ -22,79 +21,77 @@ function Scenes(name,tenantId) {
 // ];
 
 module.exports = {
-    getScenes: async () => {
-        var scenes = await Scene.findAll();              //这里可以调用数据库操作方法
-        console.log(JSON.stringify(scenes));
-        
-        //db.createItem();
+    getSites: async () => {
+        var sites = await Site.findAll();              //这里可以调用数据库操作方法
+        console.log(JSON.stringify(sites));
        
-        return scenes;     //async函数return的时候会返回一个promise对象
+        return sites;     //async函数return的时候会返回一个promise对象
     },
 
 
-    getSceneById: async (id) => {
+    getSiteById: async (id) => {
         
-        var scene = await Scene.findAll({
+        var site = await Site.findAll({
             where:{
                 id: id
             }
         });
-        console.log(JSON.stringify(scene));
+        console.log(JSON.stringify(site));
         
-        return scene;
+        return site;
     },
 
-    getSceneByTenentId: async (id) => {
+    getSiteByName: async (name) => {
         
-        var scene = await Scene.findAll({
-            where:{
-                tenantId: id
-            }
-        });
-        console.log(JSON.stringify(scene));
-        
-        return scene;
-    },
-
-    getSceneByName: async (name) => {
-        
-        var scene = await Scene.findAll({
+        var site = await Site.findAll({
             where:{
                 name: name
             }
         });
-        console.log(JSON.stringify(scene));
+        console.log(JSON.stringify(site));
         
-        return scene;
+        return site;
     },
 
-    createScene: async (name, tenantId) => {
+    getSiteByTenentId: async (id) => {
         
-        var s = new Scenes(name,tenantId);
-        var scene = await Scene.create(s);
+        var site = await Site.findAll({
+            where:{
+                tenantId: id
+            }
+        });
+        console.log(JSON.stringify(site));
         
-        return scene;
+        return site;
     },
 
-    deleteScene: async (id) => {
+
+    createSite: async (name, tenantId,longtitude,latitude) => {
         
-        var scene = await Scene.destroy({
+        var s = new Sites(name,tenantId,longtitude,latitude);
+        var site = await Site.create(s);
+        
+        return site;
+    },
+
+    deleteSite: async (id) => {
+        
+        var site = await Site.destroy({
             where: {
                 id:id
             }
         });
-        console.log(scene);    //删除成功返回1，失败返回0
+        console.log(site);    //删除成功返回1，失败返回0
 
-        return scene;
+        return site;
     },
 
-    renameScene: async (id,name) => {
+    renameSite: async (id,name) => {
         
-        var scene = await Scene.update(
+        var site = await Site.update(
             {
                 name:name,
-                updateAt:Date.now(),
-                // version:version++
+                updatedAt:Date.now(),
             },
             {
                 where: {
@@ -103,9 +100,10 @@ module.exports = {
         }
         );     //返回一个一维数组，表示每个更新的失败或成功，0表示失败，1表示成功
         
-        console.log(scene);    //删除成功返回1，失败返回0
+        console.log(site);    //更新成功返回[1]，失败返回[0]
+       
 
-        return scene;
+        return site;
     },
 
     // getSites: async () => {

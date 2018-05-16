@@ -32,6 +32,10 @@ module.exports = db.defineModel('scenes', {     //第一个参数是表名
     devicesModelCount: {
         type: db.INTEGER,
         defaultValue: 0
+    },
+    siteId :{
+        type:db.INTEGER,
+        defaultValue: 0
     }
 });
 

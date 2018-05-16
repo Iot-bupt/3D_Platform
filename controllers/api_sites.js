@@ -8,7 +8,7 @@ const APIError = require('../rest').APIError;
 
 module.exports = {
     'GET /api/sites': async (ctx, next) => {
-        var res = await scenes.getSites();     //通过await执行promise对象，拿到结果
+        var res = await sites.getSites();     //通过await执行promise对象，拿到结果
         ctx.rest({
             sites: res
         });
@@ -32,7 +32,7 @@ module.exports = {
 
     'GET /api/tenantsites/:id': async (ctx,next)=>{
         var tenantId = ctx.params.id;
-        var res = await scenes.getSiteByTenentId(tenantId);
+        var res = await sites.getSiteByTenentId(tenantId);
 
         ctx.rest({
             sites: res
@@ -41,27 +41,29 @@ module.exports = {
 
 
     'POST /api/sites': async (ctx, next) => {     //创建场景
-        var res = await scenes.createSite(ctx.request.body.name, ctx.request.body.tenantId);
+        var data = ctx.request.body;
+        var res = await sites.createSite(data.name, data.tenantId,data.longtitude,
+                            data.latitude);
         ctx.rest(res);
     },
 
-    'DELETE /api/scenes/:id': async (ctx, next) => {   //删除场景，失败res=0,成功=1
-        console.log(`delete scene ${ctx.params.id}...`);
-        var s = await scenes.deleteScene(ctx.params.id);
+    'DELETE /api/sites/:id': async (ctx, next) => {   //删除场景，失败res=0,成功=1
+        console.log(`delete site ${ctx.params.id}...`);
+        var s = await sites.deleteSite(ctx.params.id);
         if (s) {
             ctx.rest(s);
         } else {
-            throw new APIError('scene:not_found', 'scene not found by id.');
+            throw new APIError('site:not_found', 'site not found by id.');
         }
     },
 
-    'PUT /api/scenes/:id': async (ctx,next) => {
-        console.log(`update scenename ${ctx.params.id}...`);
-        var s = await scenes.renameScene(ctx.params.id,ctx.request.body.name);
+    'PUT /api/sites/:id': async (ctx,next) => {
+        console.log(`update sitename ${ctx.params.id}...`);
+        var s = await sites.renameSite(ctx.params.id,ctx.request.body.name);
         if (s[0] === 1) {
             ctx.rest(s);
         } else {
-            throw new APIError('scene:not_found', 'scene not found by id.');
+            throw new APIError('site:not_found', 'site not found by id.');
         }
     },
 

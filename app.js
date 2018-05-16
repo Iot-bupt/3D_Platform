@@ -12,8 +12,6 @@ const templating = require('./templating');
 
 const rest = require('./rest');
 
-const db = require('./handleDB');
-
 const app = new Koa();
 
 // log request URL:

@@ -23,9 +23,9 @@ module.exports = db.defineModel('sites', {
     latitude: {
         type:db.DOUBLE,
         defaultValue:0
-    },
-    sceneId: {
-        type:db.INTEGER,
-        allowNull : true
     }
+    // sceneId: {
+    //     type:db.INTEGER,
+    //     allowNull : true
+    // }
 });
