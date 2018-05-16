@@ -2,10 +2,14 @@
 
 
 module.exports = {
-    'GET /': async (ctx, next) => {
+    'GET /demo': async (ctx, next) => {
         ctx.render('index_test.html');
     },
-    'GET /index': async (ctx, next) => {
-        ctx.render('index.html');
-    }
+    'GET /sites': async (ctx, next) => {
+        ctx.render('sites.html');
+    },
+    'GET /home': async (ctx, next) => {
+        ctx.render('home.html');
+    },
+
 };
