@@ -4,7 +4,7 @@ var config = {
     database: 'BUPT_IOT',
     username: 'root',
     password: 'root',
-    host: '10.112.233.200',
+    host: '39.104.165.155',
     port: 3306
 };
 

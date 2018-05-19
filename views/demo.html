@@ -31,11 +31,15 @@
                 z-index: 10;
                 font-size: 30px;
             }
+        #coords{ width:136px; height:60px; top:0px;position:absolute;
+                 background-color:rgba(255,255,255,0.1);color:white ;
+                 z-index:3;font-weight:normal }
     </style>
 </head>
 
 <body>
 <div id="container"></div>
+<div id="coords"></div>
 <div id="info">
     Labroom_815_monitoring
 </div>
@@ -47,6 +51,7 @@
 <script src="static/gis_815/js/controls/OrbitControls.js"></script>
 <script src="static/gis_815/js/controls/TransformControls.js"></script>
 <script src="static/gis_815/js/controls/PointerLockControls.js"></script>
+<script src="static/gis_815/js/loaders/STLLoader.js"></script>
 <script src="static/gis_815/js/Detector.js"></script>
 <script src="static/gis_815/DRACOLoader.js"></script>
 <script src="static/gis_815/geometry_helper.js"></script>
@@ -55,6 +60,7 @@
 
 <script>
     if (!Detector.webgl) Detector.addGetWebGLMessage();
+
     var camera, scene, renderer,
         bulbLight, bulbMat, ambientLight,
         object, loader, stats;
@@ -70,7 +76,7 @@
     var transformcontrol;
     var boxmesh2;
     var temp, isdb;
-    // ref for lumens: http://www.power-sure.com/lumens.htm
+    
     var bulbLuminousPowers = {
         "110000 lm (1000W)": 110000,
         "3500 lm (300W)": 3500,
@@ -119,7 +125,7 @@
             objects = [];
         },
         "上传设备模型": function() {
-            window.open("/index", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=no, resizable=no, copyhistory=yes, width=400, height=360")
+            window.open("/upload", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=no, resizable=no, copyhistory=yes, width=400, height=360")
         }  //upload/upload.html,原来.open()中的内容
     }
     function setPosAndShade(obj) {
@@ -133,6 +139,7 @@
         obj.castShadow = true;
     }
     var raycaster = new THREE.Raycaster();
+    var craycaster = new THREE.Raycaster();    //用于坐标的拾取
     var mouse = new THREE.Vector2();
     var clock = new THREE.Clock();
     init();
@@ -168,12 +175,12 @@
     //
     function init() {
         var container = document.getElementById('container');
-        stats = new Stats();
-        container.appendChild(stats.dom);
+        // stats = new Stats();
+        // container.appendChild(stats.dom);
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.x = 0;
-        camera.position.z = 20;
-        camera.position.y = 10;
+        camera.position.z = 15;
+        camera.position.y = 8;
         scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0xffffff, 0);
         //半光
@@ -182,6 +189,9 @@
 
         var ambientLight = new THREE.AmbientLight(0xffffff);
         scene.add(ambientLight);
+        //坐标辅助
+        var axes = new THREE.AxisHelper(100);
+        scene.add(axes);
         
         //地板
         floorMat = new THREE.MeshStandardMaterial({
@@ -280,12 +290,12 @@
         mesh.material.side = THREE.DoubleSide;
 
         mesh.scale.x = 0.5;
-        mesh.scale.y = 0.5;     /*  改变几个体的比例*/ 
+        mesh.scale.y = 0.5;     /*  改变几何的比例*/ 
         mesh.scale.z = 0.5;
         mesh.position.x = 5;
-        mesh.position.y = 2;     /*  改变几个体的比例*/ 
+        mesh.position.y = 2;     /*  改变几何的比例*/ 
         mesh.position.z = 0;
-
+        // console.log(mesh.getWorldPosition());
         scene.add( mesh );
 
         // Release the cached decoder module.
@@ -296,6 +306,9 @@
         window.addEventListener('resize', onWindowResize, false);
         renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
         renderer.domElement.addEventListener('mousedown', onDocumentMouseDown, false);
+        renderer.domElement.addEventListener('dblclick', onDocumentDbclick, false);
+        
+
         var gui = new dat.GUI();
         gui.add(params, 'exposure', 0, 1);
         effectController = {
@@ -309,12 +322,62 @@
         var model = gui.addFolder("添加设备");
         gui.add(newcontrols, '清除物体');
         gui.add(newcontrols, '上传设备模型');
-        gui.close();
+        gui.open();
     }
     var baseColor = 0xFF0000;
     var foundColor = 0x12C0E3;
     var intersectColor = 0x00D66B;
     var intersected;
+
+    var fun2cgq  = function(str,x,y,z,name_uid){
+            var loader = new THREE.STLLoader();
+            loader.load("static/gis_815/models/somedevices/" + str, function(geometry) {
+                var material = new THREE.MeshPhongMaterial({
+                    color: 0xFF0000,
+                    specular: 0x111111,
+                    shininess: 200
+                });
+                var mesh = new THREE.Mesh(geometry, material);
+
+                mesh.position.set(x,y,z);
+                mesh.rotation.set(Math.PI / 2, Math.PI / 2, 0);
+                mesh.scale.set(0.02, 0.02, 0.02);
+
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.tooltip = name_uid;
+                scene.add(mesh);
+                objects.push(mesh);
+                //console.log(objects)
+            });
+        };
+
+        fun2cgq('sensor_center.stl',-10.37, 6.90, 15.16,"开关:1_uid1");
+        fun2cgq('sensor_center.stl',-10.37, 6.90, 14.16,"开关:2_uid2");
+        fun2cgq('sensor_center.stl',0.0, 4.228, -6.5,"窗帘1_uid3");
+        fun2cgq('sensor_center.stl',0.0,4.96,18,"温湿2_uid4");
+        
+
+
+    function onDocumentDbclick(event){
+        event.preventDefault(); 
+        var vector = new THREE.Vector3();//三维坐标对象 
+        vector.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 ); 
+        vector.unproject( camera ); 
+        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize()); 
+        var intersects = raycaster.intersectObjects(scene.children); 
+        if (intersects.length > 0) 
+        { var selected = intersects[0];//取第一个物体 
+            document.getElementById('coords').innerHTML = "x坐标:"+selected.point.x.toFixed(6) 
+                + "<br>"+"y坐标:"+selected.point.y.toFixed(6)+"<br>"+"z坐标:"+selected.point.z.toFixed(6); 
+            document.getElementById('coords').style.display = '';
+            console.log(intersects.length); 
+        }
+        
+        
+    
+    }
+
     function onDocumentMouseDown(event) {
         event.preventDefault();
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -327,9 +390,23 @@
         intersections = raycaster.intersectObjects(objects);
         numObjects = objects.length;
         //numFaces = totalFaces;
-        //console.log(intersections.length)
+        
+        //console.log("dijichangdu :"+intersections.length)
+        if (intersections.length > 0) {
+                var name_uid =  intersections[0].object.tooltip;
+                var nameUid =  name_uid.split("_");
+                console.log('名字'+nameUid[0])
+                if(nameUid[0].indexOf("窗帘")!=-1){
+                    getAjax("/api/3d815/control/"+nameUid[1], function(response) {
+                         
+                         console.log('开关结果'+JSON.parse(response));
+                    });
+            }
+        }
+        
         
     }
+
     function onDocumentMouseMove(event) {
         event.preventDefault();
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -356,13 +433,15 @@
 //                var temp ;
                if(nameUid[0].indexOf("开关")!=-1){
                    ToolTip.showtip(event, nameUid[0]+":");
-               }
-                else if(nameUid[0].indexOf("摄像头")!=-1){
+               }else if(nameUid[0].indexOf("窗帘")!=-1){
                    ToolTip.showtip(event, nameUid[0]+":");
-                }
+               }
                 else{
-                   getAjax("../api/gis/getdata.do?uid="+nameUid[1], function(response) {
-                       ToolTip.showtip(event, nameUid[0]+":"+response);
+                   getAjax("/api/3d815/getdata/"+nameUid[1], function(response) {
+                       var data = JSON.parse(response);
+                       var temp = (((data.res)[1].value)/100).toFixed(2);
+                       console.log(temp);
+                       ToolTip.showtip(event, nameUid[0]+"temp:"+temp+"℃");
                    });
                }
 
@@ -434,7 +513,7 @@
         var time = Date.now() * 0.0005;
         var delta = clock.getDelta();
         renderer.render(scene, camera);
-        stats.update();
+        // stats.update();
     }
     function randomvalue() {
         if (temp == undefined) {
@@ -496,7 +575,7 @@
                     if (xhr.status == 200) {
                         fn(xhr.responseText);
                     } else {
-                        alert("error");
+                        //alert("error");
                     }
                 }
             }

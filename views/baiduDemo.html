@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+		#allmap{width:100%;height:500px;}
+		#r-result{width:100%;margin-top:5px;}
+		p{margin:5px; font-size:14px;}
+
+	</style>.
+
+<style>
+		.box{
+		    width:50%; margin-top:10%; margin:auto; padding:28px;
+		    height:350px; border:1px #111 solid;
+		    display:none;            /* 默认对话框隐藏 */
+		}
+		.box.show{display:block;} 
+		.x{  z-index : 1; font-size:18px; text-align:right; display:block;}
+		.box input{width:80%; font-size:18px; margin-top:18px;}
+</style>
+
+<style>
+    #div1{ width:400px; height: 300px; border: 1px solid #D4CD49; background-color:white; position:fixed;left:20%;top:10% }
+    #div2{ width:400px; height: 300px; border: 1px solid #D4CD49; background-color:white; position:fixed;left:20%;top:10% }
+    #nav { width:300px; height: 300px; border: 1px solid #D4CD49; background-color:white; position:fixed;left:20%;top:10% }
+</style>
+
+	<script src="../static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../static/baidujs/area.js"></script>
+	<script type="text/javascript" src="../static/baidujs/areaDemo.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
+	<!-- <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script> -->
+	<script type="text/javascript" src="../static/baidujs/MarkerTool.js"></script>
+	<script type="text/javascript" src="../static/baidujs/DistanceTool.js"></script>
+	<script type="text/javascript" src="../static/baidujs/DrawingManager.js"></script>
+	<!-- <script type="text/javascript" src="./js/TextIconOverlay.js"></script> -->
+	<script type="text/javascript" src="../static/baidujs/SearchInfoWindow.js"></script>
+    <script type="text/javascript" src="../static/baidujs/searchInRectangle.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+
+	<!-- <script type="text/javascript" src="./node_modules/mockjs/dist/mock.js"></script> -->
+	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+	<link href="../static/style/demo.css" rel="stylesheet" type="text/css" />
+	<title>地图展示</title>
+</head>
+
+<body>
+
+    <fieldset class="demo_content">
+        <div>
+            省份：
+            <select name="province">
+            </select>
+            城市：<select name="city">
+            </select>
+            县区：<select name="county">
+            </select>
+            <span class="tips" style="color: green">请选择地区</span>
+        </div>
+        <div id="allmap"></div>
+    </fieldset>
+
+	<input type="button" onclick="myDis.open();" value="测距" />
+	<input type="button" onclick="mark1();" value="输入经纬度标注" />
+    <input type="button" onclick="mark2();" value="点击标注" />
+	<input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>
+	<input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
+	<input type="button" id="btn" value="定位"/>
+	<input type="text" id="address">
+    <input type="button" value="开启"  id="searchOn"  />
+    <input type="button" value="关闭" id="searchOff"  />
+    <input type="button" id ="jiexi" value="批量反地址解析+商圈"  />
+    <div id="result" style=" overflow-y:auto; overflow-x:auto;  height:400px;">
+    </div>
+
+    <div id='div1' class="box">
+        <b class='x' onclick="CloseDiv1();">X</b>
+        <table>
+            <tr><td>站点ID</td><td><input type="text" id="siteID"></td></tr>
+            <tr><td>模型命名</td><td><input type="text" id="modelName"></td></tr>
+            <tr><td>其他</td><td><input type="text" id="other"></td></tr>
+            <tr><td>模型文件</td><td><input type="string" id="data"><td><input type="button" id="fileImport" value='选择文件'></td></td></tr>
+        </table>
+        <input type="file" id="files" style="display: none" onchange="fileImport();">
+        <button onclick="CloseDiv()" id="CloseDiv">关闭</button>
+        <button  id="checkin">上传</button>
+    </div>
+
+    <div id='div2' class="box">
+        <b class='x' onclick="CloseDiv2();">X</b>
+        <table>
+            <tr><td>站点ID</td><td><input type="text" id="siteOldID"></td></tr>
+            <tr><td>站点原名</td><td><input type="text" id="siteOldName"></td></tr>
+            <tr><td>重命名</td><td><input type="text" id="siteNewName"></td></tr>
+        </table>
+        <button  id="renameSite" onclick= "renameSite(); ">确认</button>
+    </div>
+
+	<div id='nav' class="box">
+	<b class='x' onclick="closeWin();">X</b>
+        <table>
+                <tr>
+                    <td>经度</td>
+                    <td><input name=txt1 id="longitude" value="116.404" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>纬度</td>
+                    <td><input name=txt1 id="latitude" value="39.915" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}"></td>
+                </tr>
+                <tr>
+                    <td>名称</td>
+                    <td><input type="text" id="name1"></td>
+                </tr>
+                <tr>
+                    <td>场景ID</td>
+                    <td><input type="text" id="scenesID"></td>
+                </tr>
+            </table> 
+            <input type="button" onclick= "markfinish(); " value="确定" id="ok">
+     </div>
+
+</body>
+
+<script type="text/javascript" src="../static/baidujs/baidu.js"></script>
+<script type="text/javascript" src="../static/baidujs/r.js"></script>
+
+</html>
+<script type="text/javascript">
+	
+</script>
