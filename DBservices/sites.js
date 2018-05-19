@@ -23,7 +23,7 @@ function Sites(name,tenantId,longtitude,latitude) {
 module.exports = {
     getSites: async () => {
         var sites = await Site.findAll();              //这里可以调用数据库操作方法
-        console.log(JSON.stringify(sites));
+        
        
         return sites;     //async函数return的时候会返回一个promise对象
     },
@@ -36,7 +36,7 @@ module.exports = {
                 id: id
             }
         });
-        console.log(JSON.stringify(site));
+        
         
         return site;
     },
@@ -48,7 +48,7 @@ module.exports = {
                 name: name
             }
         });
-        console.log(JSON.stringify(site));
+        
         
         return site;
     },
@@ -60,7 +60,7 @@ module.exports = {
                 tenantId: id
             }
         });
-        console.log(JSON.stringify(site));
+        
         
         return site;
     },
@@ -81,7 +81,7 @@ module.exports = {
                 id:id
             }
         });
-        console.log(site);    //删除成功返回1，失败返回0
+           //删除成功返回1，失败返回0
 
         return site;
     },
@@ -100,7 +100,7 @@ module.exports = {
         }
         );     //返回一个一维数组，表示每个更新的失败或成功，0表示失败，1表示成功
         
-        console.log(site);    //更新成功返回[1]，失败返回[0]
+            //更新成功返回[1]，失败返回[0]
        
 
         return site;
