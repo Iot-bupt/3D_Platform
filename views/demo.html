@@ -355,7 +355,9 @@
         fun2cgq('sensor_center.stl',-10.37, 6.90, 15.16,"开关:1_uid1");
         fun2cgq('sensor_center.stl',-10.37, 6.90, 14.16,"开关:2_uid2");
         fun2cgq('sensor_center.stl',0.0, 4.228, -6.5,"窗帘1_uid3");
+        fun2cgq('sensor_center.stl',-1.0, 4.228, -6.5,"窗帘2_uid5");
         fun2cgq('sensor_center.stl',0.0,4.96,18,"温湿2_uid4");
+        
         
 
 
@@ -398,11 +400,17 @@
                 console.log('名字'+nameUid[0])
                 if(nameUid[0].indexOf("窗帘")!=-1){
                     getAjax("/api/3d815/control/"+nameUid[1], function(response) {
-                         
+                         //未完成
                          console.log('开关结果'+JSON.parse(response));
                     });
-            }
-        }
+                    params.exposure = 0.81;
+                }else if (nameUid[0].indexOf("开关")!=-1){
+                    getAjax("/api/3d815/control/"+nameUid[1], function(response) {
+                         //未完成
+                         console.log('开关结果'+JSON.parse(response));
+                        });
+                }
+                 }
         
         
     }
@@ -439,9 +447,10 @@
                 else{
                    getAjax("/api/3d815/getdata/"+nameUid[1], function(response) {
                        var data = JSON.parse(response);
-                       var temp = (((data.res)[1].value)/100).toFixed(2);
+                       var temp = (parseFloat((data.res[1].value))/100).toFixed(2);
+                       var humidity = parseFloat(data.res[0].value).toFixed(2);
                        console.log(temp);
-                       ToolTip.showtip(event, nameUid[0]+"temp:"+temp+"℃");
+                       ToolTip.showtip(event, nameUid[0]+"<br>temp:"+temp+"℃<br>humitity:"+humidity);
                    });
                }
 

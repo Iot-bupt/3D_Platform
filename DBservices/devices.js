@@ -21,6 +21,9 @@ function getDeviceId(id){
         case 'uid4':
             deviceId = "d11156f0-5a78-11e8-b66a-e5d2dad89b7c";
             break;
+        case 'uid5':
+            deviceId = "d1bd2750-5a78-11e8-b66a-e5d2dad89b7c";
+            break;
         default:
             deviceId = null;
     }
@@ -47,23 +50,22 @@ module.exports = {
 
     controlDevices: async (id)=>{
         var deviceId = getDeviceId(id);
-        if (deviceId){
+        try{
             var data = await instance.get('/data/alllatestdata/'+deviceId);
             var curStatus = data[0].value;
             global.requestId = Number.MAX_SAFE_INTEGER;
             var res = await instance.post('/rpc/'+id+'/'+requestId,{
                 "methodName":"setStatus",
                 "uid":deviceId,
-                "status":!curStatus
+                "status":Number(!curStatus)
             });
             requestId--;
             console.log(res);
             return res;
-        } else{
-            return "Error:设备未找到！";
+        } catch(e){
+            return "Error:设备未找到！"+ e.message;
         }
     }
     
-
 
 }
