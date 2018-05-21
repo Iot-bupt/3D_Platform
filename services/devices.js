@@ -53,6 +53,7 @@ module.exports = {
         try{
             var data = await instance.get('/data/alllatestdata/'+deviceId);
             var curStatus = data[0].value;
+            //var uid = 查设备属性
             global.requestId = Number.MAX_SAFE_INTEGER;
             var res = await instance.post('/rpc/'+id+'/'+requestId,{
                 "methodName":"setStatus",
@@ -61,7 +62,17 @@ module.exports = {
             });
             requestId--;
             console.log(res);
-            return res;
+            if (res.indexOf("ha")!=-1){
+                //调用成功
+                if (curStatus === 0){
+                    return "on";
+                }else{
+                    return "off";
+                }
+            }else{
+                return res;
+            }
+            
         } catch(e){
             return "Error:设备未找到！"+ e.message;
         }

@@ -125,7 +125,7 @@
             objects = [];
         },
         "上传设备模型": function() {
-            window.open("/upload", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=no, resizable=no, copyhistory=yes, width=400, height=360")
+            window.open("/demoupload", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=no, resizable=no, copyhistory=yes, width=400, height=360")
         }  //upload/upload.html,原来.open()中的内容
     }
     function setPosAndShade(obj) {
@@ -400,14 +400,27 @@
                 console.log('名字'+nameUid[0])
                 if(nameUid[0].indexOf("窗帘")!=-1){
                     getAjax("/api/3d815/control/"+nameUid[1], function(response) {
-                         //未完成
-                         console.log('开关结果'+JSON.parse(response));
+                         
+                         console.log('开关结果'+response);
+                         if (response.indexOf("on")!=-1){
+                            params.exposure = 0.81;
+                         }else if (response.indexOf("off")!=-1){
+                             params.exposure = 0.65
+                         }else{
+                             alert("控制失败！");
+                         }
                     });
-                    params.exposure = 0.81;
                 }else if (nameUid[0].indexOf("开关")!=-1){
                     getAjax("/api/3d815/control/"+nameUid[1], function(response) {
-                         //未完成
-                         console.log('开关结果'+JSON.parse(response));
+                         
+                         console.log('开关结果'+response);
+                         if (response.indexOf("on")!=-1){
+                            params.exposure = 0.81;
+                         }else if (response.indexOf("off")!=-1){
+                             params.exposure = 0.65
+                         }else{
+                             alert("控制失败！");
+                         }
                         });
                 }
                  }
