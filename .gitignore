@@ -1,2 +1,3 @@
 #my public:
-public/upload/*
+public/upload/
+!public/upload/README.md
