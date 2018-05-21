@@ -370,10 +370,12 @@
         var intersects = raycaster.intersectObjects(scene.children); 
         if (intersects.length > 0) 
         { var selected = intersects[0];//取第一个物体 
-            document.getElementById('coords').innerHTML = "x坐标:"+selected.point.x.toFixed(6) 
-                + "<br>"+"y坐标:"+selected.point.y.toFixed(6)+"<br>"+"z坐标:"+selected.point.z.toFixed(6); 
+            var str = "x坐标:"+selected.point.x.toFixed(6) 
+                + "<br>"+"y坐标:"+selected.point.y.toFixed(6)+"<br>"+"z坐标:"+selected.point.z.toFixed(6);
+            document.getElementById('coords').innerHTML = str; 
             document.getElementById('coords').style.display = '';
             console.log(intersects.length); 
+            
         }
         
         
