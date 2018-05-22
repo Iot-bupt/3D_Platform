@@ -16,7 +16,7 @@ module.exports = {
                 var tmpath = item.path;  
                 var tmparr = item.name.split('.');  
                 var ext ='.'+tmparr[tmparr.length-1];  
-                var newpath =path.join('public/upload/scenes', generateId()+'_'+item.name);  
+                var newpath =path.join('public/upload/scenes', generateId()+'#'+item.name);  
                  
                 console.log(newpath);  
                 var stream = fs.createWriteStream(newpath);//创建一个可写流  
