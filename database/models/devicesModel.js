@@ -14,6 +14,7 @@ module.exports = db.defineModel('devicesModel', {
     // },
     tenantId: db.INTEGER,
     deviceId: db.STRING(50),
+    name: db.STRING(50),
     sceneModelId:db.INTEGER,   //外键
     deviceModelUrl: db.STRING(100),
     compressStatus: {

@@ -1,3 +1,6 @@
 #my public:
-public/upload/*
-!public/upload/README.md
+public/upload/scenes/*
+public/upload/devices/*
+!public/upload/scenes/README.md
+!public/upload/devices/README.md
+
