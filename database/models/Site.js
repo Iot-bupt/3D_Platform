@@ -13,19 +13,32 @@ module.exports = db.defineModel('sites', {
         
     // },
     tenantId: db.INTEGER,
-    name: {
-        type:db.STRING(50)
-    },
+    name: db.STRING(50),
     longtitude: {
         type:db.DOUBLE,
-        defaultValue:0
+        defaultValue:0.000000
     },
     latitude: {
         type:db.DOUBLE,
-        defaultValue:0
+        defaultValue:0.000000
+    },
+    
+    sceneUrl: {
+        type: db.STRING(100),
+        allowNull : true
+    },
+    compressStatus:{
+        type: db.BOOLEAN,
+        comment:"compressed or not",
+        defaultValue: false
+    },
+    ossStatus: {
+        type: db.BOOLEAN,
+        comment:"toOSS or not",
+        defaultValue: false
+    },
+    devicesModelCount: {
+        type: db.INTEGER,
+        defaultValue: 0
     }
-    // sceneId: {
-    //     type:db.INTEGER,
-    //     allowNull : true
-    // }
 });

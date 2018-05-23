@@ -14,12 +14,6 @@ function Sites(name,tenantId,longtitude,latitude) {
     this.latitude = latitude;
 }
 
-// var products = [
-//     new Product('iPhone 7', 'Apple', 6800),
-//     new Product('ThinkPad T440', 'Lenovo', 5999),
-//     new Product('LBP2900', 'Canon', 1099)
-// ];
-
 module.exports = {
     getSites: async () => {
         var sites = await Site.findAll();              //这里可以调用数据库操作方法
@@ -74,6 +68,25 @@ module.exports = {
         return site;
     },
 
+    addSceneUrl: async (id,url) =>{
+        var site = await Site.update(
+            {
+                sceneUrl:url,
+                updatedAt:Date.now(),
+            },
+            {
+                where: {
+                id:id
+                }
+        }
+        );     //返回一个一维数组，表示每个更新的失败或成功，0表示失败，1表示成功
+        
+            //更新成功返回[1]，失败返回[0]
+       
+
+        return site;
+    },
+
     deleteSite: async (id) => {
         
         var site = await Site.destroy({
@@ -106,14 +119,4 @@ module.exports = {
         return site;
     },
 
-    // getSites: async () => {
-    //     var sites = await Site.findAll({
-    //         // 'attributes': ['id', 'name','longtitude','updatedAt']
-    //     });              //这里可以调用数据库操作方法
-    //     console.log(JSON.stringify(sites));
-        
-    //     //db.createItem();
-       
-    //     return sites;     //async函数return的时候会返回一个promise对象
-    // },
 };

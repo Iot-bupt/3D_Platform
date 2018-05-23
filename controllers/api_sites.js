@@ -47,6 +47,7 @@ module.exports = {
         ctx.rest(res);
     },
 
+
     'DELETE /api/sites/:id': async (ctx, next) => {   //删除场景，失败res=0,成功=1
         console.log(`delete site ${ctx.params.id}...`);
         var s = await sites.deleteSite(ctx.params.id);
@@ -57,9 +58,18 @@ module.exports = {
         }
     },
 
-    'PUT /api/sites/:id': async (ctx,next) => {
+    'PUT /api/sitename/:id': async (ctx,next) => {
         console.log(`update sitename ${ctx.params.id}...`);
         var s = await sites.renameSite(ctx.params.id,ctx.request.body.name);
+        if (s[0] === 1) {
+            ctx.rest(s);
+        } else {
+            throw new APIError('site:not_found', 'site not found by id.');
+        }
+    },
+    'PUT /api/siteUrl/:id': async (ctx,next) => {
+        console.log(`update siteUrl ${ctx.params.id}...`);
+        var s = await sites.addSceneUrl(ctx.params.id,ctx.query.url);
         if (s[0] === 1) {
             ctx.rest(s);
         } else {

@@ -2,7 +2,7 @@
 
 
 module.exports = {
-    'GET /': async (ctx, next) => {
+    'GET /:tenantId': async (ctx, next) => {
         ctx.render('home.html');
     },
     'GET /demo': async (ctx, next) => {
