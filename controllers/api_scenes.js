@@ -3,11 +3,11 @@
 //对于不同表的api接口操作，就在controllers下面建不同的api.js文件
 
 const scenes = require('../services/scenes.js');
-
 const APIError = require('../rest').APIError;
 
 module.exports = {
     'GET /api/scenes': async (ctx, next) => {
+        
         var res = await scenes.getScenes();     //通过await执行promise对象，拿到结果
         ctx.rest({
             scenes: res
@@ -43,6 +43,7 @@ module.exports = {
 
 
     'POST /api/scenes': async (ctx, next) => {     //创建场景
+        
         var res = await scenes.createScene(ctx.request.body.name, ctx.request.body.tenantId);
         ctx.rest(res);
     },

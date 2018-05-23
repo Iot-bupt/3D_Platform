@@ -30,6 +30,7 @@
         "axios": "0.18.0",
         "koa-better-body": "3.0.4",
         "path": "0.12.7",
-        "moment": "2.22.1"
+        "moment": "2.22.1",
+        "superagent": "3.8.3"
     }
 }

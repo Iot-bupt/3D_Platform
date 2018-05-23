@@ -22,9 +22,6 @@ function Scenes(name,tenantId) {
 module.exports = {
     getScenes: async () => {
         var scenes = await Scene.findAll();              //这里可以调用数据库操作方法
-        console.log(JSON.stringify(scenes));
-        
-        //db.createItem();
        
         return scenes;     //async函数return的时候会返回一个promise对象
     },
@@ -37,7 +34,6 @@ module.exports = {
                 id: id
             }
         });
-        console.log(JSON.stringify(scene));
         
         return scene;
     },
@@ -49,7 +45,7 @@ module.exports = {
                 tenantId: id
             }
         });
-        console.log(JSON.stringify(scene));
+       
         
         return scene;
     },
@@ -61,7 +57,7 @@ module.exports = {
                 name: name
             }
         });
-        console.log(JSON.stringify(scene));
+        
         
         return scene;
     },
