@@ -14,6 +14,9 @@ module.exports = {
     'GET /baidu': async (ctx, next) => {
         ctx.render('baiduDemo.html');
     },
+    'GET /sitesList': async (ctx, next) => {
+        ctx.render('sitesList.html');
+    },
     'GET /demoupload': async (ctx, next) => {
         ctx.render('upload.html');
     },

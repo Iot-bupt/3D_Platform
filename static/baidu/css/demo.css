@@ -1,0 +1,68 @@
+﻿/*---------------------------------------公共样式(请勿修改)---------------------------------------------*/
+body { margin: 0; font-family: "Helvetica,Arial,FreeSans"; color: #000000; font-size: 12px; }
+.demo_main { padding: 20px; padding-top: 10px; }
+.demo_title { padding: 10px; margin-bottom: 10px; background-color: #D3D8E0; border: solid 1px gray; }
+.demo_title .author{float: right;}
+.demo_content { padding: 10px; margin-bottom: 10px; border: solid 1px gray; }
+body, html {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+        #allmap{width:100%;height:500px;}
+        #r-result{width:100%;margin-top:5px;}
+        p{margin:5px; font-size:14px;}
+fieldset { border: 1px solid gray; }
+
+.providerAdd{
+            display:none;            /* 默认对话框隐藏 */
+            margin:auto;
+        }
+.providerAdd.show{display:block;}
+
+#div1{width: 350px;height: 250px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
+#div2{width: 350px; height: 170px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
+#nav {width: 350px;height: 220px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
+
+.nav li{   
+ padding: 8px 15px;    
+ float: right;   
+ list-style: none;   
+ color:#fff;  
+} 
+#btn {
+    margin-left: 0px;
+    width: 100px;
+    padding: 0 20px;
+    height: 25px;
+    border: 1px solid #7ba92c;
+    border-radius: 4px;
+    /*font-weight: bold;*/
+}
+#address {
+    margin-left: 350px;
+}
+.anjian {
+    width:125px;
+    height:30px;
+    line-height:24px;
+    border: 1px solid #7ba92c;
+    color:#FFFFFF;
+    background: radial-gradient(#70c2f4,#035384);
+    border-radius: 5px;
+    /*padding-left:24px;*/
+}
+
+progress
+{
+        
+    width: 250px;
+    height: 25px;
+    
+        
+}
+.progressNumber
+{
+    width: 250px;
+    height: 25px;
+}
+
+
+/*---------------------------------------自定义样式---------------------------------------------*/
+

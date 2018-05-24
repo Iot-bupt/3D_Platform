@@ -19,14 +19,13 @@
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
     <link rel="stylesheet" href="../static/baidu/css/style.css"/>
-	<title>地图展示</title>
+	<title>列表展示</title>
 </head>
 
 <body>
-<!-- div id="progressNumber"></div> -->
-<!-- <progress max="100" value="0" id="progressNumber"  ></progress>   -->
+<!-- <link rel="import" href="page/baiduDemo.html" id="page1"> -->
 <header class="publicHeader">
-    <h1>地图展示</h1>  <h1><a href="sitesList">列表展示</a></h1>
+    <h1>列表展示</h1><h1><a href="baidu">地图展示</a></h1>
     <div class="publicHeaderR">
         <p><span>下午好！</span><span style="color: #fff21b"> Admin</span> , 欢迎你！</p>
         <a href="login.html">退出</a>
@@ -51,28 +50,48 @@
                 <li><input type="button" class="anjian" value="批量反地址解析" id ="jiexi"/></li>
             </ul>
         </nav>
+        
     </div>
-
-    <div class="right">
-        <fieldset class="demo_content">
-        <div>
-            省份：
-            <select name="province">
-            </select>
-            城市：<select name="city">
-            </select>
-            县区：<select name="county">
-            </select>
-            <span class="tips" style="color: green">请选择地区</span>   
-            <span><input type="text" id="address" placeholder="请输站点ID或名字"></span> 
-            <input type="button" id="btn" value="定位"/>  
+<div class="right">
+        <div class="search">
+            <span>站点ID：</span>
+            <input type="text" id="searchValue"  onkeyup="siteSearch1()" placeholder="请输入站点ID"/>
+            <input type="button" id='keyup' value="查询" onclick="siteSearch()" />
         </div>
-        <div id="allmap"></div>
-        </fieldset>
-    </div>
-</section>
+        <!--供应商操作表格-->
+        <table id ="myTable" class="providerTable" cellpadding="0" cellspacing="0">
+            <tr class="firstTr">
+                <th width="10%">站点ID</th>
+                <th width="20%">站点名称</th>
+                <th width="10%">用户ID</th>
+                <th width="10%">经度</th>
+                <th width="10%">纬度</th>
+                <th width="10%">创建时间</th>
+                <th width="30%">操作</th>
+            </tr>
+            <!-- <tr class="secondTr">
+                <td id="firstTd1"></td>
+                <td id="firstTd2"></td>
+                <td id="firstTd3"></td>
+                <td id="firstTd4"></td>
+                <td id="firstTd5"></td>
+                <td id="firstTd6"></td>
+                <td>
+                    <a href="providerView.html"><img src="img/read.png" alt="查看" title="查看"/></a>
+                    <a href="providerUpdate.html"><img src="img/xiugai.png" alt="修改" title="修改"/></a>
+                    <a href="#" class="removeProvider"><img src="img/schu.png" alt="删除" title="删除"/></a>
+                </td>
+            </tr> -->
+        </table>
+        <span id="spanFirst">第一页</span>   
+        <span id="spanPre">上一页</span>   
+        <span id="spanNext">下一页</span>   
+        <span id="spanLast">最后一页</span>   
+        第<span id="spanPageNum"></span>页/共<span id="spanTotalPage"></span>页 
 
-<div id='div1' class="providerAdd">
+    </div>
+
+    <div id='div1' class="providerAdd">
             <form >
                 <!--div的class 为error是验证错误，ok是验证成功-->
                 <b>长传场景</b>
@@ -131,7 +150,7 @@
                 <div class="providerAddBtn">
                     <!--<a href="#">保存</a>-->
                     <!--<a href="providerList.html">返回</a>-->
-                    <input type="submit" value="保存" onclick="renameSite();"/>
+                    <input type="submit" value="保存" onclick="renameSite1();"/>
                     <input type="button" value="返回" onclick="CloseDiv2()"/>
                 </div>
             </form>
@@ -140,11 +159,6 @@
 <div id='nav' class="providerAdd">
             <form >
              <b>添加站点</b>
-             <div>
-                    <label for="tenantId1">用户ID：</label>
-                    <input type="text" name="tenantId1" id="tenantId1" required/ autocomplete="off">
-                    <span>*</span>
-                </div>
                 <div class="">
                     <label for="longitude">经度：</label>
                     <input name=txt1 id="longitude" value="116.404" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}" required autocomplete="off">
@@ -161,6 +175,11 @@
                     <span>*</span>
 
                 </div>
+                <div>
+                    <label for="scenesID">场景ID：</label>
+                    <input type="text" name="scenesID" id="scenesID" required/ autocomplete="off">
+                    <span>*</span>
+                </div>
 
                 <div class="providerAddBtn">
                     <!--<a href="#">保存</a>-->
@@ -171,14 +190,11 @@
             </form>
         </div>
 
-     <footer class="footer">
-</footer>
-
+</section>
 </body>
 
-<script type="text/javascript" src="../static/baidu/baidujs/baidu.js"></script>
+<script type="text/javascript" src="../static/baidu/baidujs/sitesList.js"></script>
 <script type="text/javascript" src="../static/baidu/baidujs/time.js"></script>
-<script type="text/javascript" src="../static/baidu/baidujs/upLoadFile.js"></script>
 
 </html>
 <script type="text/javascript">
