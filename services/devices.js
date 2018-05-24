@@ -1,10 +1,10 @@
 const axios = require('axios');
+const request = require('superagent');
 
 var instance = axios.create({
     baseURL: 'http://39.104.84.131:8100/api/v1',
     timeout: 1000,
   });
-  instance.defaults.headers.post['content-Type'] = 'appliction/json';
 
 global.requestId = 100000;
 
@@ -50,7 +50,7 @@ module.exports = {
         return yaoce;
     },
 
-    controlDevices: async (id)=>{
+    controlSwitch: async (id)=>{
         var deviceId = getDeviceId(id);
         try{
             var data = await instance.get('/data/alllatestdata/'+deviceId);
@@ -60,22 +60,56 @@ module.exports = {
             var uid = uid_data.data[21].value;
             requestId--;
             
-            var res = await instance.post('/rpc/'+deviceId+'/'+requestId,{
-                "methodName":"setStatus",
-                "uid":uid,
-                "status":Boolean((!curStatus))
-            });
+            var res = await request.post('http://39.104.84.131:8100/api/v1/rpc/'+deviceId+'/'+requestId)
+                .set('Content-Type', 'application/json')
+                .send({"serviceName":"control switch"})
+                .send({"methodName":"setstate"})
+                .send({"uid":uid})
+                .send({"status":Boolean((!curStatus))})
             
-            console.log(res);
-            if (res.indexOf("ha")!=-1){
-                //调用成功
+            console.log(res.text);
+            if (res.text.indexOf("de")!=-1){
+                //调用失败
+                return res.text;
+            }else{
                 if (curStatus === 0){
                     return "on";
                 }else{
                     return "off";
                 }
+            }
+            
+        } catch(e){
+            return "Error:"+ e.message;
+        }
+    },
+    controlCurtain: async (id)=>{
+        var deviceId = getDeviceId(id);
+        try{
+            var data = await instance.get('/data/alllatestdata/'+deviceId);
+            var curStatus = data.data[0].value;
+            
+            var uid_data = await instance.get('/allattributes/'+deviceId);
+            var uid = uid_data.data[21].value;
+            requestId--;
+            
+            var res = await request.post('http://39.104.84.131:8100/api/v1/rpc/'+deviceId+'/'+requestId)
+                .set('Content-Type', 'application/json')
+                .send({"serviceName":"control curtain"})
+                .send({"methodName":"setstate"})
+                .send({"uid":uid})
+                .send({"status":Boolean((!curStatus))})
+            
+            console.log(res.text);
+            if (res.text.indexOf("de")!=-1){
+                //调用失败
+                return res.text;
             }else{
-                return res;
+                if (curStatus === 0){
+                    return "on";
+                }else{
+                    return "off";
+                }
             }
             
         } catch(e){

@@ -1,9 +1,12 @@
 //处理默认进入时的URL
 
-
+var tenantId;
 module.exports = {
-    'GET /:tenantId': async (ctx, next) => {
-        ctx.render('home.html');
+    'GET /': async (ctx, next) => {
+        tenantId = ctx.query.id;
+        ctx.render('home.html',{
+            tenantId:tenantId
+        });
     },
     'GET /demo': async (ctx, next) => {
         ctx.render('demo.html');

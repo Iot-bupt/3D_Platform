@@ -23,20 +23,18 @@ module.exports = {
             res: res
         });
     },
-    'GET /api/3d815/control/:id': async (ctx, next) => {    
+    'GET /api/3d815/controlSwitch/:id': async (ctx, next) => {    
         var id = ctx.params.id;
-        var res = await devices.controlDevices(id);
+        var res = await devices.controlSwitch(id);
+        ctx.rest(res);
+    },
+    'GET /api/3d815/controlCurtain/:id': async (ctx, next) => {    
+        var id = ctx.params.id;
+        var res = await devices.controlCurtain(id);
         ctx.rest(res);
     },
 
-    // 'GET /api/scenesname/:name': async (ctx,next)=>{
-    //     var sceneName = ctx.params.name;
-    //     var res = await scenes.getSceneByName(sceneName);
-
-    //     ctx.rest({
-    //         scenes: res
-    //     });
-    // },
+    
 
     // 'GET /api/tenantscenes/:id': async (ctx,next)=>{
     //     var tenantId = ctx.params.id;

@@ -402,19 +402,19 @@
                 var nameUid =  name_uid.split("_");
                 console.log('名字'+nameUid[0])
                 if(nameUid[0].indexOf("窗帘")!=-1){
-                    getAjax("/api/3d815/control/"+nameUid[1], function(response) {
+                    getAjax("/api/3d815/controlCurtain/"+nameUid[1], function(response) {
                          
-                         console.log('开关结果'+response);
+                         console.log('窗帘结果'+response);
                          if (response.indexOf("on")!=-1){
                             params.exposure = 0.81;
                          }else if (response.indexOf("off")!=-1){
                              params.exposure = 0.65
                          }else{
-                             alert("控制失败！");
+                             alert("控制失败！"+response);
                          }
                     });
                 }else if (nameUid[0].indexOf("开关")!=-1){
-                    getAjax("/api/3d815/control/"+nameUid[1], function(response) {
+                    getAjax("/api/3d815/controlSwitch/"+nameUid[1], function(response) {
                          
                          console.log('开关结果'+response);
                          if (response.indexOf("on")!=-1){
@@ -422,7 +422,7 @@
                          }else if (response.indexOf("off")!=-1){
                              params.exposure = 0.65
                          }else{
-                             alert("控制失败！");
+                             alert("控制失败！"+reponse);
                          }
                         });
                 }
