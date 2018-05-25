@@ -7,9 +7,11 @@ const devices = require('../services/devices.js');
 const APIError = require('../rest').APIError;
 
 module.exports = {
-    'GET /api/3d815/search/:text': async (ctx, next) => {
-        var text = ctx.params.text;
-        var res = await devices.searchByText(text);     //通过await执行promise对象，拿到结果
+    'GET /api/3d815/search/:id': async (ctx, next) => {
+        var tid = ctx.params.id;
+        var sText = ctx.query.textSearch;
+        var limit = ctx.query.limit;
+        var res = await devices.searchByText(tid,sText,limit);     //通过await执行promise对象，拿到结果
         ctx.rest({
             res: res
         });
@@ -31,6 +33,15 @@ module.exports = {
     'GET /api/3d815/controlCurtain/:id': async (ctx, next) => {    
         var id = ctx.params.id;
         var res = await devices.controlCurtain(id);
+        ctx.rest(res);
+    },
+
+    'GET /api/3d815/paging/:tenantId': async (ctx, next) => {      //租户设备分页
+        var tid = ctx.params.tenantId;
+        var limit = ctx.query.limit;
+        var idOffset = ctx.query.idOffset;
+        var textOffset = ctx.query.textOffset;
+        var res = await devices.devicesPaging(tid,limit,idOffset,textOffset);
         ctx.rest(res);
     },
 

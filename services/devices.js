@@ -34,12 +34,11 @@ function getDeviceId(id){
 
 module.exports = {
   
-    searchByText:async (text)=>{
-        var searchText = text;
-        var data =await instance.get('tenant/devices/2?limit=10&textSearch='+searchText);
+    searchByText:async (tid,sText,limit)=>{
+        var data =await instance.get('/tenant/devices/'+tid+'?limit='+limit+'&textSearch='+sText);
 
-        return data;
-        console.log(data);
+        return data.data;
+        console.log(data.data);
     },
 
     getDeviceData: async (id)=>{
@@ -114,6 +113,22 @@ module.exports = {
             
         } catch(e){
             return "Error:"+ e.message;
+        }
+    },
+
+    devicesPaging: async (tid,limit,idOffset,textOffset) => {
+        try{
+            if ((idOffset) || (textOffset)){
+            var data = await instance.get('/tenant/devices/'+tid+'?limit='+limit+'&idOffset='+idOffset+'&textOffset='+textOffset);
+            var res = data.data;
+
+            }else if (!(idOffset) && !(textOffset)){
+                var data = await instance.get('/tenant/devices/'+tid+'?limit='+limit);
+                var res = data.data;
+            }
+            return res;
+        }catch(e){
+            throw e;
         }
     }
     
