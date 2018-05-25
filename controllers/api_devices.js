@@ -17,7 +17,7 @@ module.exports = {
         });
     },
 
-    'GET /api/3d815/getdata/:id':async (ctx,next) =>{
+    'GET /api/3d815/getdata/:id':async (ctx,next) =>{     //遥测数据
         var id = ctx.params.id;
         var res = await devices.getDeviceData(id);
 
@@ -25,6 +25,13 @@ module.exports = {
             res: res
         });
     },
+
+    'GET /api/3d815/getDeviceInfo/:id': async (ctx, next) => {    
+        var id = ctx.params.id;
+        var res = await devices.getDeviceInfo(id);
+        ctx.rest(res);
+    },
+
     'GET /api/3d815/controlSwitch/:id': async (ctx, next) => {    
         var id = ctx.params.id;
         var res = await devices.controlSwitch(id);
@@ -44,6 +51,7 @@ module.exports = {
         var res = await devices.devicesPaging(tid,limit,idOffset,textOffset);
         ctx.rest(res);
     },
+
 
     
 
