@@ -130,6 +130,17 @@ module.exports = {
         }catch(e){
             throw e;
         }
+    },
+
+    getDeviceInfo: async (id) => {     //获取设备属性信息
+        try{
+            var data = await instance.get('/device/'+id);
+            var info = data.data;
+
+            return info;
+        }catch(e){
+            throw e;
+        }
     }
     
 
