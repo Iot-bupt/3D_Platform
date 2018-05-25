@@ -1,0 +1,54 @@
+body {
+    background-color: #fff;
+    margin: 0px;
+    overflow: hidden;
+    font-size:14px;
+    text-align:center;
+    font-weight: bold;
+
+    font-family: "Microsoft YaHei";
+}
+#info {
+    color:#fff;
+    position: absolute;
+    top: 0px; width: 100%;
+    padding: 5px;
+    margin: 0px middle;
+}
+#Loading {
+        color:#fff;
+        position: absolute;
+        top:45%;width: 100%;
+        padding: 5px;
+        margin: 0px middle;
+        z-index: 10;
+        font-size: 30px;
+    }
+#coords{ width:136px; height:60px; top:0px;position:absolute;
+         background-color:rgba(255,255,255,0.1);color:white ;
+         z-index:3;font-weight:normal }
+#allDevice,#showDeviceInfo{ 
+    width:350px; 
+    position:absolute;
+    background-color:rgba(255,255,255,0.1);
+    color:#305680;
+    z-index:3;
+    font-weight:normal;
+    }
+#allDevice{
+    top:75px;
+}
+#showDeviceInfo{
+    top:190px;
+    right: 15px;
+    height: 350px;
+}
+#allDeviceTable tr td{
+        width: 50%;
+        cursor: pointer;
+}
+#searchDeviceDiv{
+       width: 100%;
+       opacity: 0.2;
+}
+   
