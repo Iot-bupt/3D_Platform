@@ -49,6 +49,7 @@ module.exports = {
         var idOffset = ctx.query.idOffset;
         var textOffset = ctx.query.textOffset;
         var res = await devices.devicesPaging(tid,limit,idOffset,textOffset);
+        
         ctx.rest(res);
     },
 

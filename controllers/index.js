@@ -10,6 +10,7 @@ module.exports = {
     },
     'GET /demo': async (ctx, next) => {
         ctx.render('demo.html');
+        
     },
     'GET /baidu': async (ctx, next) => {
         ctx.render('baiduDemo.html');

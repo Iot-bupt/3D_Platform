@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% raw %}
 <html lang="en" ng-app="mainApp">
 <head>
     <title>815-monitoring scene</title>
@@ -48,7 +49,7 @@
             </tr>
         </tbody>
     </table>
-    <p ng-repeat="data in deviceList">{{data.id}}</p>
+    <p ng-repeat="data in deviceList">{{data.id}}</p> 
 </div>
 <div id ="showDeviceInfo">
     <table class="table table-hover">
@@ -110,4 +111,7 @@
 <script src="static/assets/js/mainCtrl.js"></script>
 </body>
 
+
 </html>
+
+{% endraw %}
