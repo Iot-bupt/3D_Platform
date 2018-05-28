@@ -34,12 +34,14 @@ module.exports = {
 
     'GET /api/3d815/controlSwitch/:id': async (ctx, next) => {    
         var id = ctx.params.id;
-        var res = await devices.controlSwitch(id);
+        var turn = ctx.query.turn;
+        var res = await devices.controlSwitch(id,turn);
         ctx.rest(res);
     },
     'GET /api/3d815/controlCurtain/:id': async (ctx, next) => {    
         var id = ctx.params.id;
-        var res = await devices.controlCurtain(id);
+        var turn = ctx.query.turn;
+        var res = await devices.controlCurtain(id,turn);
         ctx.rest(res);
     },
 

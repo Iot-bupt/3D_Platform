@@ -12,19 +12,19 @@ function getDeviceId(id){
     var deviceId;
     switch (id){
         case 'uid1':
-            deviceId = "25d469a0-5d73-11e8-a6b5-59c2cc02320f";  //switch1
+            deviceId = "1ecde350-6252-11e8-b8df-59c2cc02320f";  //switch1
             break;
         case 'uid2':
-            deviceId = "25e05080-5d73-11e8-a6b5-59c2cc02320f";  //switch2
+            deviceId = "1edd2590-6252-11e8-b8df-59c2cc02320f";  //switch2  不可用
             break;
         case 'uid3':
-            deviceId = "2957c400-5d73-11e8-a6b5-59c2cc02320f";  //c1
+            deviceId = "22acf240-6252-11e8-b8df-59c2cc02320f";  //c1
             break;
         case 'uid4':
-            deviceId = "286c5290-5d73-11e8-a6b5-59c2cc02320f";  //wenshi
+            deviceId = "21b94370-6252-11e8-b8df-59c2cc02320f";  //wenshi
             break;
         case 'uid5':
-            deviceId = "2900f170-5d73-11e8-a6b5-59c2cc02320f";   //c2
+            deviceId = "22649ea0-6252-11e8-b8df-59c2cc02320f";   //c2  不可用
             break;
         default:
             deviceId = null;
@@ -49,12 +49,14 @@ module.exports = {
         return yaoce;
     },
 
-    controlSwitch: async (id)=>{
+    controlSwitch: async (id,turn)=>{
         var deviceId = getDeviceId(id);
+        var status = false;
+        if (turn === 'on'){
+            status = true;
+        }
+        
         try{
-            var data = await instance.get('/data/alllatestdata/'+deviceId);
-            var curStatus = data.data[0].value;
-            
             var uid_data = await instance.get('/allattributes/'+deviceId);
             var uid = uid_data.data[21].value;
             requestId--;
@@ -64,29 +66,31 @@ module.exports = {
                 .send({"serviceName":"control switch"})
                 .send({"methodName":"setstate"})
                 .send({"uid":uid})
-                .send({"status":Boolean((!curStatus))})
+                .send({"status":status})
             
             console.log(res.text);
             if (res.text.indexOf("de")!=-1){
                 //调用失败
                 return res.text;
+            }else if (status === true){
+                    return "on"+res.text;
+            }else if(status === false){
+                return "off"+res.text;
             }else{
-                if (curStatus === 0){
-                    return "on";
-                }else{
-                    return "off";
-                }
+                throw new Error('server error!');
             }
             
         } catch(e){
-            return "Error:"+ e.message;
+            return e.message;
         }
     },
-    controlCurtain: async (id)=>{
+    controlCurtain: async (id,turn)=>{
         var deviceId = getDeviceId(id);
+        var status = false;
+        if (turn === 'on'){
+            status = true;
+        }
         try{
-            var data = await instance.get('/data/alllatestdata/'+deviceId);
-            var curStatus = data.data[0].value;
             
             var uid_data = await instance.get('/allattributes/'+deviceId);
             var uid = uid_data.data[21].value;
@@ -97,22 +101,22 @@ module.exports = {
                 .send({"serviceName":"control curtain"})
                 .send({"methodName":"setstate"})
                 .send({"uid":uid})
-                .send({"status":Boolean((!curStatus))})
+                .send({"status":status})
             
             console.log(res.text);
             if (res.text.indexOf("de")!=-1){
                 //调用失败
                 return res.text;
+            }else if (status === true){
+                    return "on"+res.text;
+            }else if(status === false){
+                return "off"+res.text;
             }else{
-                if (curStatus === 0){
-                    return "on";
-                }else{
-                    return "off";
-                }
+                throw new Error('server error!');
             }
             
         } catch(e){
-            return "Error:"+ e.message;
+            return e.message;
         }
     },
 

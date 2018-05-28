@@ -292,11 +292,12 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             });
         };
 
-        fun2cgq('sensor_center.stl',-10.37, 6.90, 15.16,"开关:1_uid1");
-        fun2cgq('sensor_center.stl',-10.37, 6.90, 14.16,"开关:2_uid2");
-        fun2cgq('sensor_center.stl',0.0, 4.228, -6.5,"窗帘1_uid3");
+        fun2cgq('sensor_center.stl',-10.37, 6.90, 15.16,"开关1开_uid1_on");
+        fun2cgq('sensor_center.stl',-10.37, 6.90, 14.16,"开关1关_uid1_off");
+        fun2cgq('sensor_center.stl',0.0, 4.228, -6.5,"窗帘1开_uid3_on");
+        fun2cgq('sensor_center.stl',-1.0, 4.228, -6.5,"窗帘1关_uid3_off");
         fun2cgq('sensor_center.stl',0.0,4.96,18,"温湿2_uid4");
-        fun2cgq('sensor_center.stl',-1.0, 4.228, -6.5,"窗帘2_uid5");
+        
         
         
         
@@ -340,29 +341,29 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         if (intersections.length > 0) {
                 var name_uid =  intersections[0].object.tooltip;
                 var nameUid =  name_uid.split("_");
-                console.log('名字'+nameUid[0])
+                console.log('名字:'+nameUid[0]);
                 if(nameUid[0].indexOf("窗帘")!=-1){
-                    getAjax("/api/3d815/controlCurtain/"+nameUid[1], function(response) {
+                    getAjax("/api/3d815/controlCurtain/"+nameUid[1]+'?turn='+nameUid[2], function(response) {
                          
-                         console.log('窗帘结果'+response);
+                         console.log('窗帘结果:'+response);
                          if (response.indexOf("on")!=-1){
                             params.exposure = 0.81;
                          }else if (response.indexOf("off")!=-1){
-                             params.exposure = 0.65
+                             params.exposure = 0.68
                          }else{
                              alert("控制失败！"+response);
                          }
                     });
                 }else if (nameUid[0].indexOf("开关")!=-1){
-                    getAjax("/api/3d815/controlSwitch/"+nameUid[1], function(response) {
+                    getAjax("/api/3d815/controlSwitch/"+nameUid[1]+'?turn='+nameUid[2], function(response) {
                          
-                         console.log('开关结果'+response);
+                         console.log('开关结果:'+response);
                          if (response.indexOf("on")!=-1){
                             params.exposure = 0.81;
                          }else if (response.indexOf("off")!=-1){
-                             params.exposure = 0.65
+                             params.exposure = 0.68
                          }else{
-                             alert("控制失败！"+reponse);
+                             alert("控制失败！"+response);
                          }
                         });
                 }
