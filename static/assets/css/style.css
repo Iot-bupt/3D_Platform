@@ -28,7 +28,7 @@ body {
          background-color:rgba(255,255,255,0.1);color:white ;
          z-index:3;font-weight:normal }
 #allDevice,#showDeviceInfo{ 
-    width:350px; 
+    width:500px; 
     height: 520px;
     position:absolute;
     background-color:rgba(255,255,255,0.1);
@@ -41,8 +41,8 @@ body {
 
 }
 #showDeviceInfo{
-    top:120px;
-    left: 1000px;
+    top:190px;
+    right: 15px;
     height: 350px;
 }
 #allDeviceTable tr td{

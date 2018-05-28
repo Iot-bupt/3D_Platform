@@ -9,6 +9,7 @@
     <link href="static/assets/css/font-awesome.css" rel="stylesheet" type='text/css'/>
     <link href='static/assets/css/font-Lobster.css' rel='stylesheet' type='text/css' />
     <link href="static/assets/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="static/assets/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="static/assets/js/angular.js"></script>
     <script src="static/assets/js/angular-resource.js"></script>
 </head>
@@ -28,7 +29,7 @@
                     <div class="input-group"  id="searchDeviceDiv">
                         <input type="text" class="form-control" placeholder="请输入设备名称..." id="searchDevice">
                         <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" id="btn"><i class="fa fa-search"></i></button>
+                            <button class="btn btn-primary" type="button" id="btn" ng-click="searchDeviceInfo()"><i class="fa fa-search"></i></button>
                         </span>
                     </div>
                 </td>
@@ -39,55 +40,55 @@
             </tr>
         </thead>
         <tbody id="showDevice">
-           
+           <tr ng-repeat="data in deviceList" ng-click="show(data)">
+               <td>{{data.id}}</td>
+               <td>{{data.name}}</td>
+           </tr>
         </tbody>
     </table>
-<<<<<<< HEAD
     
-    <button class="btn btn-default button" style="opacity: 0.2;" id="pre">上一页</button>
-    <button class="btn btn-default button" style="opacity: 0.2;" id="next">下一页</button>
+    <button class="btn btn-default button" style="opacity: 0.2;" id="pre" ng-click="prePage()">上一页</button>
+    <button class="btn btn-default button" style="opacity: 0.2;" id="next" ng-click="nextPage()">下一页</button>
            
        
-=======
-    <p ng-repeat="data in deviceList">{{data.id}}</p> 
+    
 </div>
->>>>>>> 1dafea9c85543f64426d872d3548e4a7364f3f87
 <div id ="showDeviceInfo">
     <table class="table table-hover">
     <thead>
         <tr>
-           <th>{{deviceName}}</th>
+           <th>{{name}}</th>
            <th></th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>设备ID:</td>
-            <td></td>
+            <td>{{id}}</td>
         </tr>
         <tr>
             <td>父类设备:</td>
-            <td></td>
+            <td>{{parentDeviceId}}</td>
         </tr>
         <tr>
             <td>厂商：</td>
-            <td></td>
+            <td>{{manufacture}}</td>
         </tr>
         <tr>
             <td>设备类型:</td>
-            <td></td>
+            <td>{{deviceType}}</td>
         </tr>
         <tr>
             <td>型号：</td>
-            <td></td>
+            <td>{{model}}</td>
         </tr>
         <tr>
             <td>状态：</td>
-            <td></td>
+            <td>{{status}}</td>
         </tr>
         <tr>
             <td>位置：</td>
-            <td></td>
+            <td>{{location}}</td>
         </tr>
     </tbody>
 </table>
@@ -110,6 +111,7 @@
 
 <script src="static/assets/js/815_scene.js"></script>
 <script src="static/assets/js/mainCtrl.js"></script>
+<script src="static/assets/js/toastr.js"></script>
 </body>
 
 
