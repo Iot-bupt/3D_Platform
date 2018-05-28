@@ -48,28 +48,61 @@ jQuery.ajax({
         
     }
 });
+
+// 下一页
 jQuery("#next").click(function(){
+    // jQuery("#showDevice tr").remove();
+    
+   
     if(hasNext == true){
+       
         jQuery.ajax({
-            url:"/api/3d815/paging/2?limit=6&idOffset="+idOffset,
+            url:"/api/3d815/paging/2?limit=6&idOffset="+idOffset+"textOffset="+textOffset,
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
             success:function(msg) {
-                jQuery("#showDevice .info").remove;
+                
                 $scope.deviceList = msg.data;
                 console.log($scope.deviceList);
                 for(var i = 0;i<$scope.deviceList.length;i++){
         
-                    jQuery("#showDevice").prepend("<tr class='info'><td>"+$scope.deviceList[i].id+"</td><td>"+$scope.deviceList[i].name+"</td></tr>")
+                    jQuery("#showDevice").prepend("<tr><td>"+$scope.deviceList[i].id+"</td><td>"+$scope.deviceList[i].name+"</td></tr>")
                 }
                 
+            },
+            error:function(err){
+                jQuery("#showDevice tr").remove();
             }
         });
     }else{
         alert("当前已是最后一页！")
     }
    
+});
+// 搜索
+jQuery("#btn").click(function(){
+    var temp= window.location.search;
+    var tenantId = temp.split("=");
+    console.log(tenantId[1]);
+    var textSearch = jQuery("#searchDevice").val();
+    console.log(textSearch);
+    jQuery("#showDevice").remove();
+    jQuery.ajax({
+        url:"/api/3d815/search/"+tenantId[1]+"？limit=1000&textSearch="+textSearch,
+        contentType: "application/json; charset=utf-8",
+        async: false,
+        type:"GET",
+        success:function(msg) {
+            
+            console.log(msg);
+            for(var i = 0;i<$scope.deviceList.length;i++){
+    
+                jQuery("#showDevice").prepend("<tr class='deviceInfo'><td>"+$scope.deviceList[i].id+"</td><td>"+$scope.deviceList[i].name+"</td></tr>")
+            }
+            
+        }
+    });
 })
 
 }]);

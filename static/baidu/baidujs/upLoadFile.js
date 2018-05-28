@@ -21,12 +21,14 @@ if (file) {
   // // } 
      
   //   ｝ 
-  modelName.value=file.name;
+  //modelName.value=file.name;
+  $("#modelName").val(file.name);
   
   
 }  
 }  
-function uploadFile() {  
+function uploadFile() { 
+//$('#addSences').modal('show'); 
 var fd = new FormData();  
 fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]);  
 var xhr = new XMLHttpRequest();  
@@ -55,7 +57,8 @@ else {
 function uploadComplete(evt) {  
 /* 服务器端返回响应时候触发event事件*/  
 alert(evt.target.responseText); 
-document.getElementById("div1").style.display="none"; 
+$('#addSences').modal('hide');
+//document.getElementById("div1").style.display="none"; 
 }  
 function uploadFailed(evt) {  
 alert("There was an error attempting to upload the file.");  

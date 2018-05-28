@@ -15,17 +15,29 @@
 	<script type="text/javascript" src="../static/baidu/baidujs/SearchInfoWindow.js"></script>
     <script type="text/javascript" src="../static/baidu/baidujs/searchInRectangle.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+    <!-- <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <!-- <script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script> -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
     <link rel="stylesheet" href="../static/baidu/css/style.css"/>
+    <link rel="stylesheet" href="../static/baidu/css/style1.css"/>
+    <link rel="stylesheet" href="../static/baidu/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../static/baidu/css/bootstrap-switch.css"/>
+    <!-- <link rel="stylesheet" href="../static/baidu/css/font-awesome.css"/> -->
+    <!-- <link rel="stylesheet" href="../static/baidu/css/font-Lobster.css"/> -->
+    <!-- <link rel="stylesheet" href="../static/baidu/css/pagination.css"/> -->
+    <!-- <link rel="stylesheet" href="../static/baidu/css/toastr.css"/> -->
+    <!-- <link rel="stylesheet" href="../static/baidu/css/ui-grid.css"/> -->
+    
 	<title>地图展示</title>
 </head>
 
 <body>
 <!-- div id="progressNumber"></div> -->
 <!-- <progress max="100" value="0" id="progressNumber"  ></progress>   -->
-<header class="publicHeader">
+<!-- <header class="publicHeader">
     <h1>地图展示</h1>  <h1><a href="sitesList">列表展示</a></h1>
     <div class="publicHeaderR">
         <p><span>下午好！</span><span style="color: #fff21b"> Admin</span> , 欢迎你！</p>
@@ -34,21 +46,77 @@
 </header>
 <section class="publicTime">
     <span id="time">2015年1月1日 11:11  星期一</span>
+</section> -->
+<section class="sec-menu" >
+    <div class="container"  style="margin: 0;width:100%;">
+        <div class="row" id="head-menu">
+<div class="col-md-1 col-sm-1">
+                    <span class="menu-open-icon">
+                        <a href="/sitesList" target="_self">列表</a>
+                    </span>
+                </div>
+            <div class="col-md-5 col-sm-12" >
+                <i class="pull-left"> 欢迎来到物管理平台 &nbsp;&nbsp;</i>
+            </div>
+            <div class="col-md-4 col-sm-12">
+    <span id="time">2015年1月1日 11:11  星期一</span>
+</div>
+            <div class="col-md-1 col-sm-12">
+                <input type="button" class="btn btn-danger" value="退出登录" id="quit" ng-click="logout()"/>
+                <!-- <a href="/"><input type="button" class="btn btn-danger" value="退出登录" id="quit" ng-click="logout()"/></a> -->
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-12">
+
+            </div>
+        </div> -->
+    </div>
+
 </section>
+
+<div id="side-menu">
+        <ul>
+             <li style="border-bottom:0px;">
+             <a href="#" title="close"> <i class="fa fa-close fa-2x menu-close-icon b-clr"></i></a>
+            </li>
+            <li class="side-menu-icon">
+                <a href ="" title="首页" ng-click="$location.path('homePage')">
+                    <i class="fa fa-home fontStyle"></i>
+                    <span class="textStyle">首页</span>
+                </a>
+
+            </li>
+            <li class="side-menu-icon">
+             <a href="" title="设备列表" ng-click="$location.path('deviceList')">
+                 <i class="fa fa-file-text-o fontStyle"></i>
+                 <span class="textStyle">设备列表</span>
+             </a>
+            </li>
+            <li class="side-menu-icon">
+              <a href="" title="设备组" ng-click="$location.path('deviceGroup')">
+                  <i class="fa fa-cubes fontStyle"></i>
+                  <span class="textStyle">设备组</span>
+              </a>
+            </li>
+            
+        </ul>
+           
+    </div>
 <!--主体内容-->
 <section class="publicMian">
     <div class="left">
-        <h2 class="leftH2"><span class="span1"></span>功能列表 <span></span></h2>
+        <h2 class="leftH2"><span ></span>功能列表 <span></span></h2>
         <nav>
             <ul class="list">
-                <li><input type="button" class="anjian" value="测距" onclick="myDis.open();"  /></li>
-                <li><input type="button" class="anjian" value="输入经纬度标注" onclick="mark1();" /></li>
-                <li><input type="button" class="anjian" value="点击添加标注"  onclick="mark2();" /></li>
-                <li><input type="button" class="anjian" value="绘制覆盖物个数" onclick="alert(overlays.length)"/></li>
-                <li><input type="button" class="anjian" value="清除所有覆盖物" onclick="clearAll()"/></li> 
-                <!-- <li><input type="button" class="anjian" value="开启"  id="searchOn" /></li>
+                <li><input type="button" class="anjian" data-toggle="modal" value="测距" onclick="myDis.open();"  /></li>
+                <li><input type="button" class="anjian" data-toggle="modal" value="输入经纬度标注" onclick="mark1()" /></li>
+                <li><input type="button" class="anjian" data-toggle="modal" value="点击添加标注"  onclick="mark2();" /></li>
+                <!-- <li><input type="button" class="anjian" data-toggle="modal" value="绘制覆盖物个数" onclick="alert(overlays.length)"/></li>
+                <li><input type="button" class="anjian" data-toggle="modal" value="清除所有覆盖物" onclick="clearAll1()"/></li>  -->
+               <!--  <li><input type="button" class="anjian" value="开启"  id="searchOn" /></li>
                 <li><input type="button" class="anjian" value="关闭" id="searchOff" /></li> -->
-                <li><input type="button" class="anjian" value="批量反地址解析" id ="jiexi"/></li>
+                <li><input type="button" class="anjian" value="框选搜索" id ="jiexi" onclick="draw()" /></li>
             </ul>
         </nav>
     </div>
@@ -67,113 +135,187 @@
             <span><input type="text" id="address" placeholder="请输站点ID或名字"></span> 
             <input type="button" id="btn" value="定位"/>  
         </div>
-        <div id="allmap"></div>
+        <div id="allmap" class="baidu-maps"></div>
         </fieldset>
     </div>
 </section>
 
-<div id='div1' class="providerAdd">
-            <form >
-                <!--div的class 为error是验证错误，ok是验证成功-->
-                <b>长传场景</b>
-                <div class="">
-                    <label for="siteId">站点ID：</label>
-                    <input type="text" name="siteId" id="siteId" autocomplete="off"/>
-                    <span></span>
-                </div>
-                <div>
-                    <label for="modelName">模型命名：</label>
-                    <input type="text" name="modelName" id="modelName" autocomplete="off"/>
-                    <span >*</span>
-                </div>
-                <div>
-                    <label for="other">其他：</label>
-                    <input type="text" name="other" id="other" autocomplete="off"/>
-                    <span></span>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="addSites">
+        <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" style="font-weight: bold;">添加站点</h4>
                 </div>
-                <div>
-                    <label for="fileImport">模型文件：</label>
-                    <!-- <input type="text" name="fileImport" id="fileImport"/> -->
-                    <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();" autocomplete="off"/>
-                </div>
-
-                <div class="progressNumber">
-                    <progress max="100" value="0" id="progressNumber"></progress> 
-                </div>
-                <div class="providerAddBtn">
-                    <!--<a href="#">保存</a>-->
-                    <!--<a href="providerList.html">返回</a>-->
-                    <input type="button" value="上传" onclick="uploadFile()"/>
-                    <input type="button" value="返回" onclick="CloseDiv1()"/>
-                </div>
-            </form>
-        </div>
-
-<div id='div2' class="providerAdd">
-            <form >
-                <b>修改站点</b>
-                <div class="">
-                    <label for="siteOldID">站点ID：</label>
-                    <input type="text" name="siteOldID" id="siteOldID" autocomplete="off"/>
-                    <span></span>
-                </div>
-                <div>
-                    <label for="siteOldName">站点原名：</label>
-                    <input type="text" name="siteOldName" id="siteOldName" autocomplete="off"/>
-                    <span ></span>
-                </div>
-                <div>
-                    <label for="siteNewName">重命名：</label>
-                    <input type="text" name="siteNewName" id="siteNewName" required autocomplete="off"/>
-                    <span>*</span>
-                </div>
-                <div class="providerAddBtn">
-                    <!--<a href="#">保存</a>-->
-                    <!--<a href="providerList.html">返回</a>-->
-                    <input type="submit" value="保存" onclick="renameSite();"/>
-                    <input type="button" value="返回" onclick="CloseDiv2()"/>
-                </div>
-            </form>
-        </div>
-
-<div id='nav' class="providerAdd">
-            <form >
-             <b>添加站点</b>
-             <div>
-                    <label for="tenantId1">用户ID：</label>
-                    <input type="text" name="tenantId1" id="tenantId1" required/ autocomplete="off">
-                    <span>*</span>
-                </div>
-                <div class="">
-                    <label for="longitude">经度：</label>
-                    <input name=txt1 id="longitude" value="116.404" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}" required autocomplete="off">
-                    <span>*</span>
-                </div>
-                <div>
-                    <label for="latitude">纬度：</label>
+                <div class="modal-body" id="deviceInfo">
+                    <table class="table table-striped table-hover">
+                        <tbody>
+                        <tr>
+                            <td class="attName">用户ID：</td>
+                            <td><input type="text"  name="tenantId1" id="tenantId1" required autocomplete="off" />
+                            <span>*</span></td>
+                        </tr>
+                        <tr>
+                            <td class="attName">经度:</td>
+                            <td>
+                                <input name=txt1 id="longitude" value="116.404" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}" required autocomplete="off">
+                            <span>*</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="attName">纬度:</td>
+                            <td>
                    <input name=txt1 id="latitude" value="39.915" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}" required autocomplete="off">
                     <span >*</span>
-                </div>
-                <div>
-                    <label for="name1">名称：</label>
-                    <input type="text" name="name1" id="name1" required/ autocomplete="off">
+                    </td>
+                        </tr>
+                        <tr>
+                            <td class="attName">站点名称:</td>
+                            <td>
+                                <input type="text" name="name1" id="name1" required/ autocomplete="off">
                     <span>*</span>
-
+                            </td>
+                        </tr>
+                    
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="providerAddBtn">
-                    <!--<a href="#">保存</a>-->
-                    <!--<a href="providerList.html">返回</a>-->
-                    <input type="submit" value="确认" onclick="markfinish();"/>
-                    <input type="button" value="返回" onclick="closeWin();"/>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="modalClose" onclick="
+                    closeWin()">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="modalConfirm" onclick="markfinish()">确定</button>
                 </div>
-            </form>
-        </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-     <footer class="footer">
-</footer>
+<div class="modal fade" tabindex="-1" role="dialog" id="addSences">
+        <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" style="font-weight: bold;">上传场景</h4>
+                </div>
+                <div class="modal-body" id="deviceInfo">
+                    <table class="table table-striped table-hover">
+                        <tbody>
+                        <tr>
+                            <td class="attName">站点ID：</td>
+                            <td><input type="text" name="siteId" id="siteId" autocomplete="off"/>
+                            <span>*</span></td>
+                        </tr>
+                        <tr>
+                            <td class="attName">模型命名:</td>
+                            <td>
+                            <input type="text" name="modelName" id="modelName" autocomplete="off"/>
+                            <span>*</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="attName">其他:</td>
+                            <td>
+                            <input type="text" name="other" id="other" autocomplete="off"/>
+                            <span ></span>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td class="attName">选择文件：</td>
+                            <td>
+                                <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();" autocomplete="off"/>
+                            </td>
+                        </tr>
+                        <tr>
+                        <td class="attName">进度：</td>
+                            <td>
+                                <!-- <div class="progressNumber1" id="progressNumber1"> -->
+                                <progress max="100" value="0" id="progressNumber"></progress> 
+                                <!-- </div> -->
+                            </td>
+                        </tr>
+                    
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="modalClose">关闭</button>
+                    <button type="button" class="btn btn-primary"  id="modalConfirm" data-backdrop="static" onclick="uploadFile()">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="renameSite">
+        <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" style="font-weight: bold;">修改站点</h4>
+                </div>
+                <div class="modal-body" id="deviceInfo">
+                    <table class="table table-striped table-hover">
+                        <tbody>
+                        <tr>
+                            <td class="attName">站点ID：</td>
+                            <td><input type="text" name="siteOldID" id="siteOldID" autocomplete="off"/>
+                            <span>*</span></td>
+                        </tr>
+                        <tr>
+                            <td class="attName">站点原名:</td>
+                            <td>
+                            <input type="text" name="siteOldName" id="siteOldName" autocomplete="off"/>
+                            <span>*</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="attName">重命名:</td>
+                            <td>
+                            <input type="text" name="siteNewName" id="siteNewName" required autocomplete="off"/>
+                            <span >*</span>
+                        </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="modalClose">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="modalConfirm" onclick="renameSite()">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="deviceList">
+        <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
+        <div class="modal-dialog" role="document" style="width:800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" style="font-weight: bold;">设备列表</h4>
+                </div>
+                <div class="modal-body" id="deviceInfo" style="height: 500px;overflow-y: scroll";>
+            <table id ="myTable2" class="table table-striped" cellpadding="0" cellspacing="0" style="width:100%" >
+            <tr class="firstTr" id="tr1">
+                <th width="30%">设备ID</th>
+                <th width="10%">租户名称</th>
+                <th width="10%">用户ID</th>
+                <th width="20%">设备名称</th>
+                <th width="10%">设备组ID</th>
+                <th width="20%">操作</th>
+            </tr>
+        </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="modalClose" onclick="
+                    closeWin()">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="modalConfirm" onclick="markfinish()">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </body>
 
 <script type="text/javascript" src="../static/baidu/baidujs/baidu.js"></script>
