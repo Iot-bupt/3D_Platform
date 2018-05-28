@@ -1137,6 +1137,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
         /**
          * 绘制矩形结束
          */
+        var idArray=[];
         var endAction = function (e) {
             var calculate = me._calculate(polygon, polygon.getPath()[2]);
             me._dispatchOverlayComplete(polygon, calculate);
@@ -1144,8 +1145,65 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
             mask.disableEdgeMove();
             mask.removeEventListener('mousemove', moveAction);
             baidu.un(document, 'mouseup', endAction);
-            alert(BMapLib.GeoUtils.isPointInPolygon(point, polygon));
-        //alert('1');
+             for(var i=0;i<adds.length;i++)
+            {
+                //alert(BMapLib.GeoUtils.isPointInPolygon(adds[i], polygon));
+                if((BMapLib.GeoUtils.isPointInPolygon(adds[i], polygon))==true){
+                    
+                for (var j = 0; j < reqArray.length; j++) 
+                {
+                    if ((adds[i].lat == reqArray[j].latitude) && (adds[i].lng == reqArray[j].longtitude)) 
+                    {
+                    //console.log(reqArray[j].id);
+                    idArray.push(reqArray[j].id)
+                //      var table = document.getElementById("myTable2");
+                // var row = table.insertRow(1);
+                // row.id = (j + 1);
+                // var cell0 = row.insertCell(0);
+                // // var cell1 = row.insertCell(1);
+                // // var cell2 = row.insertCell(2);
+                // // var cell3 = row.insertCell(3);
+                // // var cell4 = row.insertCell(4);
+                // // // cell5 = row.insertCell(5);
+                // // // cell6 = row.insertCell(6);
+                // // var cell5 = row.insertCell(5);
+
+                // cell0.innerHTML = '<td id=row.id>'+reqArray[j].id+'</td>' ;
+                // cell1.innerHTML = req.data[i].tenantId;
+                // cell2.innerHTML = req.data[i].customerId;
+                // cell3.innerHTML = req.data[i].name;
+                // cell4.innerHTML = req.data[i].parentDeviceId;
+                    }
+
+                }
+              }
+            }
+        for(var k=0;k<idArray.length;k++)
+        {
+                var table = document.getElementById("myTable2");
+                var row = table.insertRow(k+1);
+                row.id = (k + 1);
+                var cell0 = row.insertCell(0);
+                var cell1 = row.insertCell(1);
+                var cell2 = row.insertCell(2);
+                var cell3 = row.insertCell(3);
+                var cell4 = row.insertCell(4);
+                // // cell5 = row.insertCell(5);
+                // // cell6 = row.insertCell(6);
+                var cell5 = row.insertCell(5);
+
+                cell0.innerHTML = idArray[k];
+                cell1.innerHTML = ''
+                cell2.innerHTML = ''
+                cell3.innerHTML = ''
+                cell4.innerHTML = ''
+                // 
+                cell5.innerHTML = '<a href="/demo" >'+'进入场景'+'</a>'
+                
+                }
+                $('#deviceList').modal('show');
+                clearAll(); 
+                // drawingManager.close();
         }
        
         mask.addEventListener('mousedown', startAction);
