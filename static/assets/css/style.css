@@ -29,6 +29,7 @@ body {
          z-index:3;font-weight:normal }
 #allDevice,#showDeviceInfo{ 
     width:350px; 
+    height: 520px;
     position:absolute;
     background-color:rgba(255,255,255,0.1);
     color:#305680;
@@ -37,10 +38,11 @@ body {
     }
 #allDevice{
     top:75px;
+
 }
 #showDeviceInfo{
-    top:190px;
-    right: 15px;
+    top:120px;
+    left: 1000px;
     height: 350px;
 }
 #allDeviceTable tr td{
