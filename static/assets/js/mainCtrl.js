@@ -19,6 +19,7 @@ jQuery("#allDevice").mouseout(function(){
     jQuery("#allDevice").css({"background-color":"rgba(255,255,255,0.1)","color":"#305680"});
     jQuery(".button").css("opacity","0.2");
 });
+jQuery('#showDeviceInfo').css({'display':'none'});
 //==================================
 
 
@@ -180,6 +181,18 @@ $scope.searchDeviceInfo = function(){
    
 }
 
+$scope.closeDeviceList = function(){
+    
+    jQuery('#allDevice').css({'display':'none'});
+
+}
+$scope.closeDeviceInfo = function(){
+    
+    jQuery('#showDeviceInfo').css({'display':'none'});
+
+}
+
+
 //选中设备信息展示
 $scope.show = function(data){
     $scope.deviceInfo = data;
@@ -192,6 +205,7 @@ $scope.show = function(data){
     $scope.location = data.location;
     $scope.deviceType = data.deviceType;
     $scope.model = data.model;
+    jQuery('#showDeviceInfo').css({'display':''});
 }
 
 

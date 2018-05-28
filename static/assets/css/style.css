@@ -27,7 +27,7 @@ body {
 #coords{ width:136px; height:60px; top:0px;position:absolute;
          background-color:rgba(255,255,255,0.1);color:white ;
          z-index:3;font-weight:normal }
-#allDevice,#showDeviceInfo{ 
+#allDevice{ 
     width:500px; 
     height: 520px;
     position:absolute;
@@ -44,6 +44,12 @@ body {
     top:190px;
     right: 15px;
     height: 350px;
+    background-color:rgba(49, 47, 47, 1);
+    color:#5087c3;
+    width:500px; 
+    position:absolute;
+    z-index:3;
+    font-weight:normal;
 }
 #allDeviceTable tr td{
         width: 50%;

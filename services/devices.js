@@ -3,7 +3,7 @@ const request = require('superagent');
 
 var instance = axios.create({
     baseURL: 'http://39.104.84.131:8100/api/v1',
-    timeout: 1000,
+    timeout: 2000,
   });
 
 global.requestId = 100000;
@@ -67,6 +67,10 @@ module.exports = {
                 .send({"methodName":"setstate"})
                 .send({"uid":uid})
                 .send({"status":status})
+                .timeout({
+                    response: 3000,
+                    deadline: 5000,
+                });
             
             console.log(res.text);
             if (res.text.indexOf("de")!=-1){
@@ -102,6 +106,10 @@ module.exports = {
                 .send({"methodName":"setstate"})
                 .send({"uid":uid})
                 .send({"status":status})
+                .timeout({
+                    response: 3000,
+                    deadline: 5000,
+                });
             
             console.log(res.text);
             if (res.text.indexOf("de")!=-1){
