@@ -29,6 +29,7 @@ function templating(path, opts) {
             ctx.response.body = env.render(view, Object.assign({}, ctx.state || {}, model || {}));
             ctx.response.type = 'text/html';
         };
+        
         await next();
     };
 }

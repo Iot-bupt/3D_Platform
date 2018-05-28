@@ -110,11 +110,11 @@ li{
     text-align: center;
     color: #fff;
     background: #60b3e7;
-    margin: 10px  auto;
+    margin: 5px  auto;
     box-shadow:4px 4px rgba(212,212,212,0.7);
 }
 .leftH2 span{
-    width: 10px;
+    width: 5px;
     height: 10px;
     display: inline-block;
     background: radial-gradient(#70c2f4,#3a8dc1, #035384, #4696c7,#83d1f5);
@@ -210,11 +210,12 @@ li{
     margin-left: 20px;
     width: 100px;
     padding: 0 20px;
-    height: 30px;
+    height: 40px;
     border: 1px solid #7ba92c;
     border-radius: 4px;
     color: #fff;
     font-weight: bold;
+    text-align: middle;
     background:#87c212 url("../img/search.png") 10px center no-repeat;
 }
 .search input[type='button']:focus{
@@ -249,6 +250,12 @@ li{
     border: 1px solid #0c89de;
     outline: none;
 }
+
+.right1{
+    width: 85%;
+}
+/*右边所在位置栏*/
+
 
 /*底部*/
 .footer{
