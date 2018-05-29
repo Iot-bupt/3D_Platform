@@ -76,7 +76,11 @@ $scope.nextPage = function(){
                     console.log($scope.deviceList);
                 }else{
                     hasNext = msg.hasNext;
+                    
                 }
+            },
+            error:function(err){
+                toastr.warning("当前已是最后一页！");
             }
         });
     }else{
