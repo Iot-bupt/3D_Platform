@@ -19,6 +19,18 @@ jQuery("#allDevice").mouseout(function(){
     jQuery("#allDevice").css({"background-color":"rgba(255,255,255,0.1)","color":"#305680"});
     jQuery(".button").css("opacity","0.2");
 });
+
+//动态显示左侧箭头
+jQuery("#arrow").mouseover(function(){
+    jQuery("#arrow").css({"margin-left":"-10px"});
+})
+    jQuery("#arrow").mouseout(function(){
+        jQuery("#arrow").css({"margin-left":"-60px"});
+    })
+
+
+
+    //显示初始化
 jQuery('#showDeviceInfo').css({'display':'none'});
 jQuery('#addModel').css({'display':'none'});
 jQuery('#arrow').css({'display':'none'});
@@ -228,10 +240,8 @@ $scope.closeDeviceList = function(){
 
 
 $scope.closeDeviceInfo = function(){
-    
     jQuery('#showDeviceInfo').css({'display':'none'});
     jQuery('#addModel').css({'display':'none'});
-
 }
 $scope.closeAddModel = function(){
     jQuery('#addModel').css({'display':'none'});
@@ -239,7 +249,6 @@ $scope.closeAddModel = function(){
 $scope.arrowHidden = function(){
     jQuery('#arrow').css({'display':'none'});
     jQuery('#allDevice').css({'display':''});
-
 }
 
 //选中设备信息展示

@@ -79,5 +79,6 @@ body {
     position: absolute;
     width: 10px;
     height: 5px;
+    margin-left: -10px;
 
 }
