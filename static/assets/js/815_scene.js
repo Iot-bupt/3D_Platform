@@ -350,7 +350,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                             params.exposure = 0.81;
                          }else if (response.indexOf("off")!=-1){
                              params.exposure = 0.68
-                         }else{
+                         }else {
                              alert("控制失败！"+response);
                          }
                     });
@@ -362,7 +362,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                             params.exposure = 0.81;
                          }else if (response.indexOf("off")!=-1){
                              params.exposure = 0.68
-                         }else{
+                         }else {
                              alert("控制失败！"+response);
                          }
                         });

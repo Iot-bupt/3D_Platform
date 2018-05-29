@@ -41,7 +41,7 @@ var biaozhi;
     //map.addControl(top_right_navigation);
 
     var myDis = new BMapLib.DistanceTool(map);
-    var myMark = new BMapLib.MarkerTool(map);
+    //var myMark = new BMapLib.MarkerTool(map);
     map.centerAndZoom("北京");         // 设置地图显示的城市 此项是必须设置的
     map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
     var point=new BMap.Point(116.404, 39.915);
@@ -191,10 +191,11 @@ function getSites()
             alert('失败');
         },
         success: function(req) {
-            //alert('1')
-            //return req;
-            //console.log(req.sites);
             //请求成功时处理
+            idArray=[];
+            logArray=[];
+            lohArray=[];
+            nameArray=[];
             reqArray=req.sites;
             for (var i = 0; i < req.sites.length; i++) {
                 idArray.push(req.sites[i].id);
@@ -202,9 +203,8 @@ function getSites()
                 lohArray.push(req.sites[i].latitude);
                 nameArray.push(req.sites[i].name);
                 date1=new Date(req.sites[i].createdAt);
-                 //var time=date.getFullYear()+date.getMonth()+date.getDate();
                 year=date1.getFullYear();
-                month=date1.getMonth();
+                month=date1.getMonth()+1;
                 date=date1.getDate();
                 //console.log(req.sites[i].id);
         }
@@ -228,13 +228,18 @@ function onload1(){
             console.log(req.sites);
             //请求成功时处理
             reqArray=req.sites;
+            idArray=[];
+            logArray=[];
+            lohArray=[];
+            nameArray=[];
             for (var i = 0; i < req.sites.length; i++) {
                 idArray.push(req.sites[i].id);
                 logArray.push(req.sites[i].longtitude);
                 lohArray.push(req.sites[i].latitude);
+                nameArray.push(req.sites[i].name);
                  var date1=new Date(req.sites[i].createdAt);
                  var year=date1.getFullYear();
-                 var month=date1.getMonth();
+                 var month=date1.getMonth()+1;
                  var date=date1.getDate();
                 var content =addContent(tenantId,req.sites[i].id,req.sites[i].name,req.sites[i].longtitude,req.sites[i].latitude,year,month,date)
                  var marker =addMarkers(req.sites[i].id,req.sites[i].longtitude,req.sites[i].latitude)
@@ -270,6 +275,8 @@ function onload1(){
 }
 //////////////////////////添加站点///////////////////
 	function markfinish(){
+        if($.inArray($('#name1').val(), nameArray)==-1)
+        {
         if(name1.value!=""&&tenantId1.value!=""&&longitude.value!=""&&latitude.value!="")
         {
         map.removeEventListener("click");
@@ -287,11 +294,11 @@ function onload1(){
                  getSites();
                 if(req!='')//data.trim 去空格,防止出错
                  { getSites();
-                var date1=new Date(req.createdAt);
-                 //var time=date.getFullYear()+date.getMonth()+date.getDate();
-                 var year=date1.getFullYear();
-                 var month=date1.getMonth();
-                 var date=date1.getDate();
+                // var date1=new Date(req.createdAt);
+                //  //var time=date.getFullYear()+date.getMonth()+date.getDate();
+                //  var year=date1.getFullYear();
+                //  var month=date1.getMonth();
+                //  var date=date1.getDate()+1;
                  var content =addContent(tenantId,req.id,req.name,req.longtitude,req.latitude,year,month,date)
                  var marker =addMarkers(req.id,req.longtitude,req.latitude)
                  //addMarkers(req.id,req.longtitude,req.latitude)
@@ -312,6 +319,11 @@ function onload1(){
             }
         });
         }
+    }
+    else
+    {
+        alert('该站点名已存在')
+    }
 }
 
 //标注
@@ -355,10 +367,10 @@ function alterSite()
         if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {
             a=i;
             marker=openIfoID;
-            date1=new Date(reqArray[i].createdAt);
-            var year=date1.getFullYear();
-                 var month=date1.getMonth();
-                 var date=date1.getDate();
+            // date1=new Date(reqArray[i].createdAt);
+            // var year=date1.getFullYear();
+            //      var month=date1.getMonth()+1;
+            //      var date=date1.getDate();
             // console.log(openIfoID);
             // console.log(openIfoID.point.lat);
             siteId=reqArray[i].id;
@@ -371,7 +383,9 @@ function alterSite()
 }
 
 function renameSite() {
-    if(siteNewName.value!="")
+    if($.inArray($('#siteNewName').val(), nameArray)==-1)
+    {
+       if($('#siteNewName').val()!="")
     {
     $.ajax({
         url: '/api/sitename/' + siteId,
@@ -406,14 +420,20 @@ function renameSite() {
         }
     });
 }
-else{}
+else{} 
+    }
+else{
+    alert('该站点名已存在');
+}
+
+    
 }
 
 ///////////////////////查找站点//////////////////
 $(btn).click(function(){
-    console.log(idArray)
-
-    var a=idArray.indexOf(parseInt(address.value));
+    //console.log(nameArray)
+//console.log($.inArray(address.value, nameArray));
+    var a=nameArray.indexOf(address.value);
     if(a!=-1)
     {
          //logArray=req.sites[i].longtitude;
@@ -457,11 +477,6 @@ function loadPlace(longitude, latitude, level) {
                     map.centerAndZoom(point, level); // 初始化地图,设置中心点坐标和地图级别。
                 }
             }
-
-
-
-
-
 
 function bdGEO(){
     var pt = adds[index];
@@ -527,7 +542,6 @@ function draw() {
     }
 
 //覆盖物
-
 var overlaycomplete=function(e){
     overlays.push(e.overlay);
     //console.log(e);
@@ -571,16 +585,9 @@ function clearAll() {
     overlays.length = 0
 }
 
-$("#fa fa-bars pull-left fa-2x b-clr").click(function () {
-            var mobileMenu = $("#side-menu");
-            if (mobileMenu.hasClass("show-nav")) {
-                setTimeout(function () {
-                    mobileMenu.addClass("hide-nav").removeClass("show-nav");
-                }, 100)
-            }
-            else {
-                setTimeout(function (){
-                    mobileMenu.addClass("show-nav").removeClass("hide-nav");
-                }, 100)
-            }
-        })
+    $(".homeIconBackground,.side-menu-icon,.chooseBtn").mouseover(function(){
+        $(this).siblings().stop().fadeTo(300, 0.3);//动画速度用数字表示时不需加引号
+    });
+    $(".homeIconBackground,.side-menu-icon,.chooseBtn").mouseout(function () {
+        $(this).siblings().stop().fadeTo(300, 1);
+    });
