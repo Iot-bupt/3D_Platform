@@ -6331,7 +6331,7 @@ button.close {
 }
 /*# sourceMappingURL=bootstrap.css.map */
 /*百度地图兼容性问题*/
-.baidu-maps label
+.allmap label
 {
   max-width: none;
 }

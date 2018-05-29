@@ -4,20 +4,19 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-	<script src="../static/js/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="../static/baidu/baidujs/area.js"></script>
 	<script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/MarkerTool.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/DistanceTool.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
-	<!-- <script type="text/javascript" src="./js/TextIconOverlay.js"></script> -->
-	<script type="text/javascript" src="../static/baidu/baidujs/SearchInfoWindow.js"></script>
-    <script type="text/javascript" src="../static/baidu/baidujs/searchInRectangle.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
-    <!-- <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-    <!-- <script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script> -->
+    <!-- <script src="../static/js/jquery.min.js"></script> -->
+	<!-- <script type="text/javascript" src="../static/baidu/baidujs/MarkerTool.js"></script> -->
+	<!-- <script type="text/javascript" src="../static/baidu/baidujs/DistanceTool.js"></script> -->
+	<!-- <script type="text/javascript" src="../static/baidu/baidujs/SearchInfoWindow.js"></script> -->
+    <!-- <script type="text/javascript" src="../static/baidu/baidujs/searchInRectangle.js"></script> -->
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
@@ -25,7 +24,7 @@
     <link rel="stylesheet" href="../static/baidu/css/style1.css"/>
     <link rel="stylesheet" href="../static/baidu/css/bootstrap.css"/>
     <link rel="stylesheet" href="../static/baidu/css/bootstrap-switch.css"/>
-    <!-- <link rel="stylesheet" href="../static/baidu/css/font-awesome.css"/> -->
+    <link rel="stylesheet" href="../static/baidu/css/font-awesome.css"/>
     <!-- <link rel="stylesheet" href="../static/baidu/css/font-Lobster.css"/> -->
     <!-- <link rel="stylesheet" href="../static/baidu/css/pagination.css"/> -->
     <!-- <link rel="stylesheet" href="../static/baidu/css/toastr.css"/> -->
@@ -50,17 +49,17 @@
 <section class="sec-menu" >
     <div class="container"  style="margin: 0;width:100%;">
         <div class="row" id="head-menu">
-<div class="col-md-1 col-sm-1">
-                    <span class="menu-open-icon">
-                        <a href="/sitesList" target="_self">列表</a>
-                    </span>
-                </div>
-            <div class="col-md-5 col-sm-12" >
-                <i class="pull-left"> 欢迎来到3DGIS平台 &nbsp;&nbsp;</i>
+            <div class="col-md-1 col-sm-1">
+                                <span class="menu-open-icon">
+                                    <i class="fa fa-bars pull-left fa-2x b-clr"></i>
+                                </span>
+                            </div>
+                        <div class="col-md-5 col-sm-12" >
+                            <i class="pull-left"> 欢迎来到3DGIS平台 &nbsp;&nbsp;</i>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                <span id="time">2015年1月1日 11:11  星期一</span>
             </div>
-            <div class="col-md-4 col-sm-12">
-    <span id="time">2015年1月1日 11:11  星期一</span>
-</div>
             <div class="col-md-1 col-sm-12">
                 <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id={{tenantId}}'"/>
                 <!-- <a href="/"><input type="button" class="btn btn-danger" value="退出登录" id="quit" ng-click="logout()"/></a> -->
@@ -68,11 +67,9 @@
         </div>
         <!-- <div class="row">
             <div class="col-md-12">
-
             </div>
         </div> -->
     </div>
-
 </section>
 
 <div id="side-menu">
@@ -81,28 +78,20 @@
              <a href="#" title="close"> <i class="fa fa-close fa-2x menu-close-icon b-clr"></i></a>
             </li>
             <li class="side-menu-icon">
-                <a href ="" title="首页" ng-click="$location.path('homePage')">
+                <a href ="baidu" title="首页" onclick="">
                     <i class="fa fa-home fontStyle"></i>
-                    <span class="textStyle">首页</span>
+                    <span class="textStyle">地图展示</span>
                 </a>
 
             </li>
             <li class="side-menu-icon">
-             <a href="" title="设备列表" ng-click="$location.path('deviceList')">
+             <a href="sitesList" title="设备列表" onclick="">
                  <i class="fa fa-file-text-o fontStyle"></i>
                  <span class="textStyle">设备列表</span>
              </a>
             </li>
-            <li class="side-menu-icon">
-              <a href="" title="设备组" ng-click="$location.path('deviceGroup')">
-                  <i class="fa fa-cubes fontStyle"></i>
-                  <span class="textStyle">设备组</span>
-              </a>
-            </li>
-            
-        </ul>
-           
-    </div>
+        </ul>  
+</div>
 <!--主体内容-->
 <section class="publicMian">
     <div class="left">
@@ -132,10 +121,10 @@
             县区：<select name="county">
             </select>
             <span class="tips" style="color: green">请选择地区</span>   
-            <span><input type="text" id="address" placeholder="请输站点ID或名字"></span> 
+            <span><input type="text" id="address" placeholder="请输站点名称"></span> 
             <input type="button" id="btn" value="定位"/>  
         </div>
-        <div id="allmap" class="baidu-maps"></div>
+        <div id="allmap" class="allmap"></div>
         </fieldset>
     </div>
 </section>
@@ -321,8 +310,8 @@
 <script type="text/javascript" src="../static/baidu/baidujs/baidu.js"></script>
 <script type="text/javascript" src="../static/baidu/baidujs/time.js"></script>
 <script type="text/javascript" src="../static/baidu/baidujs/upLoadFile.js"></script>
+<script type="text/javascript" src="../static/baidu/baidujs/menuCtrl.js"></script>
 
 </html>
 <script type="text/javascript">
-	
 </script>

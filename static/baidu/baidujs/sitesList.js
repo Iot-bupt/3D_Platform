@@ -3,6 +3,7 @@ var tenantId=0;
 var siteId1
 var siteId2
 var idArray=[];
+var nameArray=[];
 var str
 var table = document.getElementById("myTable");
 var row ;
@@ -13,7 +14,6 @@ var cell3 ;
 var cell4 ;
 var cell5 ;
 var cell6 ;
-
 
     $.ajax({
         url: '/api/tenantsites/'+tenantId,
@@ -29,9 +29,12 @@ var cell6 ;
             //console.log(req.sites);
             //console.log(req.data);
             //请求成功时处理
+            idArray=[];
+            nameArray=[];
             reqArray=req.data;
             for (var i = 0; i < req.sites.length; i++) {
                 idArray.push(req.sites[i].id);
+                nameArray.push(req.sites[i].name);
                }
            }
 
@@ -61,15 +64,16 @@ var cell6 ;
                 var cell3 = row.insertCell(3);
                 var cell4 = row.insertCell(4);
                 var cell5 = row.insertCell(5);
+                var cell6 = row.insertCell(6);
 
                 cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>' ;
                 cell1.innerHTML = req.data[i].tenantId;
                 cell2.innerHTML = req.data[i].customerId;
                 cell3.innerHTML = req.data[i].name;
                 cell4.innerHTML = req.data[i].parentDeviceId;
-                // cell5.innerHTML = year+'-'+month+'-'+date;
+                cell5.innerHTML = '未分配';
                 // cell6.innerHTML = '';
-                cell5.innerHTML =  '<a onclick=look();><img src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+
+                cell6.innerHTML =  '<a onclick=look();><img src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+
                     '<a onclick=distributeSite();><img src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'
   
                }
@@ -108,9 +112,8 @@ function distributeSite()
 {
    $('#addSites').modal('show');
     var tableObj = document.getElementById("myTable1");
-            //获取表格中的所有行      
+    //获取表格中的所有行      
     var rows = tableObj.getElementsByTagName("tr");
-     
     //给tr绑定click事件
     for(var i in rows)
     {
@@ -125,7 +128,7 @@ function distributeSite()
 
     }
   for (i=0;i < idArray.length; i++) {
-   document.getElementById("siteId2").options[i] = new Option(idArray[i],i);
+   document.getElementById("siteId2").options[i] = new Option(nameArray[i],i);
    }
 }   
 
@@ -146,7 +149,23 @@ function deviceSearch() {
       }
     } 
   }
+}
+///////////////文本框-表格搜索/////////////
+function deviceSearch1() 
+{
+  var input = document.getElementById("searchValue");
+  var filter = input.value.toUpperCase();//转换为大写
+  var table = document.getElementById("myTable1");
+  var tr = table.getElementsByTagName("tr");
 
+  for (var i = 0; i < tr.length; i++) {
+    //td = tr[i].getElementsByTagName("td")[0];
+    if (filter=='') {
+      //if (filter==parseInt(td.innerHTML.toUpperCase())) {
+        tr[i].style.display = "";
+      } 
+    } 
+}
 //     $.ajax({
 //         url: '/api/tenantsites/'+tenantId,
 //         type: 'get',
@@ -509,23 +528,8 @@ function deviceSearch() {
   //   }
     
   // }
-}
-/////////////////文本框-表格搜索/////////////
-// function siteSearch1() 
-// {
-//   var input = document.getElementById("searchValue");
-//   var filter = input.value.toUpperCase();//转换为大写
-//   var table = document.getElementById("myTable1");
-//   var tr = table.getElementsByTagName("tr");
 
-//   for (var i = 0; i < tr.length; i++) {
-//     //td = tr[i].getElementsByTagName("td")[0];
-//     if (filter=='') {
-//       //if (filter==parseInt(td.innerHTML.toUpperCase())) {
-//         tr[i].style.display = "";
-//       } 
-//     } 
-// }
+
 
 // function CloseDiv1()
 // {
