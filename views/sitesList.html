@@ -4,25 +4,27 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-	<script src="../static/js/jquery.min.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/area.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script>
-	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/MarkerTool.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/DistanceTool.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
-	<!-- <script type="text/javascript" src="./js/TextIconOverlay.js"></script> -->
-	<script type="text/javascript" src="../static/baidu/baidujs/SearchInfoWindow.js"></script>
-    <script type="text/javascript" src="../static/baidu/baidujs/searchInRectangle.js"></script>
+	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/baidu/baidujs/area.js"></script>
+    <script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
+    <!-- <script src="../static/js/jquery.min.js"></script> -->
+    <!-- <script type="text/javascript" src="../static/baidu/baidujs/MarkerTool.js"></script> -->
+    <!-- <script type="text/javascript" src="../static/baidu/baidujs/DistanceTool.js"></script> -->
+    <!-- <script type="text/javascript" src="../static/baidu/baidujs/SearchInfoWindow.js"></script> -->
+    <!-- <script type="text/javascript" src="../static/baidu/baidujs/searchInRectangle.js"></script> -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
-	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
     <link rel="stylesheet" href="../static/baidu/css/style.css"/>
-    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../static/baidu/css/style1.css"/>
     <link rel="stylesheet" href="../static/baidu/css/bootstrap.css"/>
     <link rel="stylesheet" href="../static/baidu/css/bootstrap-switch.css"/>
+    <link rel="stylesheet" href="../static/baidu/css/font-awesome.css"/>
 	<title>列表展示</title>
 </head>
 
@@ -30,17 +32,17 @@
 <section class="sec-menu" >
     <div class="container"  style="margin: 0;width:100%;">
         <div class="row" id="head-menu">
-<div class="col-md-1 col-sm-1">
-                    <span class="menu-open-icon">
-                        <a href="/baidu" target="_self">地图</a>
-                    </span>
-                </div>
-            <div class="col-md-5 col-sm-12" >
-                <i class="pull-left"> 欢迎来到3DGIS平台 &nbsp;&nbsp;</i>
+            <div class="col-md-1 col-sm-1">
+                                <span class="menu-open-icon">
+                                    <i class="fa fa-bars pull-left fa-2x b-clr"></i>
+                                </span>
+                            </div>
+                        <div class="col-md-5 col-sm-12" >
+                            <i class="pull-left"> 欢迎来到3DGIS平台 &nbsp;&nbsp;</i>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                <span id="time">2015年1月1日 11:11  星期一</span>
             </div>
-            <div class="col-md-4 col-sm-12">
-    <span id="time">2015年1月1日 11:11  星期一</span>
-</div>
             <div class="col-md-1 col-sm-12">
                 <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id={{tenantId}}'"/>
                 <!-- <a href="/"><input type="button" class="btn btn-danger" value="退出登录" id="quit" ng-click="logout()"/></a> -->
@@ -48,12 +50,32 @@
         </div>
         <!-- <div class="row">
             <div class="col-md-12">
-
             </div>
         </div> -->
     </div>
-
 </section>
+
+<div id="side-menu">
+        <ul>
+             <li style="border-bottom:0px;">
+             <a href="#" title="close"> <i class="fa fa-close fa-2x menu-close-icon b-clr"></i></a>
+            </li>
+            <li class="side-menu-icon">
+                <a href ="baidu" title="首页" onclick="">
+                    <i class="fa fa-home fontStyle"></i>
+                    <span class="textStyle">地图展示</span>
+                </a>
+
+            </li>
+            <li class="side-menu-icon">
+             <a href="sitesList" title="设备列表" onclick="">
+                 <i class="fa fa-file-text-o fontStyle"></i>
+                 <span class="textStyle">设备列表</span>
+             </a>
+            </li>
+        </ul>  
+</div>
+
 <!--主体内容-->
 <section class="publicMian">
     <div class="left">
@@ -62,7 +84,7 @@
 <div class="right">
         <div class="search">
             <span>站点ID：</span>
-            <input type="text" id="searchValue"  onkeyup="siteSearch1()" placeholder="请输入设备名称"/>
+            <input type="text" id="searchValue"  onkeyup="deviceSearch1()" placeholder="请输入设备名称"/>
             <input type="button" id='keyup' value="查询" style="text-align: middle;" onclick="deviceSearch()" />
         </div id="deviceList">
         <!--供应商操作表格-->
@@ -95,9 +117,10 @@
             <tr class="firstTr">
                 <th width="30%">设备ID</th>
                 <th width="10%">租户名称</th>
-                <th width="10%">用户ID</th>
-                <th width="20%">设备名称</th>
+                <th width="10%">租户ID</th>
+                <th width="10%">设备名称</th>
                 <th width="20%">设备组ID</th>
+                <th width="10%">所属站点</th>
                 <th width="10%">操作</th>
             </tr>
         </table>
@@ -182,7 +205,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="attName">站点ID:</td>
+                            <td class="attName">站点名称:</td>
                             <td>
                                  <select  name="siteId2" id="siteId2" ng-change="getCreateManufacture()" ng-model="myManufacturer"  style="width:170px">
                                 </select>
@@ -302,6 +325,7 @@
 
 <script type="text/javascript" src="../static/baidu/baidujs/sitesList.js"></script>
 <script type="text/javascript" src="../static/baidu/baidujs/time.js"></script>
+<script type="text/javascript" src="../static/baidu/baidujs/menuCtrl.js"></script>
 
 </html>
 <script type="text/javascript">
