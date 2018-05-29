@@ -29,27 +29,27 @@ body {
          z-index:3;font-weight:normal }
 #allDevice{ 
     width:500px; 
-    height: 520px;
+    height: 530px;
     position:absolute;
     background-color:rgba(255,255,255,0.1);
     color:#305680;
     z-index:3;
     font-weight:normal;
-    }
-#allDevice{
     top:75px;
+    border-radius: 12px;
+    }
 
-}
 #showDeviceInfo{
-    top:190px;
+    top:150px;
     right: 15px;
-    height: 350px;
+    height: 390px;
     background-color:rgba(49, 47, 47, 1);
     color:#5087c3;
     width:500px; 
     position:absolute;
     z-index:3;
-    font-weight:normal;
+    font-weight: bold;
+    border-radius:12px;
 }
 #allDeviceTable tr td{
         width: 50%;
@@ -59,4 +59,25 @@ body {
        width: 100%;
        opacity: 0.2;
 }
-   
+#showDevice{
+    font-weight: bold;
+}
+#addModel{
+    top:150px;
+    right: 550px;
+    height: 270px;
+    background-color:rgba(49, 47, 47, 1);
+    color:#5087c3;
+    width:270px;
+    position:absolute;
+    z-index:3;
+    font-weight: bold;
+    border-radius:12px;
+}
+#arrow{
+    top: 75px;
+    position: absolute;
+    width: 10px;
+    height: 5px;
+
+}

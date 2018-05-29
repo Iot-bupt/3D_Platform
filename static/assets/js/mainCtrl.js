@@ -20,6 +20,10 @@ jQuery("#allDevice").mouseout(function(){
     jQuery(".button").css("opacity","0.2");
 });
 jQuery('#showDeviceInfo').css({'display':'none'});
+jQuery('#addModel').css({'display':'none'});
+jQuery('#arrow').css({'display':'none'});
+
+
 //==================================
 
 
@@ -141,6 +145,33 @@ $scope.prePage = function(){
     }
 }
 
+//显示下方所有设备列表，从第一页开始
+    $scope.reShowList = function(){
+        pageNum = 1;
+        jQuery.ajax({
+            url:"/api/3d815/paging/2?limit=6&idOffset=&textOffset=",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(msg) {
+                if(msg.data.length != 0){
+                    $scope.deviceList = msg.data;
+                    // console.log($scope.deviceList);
+                    idOffset = msg.nextPageLink.idOffset;
+                    textOffset = msg.nextPageLink.textOffset;
+                    hasNext = msg.hasNext;
+                    // console.log(idOffset);
+                    // console.log(textOffset);
+                    // console.log(hasNext);
+                    preDeviceId.push(idOffset);
+                    preDeviceName.push(textOffset);
+                }
+            }
+        });
+    }
+
+
+
 // 搜索
 $scope.searchDeviceInfo = function(){
     var temp= window.location.search;
@@ -185,17 +216,31 @@ $scope.searchDeviceInfo = function(){
    
 }
 
+//点击x按钮消失
 $scope.closeDeviceList = function(){
     
     jQuery('#allDevice').css({'display':'none'});
+    jQuery('#showDeviceInfo').css({'display':'none'});
+    jQuery('#arrow').css({'display':''});
+
 
 }
+
+
 $scope.closeDeviceInfo = function(){
     
     jQuery('#showDeviceInfo').css({'display':'none'});
+    jQuery('#addModel').css({'display':'none'});
 
 }
+$scope.closeAddModel = function(){
+    jQuery('#addModel').css({'display':'none'});
+}
+$scope.arrowHidden = function(){
+    jQuery('#arrow').css({'display':'none'});
+    jQuery('#allDevice').css({'display':''});
 
+}
 
 //选中设备信息展示
 $scope.show = function(data){
@@ -211,6 +256,12 @@ $scope.show = function(data){
     $scope.model = data.model;
     jQuery('#showDeviceInfo').css({'display':''});
 }
+
+//点击添加模型显示框
+    $scope.addModel = function(){
+        jQuery('#addModel').css({'display':''});
+    }
+
 
 
 }]);
