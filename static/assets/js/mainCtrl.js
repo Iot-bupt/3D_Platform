@@ -29,7 +29,6 @@ jQuery("#arrow").mouseover(function(){
     })
 
 
-
     //显示初始化
 jQuery('#showDeviceInfo').css({'display':'none'});
 jQuery('#addModel').css({'display':'none'});
