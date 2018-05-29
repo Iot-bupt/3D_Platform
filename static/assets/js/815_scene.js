@@ -262,7 +262,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         var model = gui.addFolder("添加设备");
         gui.add(newcontrols, '清除物体');
         gui.add(newcontrols, '上传设备模型');
-        gui.open();
+        gui.close();
     }
     var baseColor = 0xFF0000;
     var foundColor = 0x12C0E3;
