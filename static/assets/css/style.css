@@ -59,4 +59,10 @@ body {
        width: 100%;
        opacity: 0.2;
 }
+
+#icon{
+    font-size: 20px;
+    color: white;
+    margin-top: 8px;
+}
    

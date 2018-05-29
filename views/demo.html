@@ -34,16 +34,14 @@
                     </div>
                 </td>
                 <td>
-                    <span ng-mouseover="changeIcon()"><i class="fa fa-angle-down"></i></span>
+                    <span ng-click="changeIcon()"><i class="fa fa-angle-double-down" id="icon"></i></span>
                 </td>
             </tr>
             <tr>
                 <td style="font-weight: bold;">设备id</td>
                 <td style="font-weight: bold;">设备名称</td>
             </tr>
-            <span style="display: inherit;text-align: right;position: relative;">
-                    <button class="btn btn-primary" type="button" id="btn" ng-click="closeDeviceList()"><i class="fa fa-close"></i></button>
-            </span>
+            
         </thead>
         <tbody id="showDevice">
            <tr ng-repeat="data in deviceList" ng-click="show(data)">

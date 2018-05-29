@@ -21,7 +21,14 @@ jQuery("#allDevice").mouseout(function(){
 });
 jQuery('#showDeviceInfo').css({'display':'none'});
 //==================================
-
+$scope.changeIcon = function(){
+    if(jQuery("#icon").attr("class") == "fa fa-angle-double-down"){
+        jQuery("#icon").attr("class","fa  fa-angle-double-up");
+    }else{
+        jQuery("#icon").attr("class","fa fa-angle-double-down");
+    }
+   
+}
 
 
 var idOffset;//用于查找下一页
