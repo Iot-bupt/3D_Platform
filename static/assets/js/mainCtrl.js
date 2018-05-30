@@ -42,7 +42,6 @@ mainApp.controller("mainCtrl",["$scope","$resource",function ($scope,$resource) 
         }else{
             jQuery("#icon").attr("class","fa fa-angle-double-down");
         }
-
     }
 
 
@@ -239,7 +238,7 @@ mainApp.controller("mainCtrl",["$scope","$resource",function ($scope,$resource) 
 
         jQuery('#allDevice').css({'display':'none'});
         jQuery('#showDeviceInfo').css({'display':'none'});
-        jQuery('#arrow').css({'display':''});
+        jQuery('#arrow').css({'display':'','margin-left':'-60px'});
 
 
     }

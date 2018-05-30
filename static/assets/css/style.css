@@ -11,7 +11,8 @@ body {
 #info {
     color:#fff;
     position: absolute;
-    top: 0px; width: 100%;
+    top: 0px;
+    width: 100%;
     padding: 5px;
     margin: 0px;
 }
@@ -24,11 +25,19 @@ body {
     z-index: 10;
     font-size: 30px;
 }
-#coords{ width:136px; height:60px; top:0px;position:absolute;
-    background-color:rgba(255,255,255,0.1);color:white ;
-    z-index:3;font-weight:normal }
+#coords{
+    width:136px;
+    height:60px;
+    top:0px;
+    position:absolute;
+    background-color:rgba(255,255,255,0.1);
+    color:white ;
+    z-index:3;
+    font-weight:normal
+}
+
 #allDevice{
-    width:500px;
+    width:530px;
     height: 530px;
     position:absolute;
     background-color:rgba(255,255,255,0.1);
@@ -51,18 +60,22 @@ body {
     font-weight: bold;
     border-radius:12px;
 }
-#allDeviceTable tr td{
+#allDeviceTable td
+{
     width: 50%;
     cursor: pointer;
 }
-#searchDeviceDiv {
+#searchDeviceDiv
+{
     width: 100%;
     opacity: 0.2;
 }
-#showDevice{
+#showDevice
+{
     font-weight: bold;
 }
-#addModel{
+#addModel
+{
     top:150px;
     right: 550px;
     height: 270px;
