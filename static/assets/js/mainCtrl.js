@@ -20,19 +20,21 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
         jQuery(".button").css("opacity","0.2");
     });
 
-//动态显示左侧箭头
+/*动态显示左侧箭头
     jQuery("#arrow").mouseover(function(){
         jQuery("#arrow").css({"margin-left":"-10px"});
     })
     jQuery("#arrow").mouseout(function(){
         jQuery("#arrow").css({"margin-left":"-60px"});
     })
+    jQuery('#arrow').css({'display':'none'});
+    */
 
 
     //显示初始化
     jQuery('#showDeviceInfo').css({'display':'none'});
     jQuery('#addModel').css({'display':'none'});
-    jQuery('#arrow').css({'display':'none'});
+
 
 
 //==================================
@@ -82,27 +84,40 @@ $scope.packSearchMenu = function(){
     var preDeviceName = [];//用于查找上一页
     var pageNum = 1;//记录当前页面
 
-//默认设备列表
+
+    //当前场景下的id：/api/3d815/siteDevicePaging/2/133?limit=6&idOffset=&textOffset=
+//默认设备列表/api/3d815/paging/2?limit=6&idOffset=&textOffset=
     jQuery.ajax({
-        url:"/api/3d815/paging/2?limit=6&idOffset=&textOffset=",
+        url:"/api/3d815/siteDevicePaging/2/133?limit=6&idOffset=&textOffset=",
         contentType: "application/json; charset=utf-8",
         async: false,
         type:"GET",
         success:function(msg) {
+            console.log(msg);
             if(msg.data.length != 0){
                 $scope.deviceList = msg.data;
-                // console.log($scope.deviceList);
-                idOffset = msg.nextPageLink.idOffset;
-                textOffset = msg.nextPageLink.textOffset;
-                hasNext = msg.hasNext;
-                // console.log(idOffset);
-                // console.log(textOffset);
-                // console.log(hasNext);
-                preDeviceId.push(idOffset);
-                preDeviceName.push(textOffset);
+                console.log($scope.deviceList);
+                console.log($scope.deviceList.length);
+                if($scope.deviceList.length>=6){
+                    idOffset = msg.nextPageLink.idOffset;//用于查找下一页
+                    textOffset = msg.nextPageLink.textOffset;//用于查找下一页
+                    hasNext = msg.hasNext;//判断是否存在下一页
+                    console.log(idOffset);
+                    console.log(textOffset);
+                    console.log(hasNext);
+                    preDeviceId.push(idOffset);
+                    preDeviceName.push(textOffset);
+                }
             }
         }
     });
+
+    //显示设备列表
+    jQuery.ajax({
+
+    })
+
+
 
 // 下一页
     $scope.nextPage = function(){
