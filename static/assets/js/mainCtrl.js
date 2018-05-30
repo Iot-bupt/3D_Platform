@@ -93,30 +93,24 @@ $scope.packSearchMenu = function(){
         async: false,
         type:"GET",
         success:function(msg) {
-            console.log(msg);
+            //console.log(msg);
             if(msg.data.length != 0){
                 $scope.deviceList = msg.data;
-                console.log($scope.deviceList);
-                console.log($scope.deviceList.length);
+                //console.log($scope.deviceList);
+                //console.log($scope.deviceList.length);
                 if($scope.deviceList.length>=6){
                     idOffset = msg.nextPageLink.idOffset;//用于查找下一页
                     textOffset = msg.nextPageLink.textOffset;//用于查找下一页
                     hasNext = msg.hasNext;//判断是否存在下一页
-                    console.log(idOffset);
-                    console.log(textOffset);
-                    console.log(hasNext);
+                    //console.log(idOffset);
+                    //console.log(textOffset);
+                    //console.log(hasNext);
                     preDeviceId.push(idOffset);
                     preDeviceName.push(textOffset);
                 }
             }
         }
     });
-
-    //显示设备列表
-    jQuery.ajax({
-
-    })
-
 
 
 // 下一页
@@ -142,7 +136,6 @@ $scope.packSearchMenu = function(){
                         console.log($scope.deviceList);
                     }else{
                         hasNext = msg.hasNext;
-
                     }
                 },
                 error:function(err){
@@ -207,7 +200,7 @@ $scope.packSearchMenu = function(){
         }
     }
 
-// 搜索
+/*搜索
 $scope.searchDeviceInfo = function(){
     var temp= window.location.search;
     var tenantId = temp.split("=");
@@ -219,8 +212,8 @@ $scope.searchDeviceInfo = function(){
         jQuery("#icon").attr("class","fa  fa-angle-double-up");
     }
     if(textSearch === ""){
-//显示下方所有设备列表，从第一页开始
-    // $scope.reShowList = function(){
+        //显示下方所有设备列表，从第一页开始
+        // $scope.reShowList = function(){
         pageNum = 1;
         jQuery.ajax({
             url:"/api/3d815/paging/2?limit=6&idOffset=&textOffset=",
@@ -244,17 +237,19 @@ $scope.searchDeviceInfo = function(){
         });
     }
 
-    }
+    }*/
 
-
-
-// 搜索
+/*搜索*/
     $scope.searchDeviceInfo = function(){
         var temp= window.location.search;
         var tenantId = temp.split("=");
         console.log(tenantId[1]);
         tenantId[1] = 2;//用于测试
         var textSearch = jQuery("#searchDevice").val();
+        if(jQuery("#allDevice").css("display") == "none"){
+            jQuery("#allDevice").slideDown();
+            jQuery("#icon").attr("class","fa  fa-angle-double-up");
+        }
         if(textSearch == ""){
             jQuery.ajax({
                 url:"/api/3d815/paging/2?limit=6&idOffset=&textOffset=",
@@ -286,30 +281,31 @@ $scope.searchDeviceInfo = function(){
                     jQuery("#showDevice tr").remove();
                     console.log(msg.res.data);
                     $scope.deviceList = msg.res.data;
+                    if($scope.deviceList.length<7){
+                        hasNext=false;
+                        pageNum == 1;
+                    }
                 }
             });
         }
-
     }
+
 
 //点击x按钮消失
     $scope.closeDeviceList = function(){
-
         jQuery('#allDevice').css({'display':'none'});
         jQuery('#showDeviceInfo').css({'display':'none'});
-        jQuery('#arrow').css({'display':''});
-
-
     }
-
 
     $scope.closeDeviceInfo = function(){
         jQuery('#showDeviceInfo').css({'display':'none'});
         jQuery('#addModel').css({'display':'none'});
     }
+
     $scope.closeAddModel = function(){
         jQuery('#addModel').css({'display':'none'});
     }
+
     $scope.arrowHidden = function(){
         jQuery('#arrow').css({'display':'none'});
         jQuery('#allDevice').css({'display':''});
