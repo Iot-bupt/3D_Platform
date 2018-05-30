@@ -55,6 +55,28 @@ module.exports = {
         ctx.rest(res);
     },
 
+    'GET /api/3d815/siteDevicePaging/:tenantId/:siteId': async (ctx, next) => {      //租户站点下设备分页
+        var tid = ctx.params.tenantId;
+        var siteId = ctx.params.siteId;
+        var limit = ctx.query.limit;
+        var idOffset = ctx.query.idOffset;
+        var textOffset = ctx.query.textOffset;
+        var res = await devices.SiteDevicesPaging(tid,siteId,limit,idOffset,textOffset);
+        
+        ctx.rest(res);
+    },
+
+    'POST /api/assignDevice/site': async (ctx,next) => {
+        
+        var body = ctx.request.body;
+        var s = await devices.assignDevicetoSite(body.id,body.tenantId,body.name,body.siteId);
+        if (s) {
+            ctx.rest(s);
+        } else {
+            throw new APIError('site:assign failed', 'sites or devices error');
+        }
+    },
+
 
     
 

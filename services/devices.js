@@ -153,6 +153,46 @@ module.exports = {
         }catch(e){
             throw e;
         }
+    },
+
+    SiteDevicesPaging: async (tid,siteId,limit,idOffset,textOffset) => {
+        try{
+            if ((idOffset) && (textOffset)){
+            var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit+'&idOffset='+idOffset+'&textOffset='+textOffset);
+            var res = data.data;
+
+            }else if (!(idOffset) && !(textOffset)){
+                var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit);
+                var res = data.data;
+            }
+            return res;
+        }catch(e){
+            throw e;
+        }
+    },
+
+    assignDevicetoSite: async(id,tenantId,name,siteId) =>{
+        try{
+            var res = await request.post('http://39.104.84.131:8100/api/v1/assign/site')
+                .set('Content-Type', 'application/json')
+                .send({"id":id})
+                .send({"tenantId":tenantId})
+                .send({"name":name})
+                .send({"siteId":siteId})
+                .timeout({
+                    response: 5000,
+                    deadline: 5000,
+                });
+
+            if (res.text){
+                return res.text;
+            }else{
+                throw new Error('server error!');
+            }
+        }catch(e){
+            throw e;
+        }
+
     }
     
 
