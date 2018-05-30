@@ -16,8 +16,8 @@ module.exports = {
                 var tmpath = item.path;  
                 var tmparr = item.name.split('.');  
                 var ext ='.'+tmparr[tmparr.length-1];  
-                var newpath =path.join('public/upload/scenes', generateId()+'#'+item.name);  
-                 
+                var newpath =path.join('public/upload/scenes', generateId()+'%'+item.name);  
+                
                 console.log(newpath);  
                 var stream = fs.createWriteStream(newpath);//创建一个可写流  
                 fs.createReadStream(tmpath).pipe(stream);//可读流通过管道写入可写流  
@@ -25,8 +25,10 @@ module.exports = {
             var time = moment().format();
             var resData = {
                 uploadTime:time,
-                res:"success"
+                res:"success",
+                url:newpath
             }
+            
             return resData;
         }else{
             return null;
