@@ -2,7 +2,7 @@
 var mainApp = angular.module("mainApp",["ngResource"]);
 
 
-mainApp.controller("mainCtrl",["$scope","$resource",function ($scope,$resource) {
+mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
 
 //============设备列表动画============
     jQuery("#searchDevice").on("focus",function(){
@@ -36,13 +36,43 @@ mainApp.controller("mainCtrl",["$scope","$resource",function ($scope,$resource) 
 
 
 //==================================
-    $scope.changeIcon = function(){
-        if(jQuery("#icon").attr("class") == "fa fa-angle-double-down"){
-            jQuery("#icon").attr("class","fa  fa-angle-double-up");
-        }else{
-            jQuery("#icon").attr("class","fa fa-angle-double-down");
-        }
+$scope.changeIcon = function(){
+    
+    if(jQuery("#icon").attr("class") == "fa fa-angle-double-down"){
+        jQuery("#allDevice").slideDown();
+        jQuery("#icon").attr("class","fa  fa-angle-double-up");
+        
+    }else{
+        jQuery("#allDevice").slideUp();
+        jQuery("#icon").attr("class","fa fa-angle-double-down");
     }
+   
+}
+$scope.packSearchMenu = function(){
+    if(jQuery("#packUp").attr("class") == "fa fa-angle-double-left"){
+        jQuery("#iconSpan").css("display","none");
+        jQuery("#searchDeviceDiv").css("opacity","0");
+        jQuery("#searchBanner").animate({width:"0px"},500);
+        jQuery("#packUp").attr("class","fa fa-angle-double-right");
+        jQuery("#allDevice").slideUp();
+        jQuery("#icon").attr("class","fa fa-angle-double-down");
+        
+        
+    }else{
+        jQuery("#iconSpan").css("display","block");
+        jQuery("#searchDeviceDiv").css("opacity","0.2");
+        jQuery("#searchBanner").animate({width:"470px"},500);
+        jQuery("#packUp").attr("class","fa fa-angle-double-left");
+    }
+}
+    // $scope.changeIcon = function(){
+    //     if(jQuery("#icon").attr("class") == "fa fa-angle-double-down"){
+    //         jQuery("#icon").attr("class","fa  fa-angle-double-up");
+    //     }else{
+    //         jQuery("#icon").attr("class","fa fa-angle-double-down");
+    //     }
+
+    // }
 
 
     var idOffset;//用于查找下一页
@@ -162,8 +192,20 @@ mainApp.controller("mainCtrl",["$scope","$resource",function ($scope,$resource) 
         }
     }
 
+// 搜索
+$scope.searchDeviceInfo = function(){
+    var temp= window.location.search;
+    var tenantId = temp.split("=");
+    console.log(tenantId[1]);
+    tenantId[1] = 2;//用于测试
+    var textSearch = jQuery("#searchDevice").val();
+    if(jQuery("#allDevice").css("display") == "none"){
+        jQuery("#allDevice").slideDown();
+        jQuery("#icon").attr("class","fa  fa-angle-double-up");
+    }
+    if(textSearch === ""){
 //显示下方所有设备列表，从第一页开始
-    $scope.reShowList = function(){
+    // $scope.reShowList = function(){
         pageNum = 1;
         jQuery.ajax({
             url:"/api/3d815/paging/2?limit=6&idOffset=&textOffset=",
@@ -185,6 +227,8 @@ mainApp.controller("mainCtrl",["$scope","$resource",function ($scope,$resource) 
                 }
             }
         });
+    }
+
     }
 
 
@@ -238,7 +282,7 @@ mainApp.controller("mainCtrl",["$scope","$resource",function ($scope,$resource) 
 
         jQuery('#allDevice').css({'display':'none'});
         jQuery('#showDeviceInfo').css({'display':'none'});
-        jQuery('#arrow').css({'display':'','margin-left':'-60px'});
+        jQuery('#arrow').css({'display':''});
 
 
     }
@@ -277,6 +321,4 @@ mainApp.controller("mainCtrl",["$scope","$resource",function ($scope,$resource) 
     }
 
 
-
 }]);
-

@@ -21,7 +21,33 @@
     Labroom_815_monitoring
 </div>
 <div id="Loading"></div>
-<div id="arrow" ng-click="arrowHidden()"><img src="../static/images/arrow.PNG"></div>
+<div id="packUpDiv">
+    <span id="packUpSpan" ng-click="packSearchMenu()"><i class="fa fa-angle-double-right" id="packUp"></i></span>
+</div>
+<div id="searchBanner">
+                
+                <div class="input-group"  id="searchDeviceDiv">
+                    <input type="text" class="form-control" placeholder="请输入设备名称..." id="searchDevice">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" id="btn" ng-click="searchDeviceInfo()" style="margin-bottom: 4px;"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+              
+            
+           
+                <span ng-click="changeIcon()" id="iconSpan"><i class="fa fa-angle-double-down" id="icon"></i></span>
+            
+</div>
+<div id ="allDevice">
+    <table id="allDeviceTable" class="table table-hover">
+        <thead>
+            
+            <tr>
+                <td style="font-weight: bold;">设备id</td>
+                <td style="font-weight: bold;">设备名称</td>
+            </tr>
+            
+<!-- <div id="arrow" ng-click="arrowHidden()"><img src="../static/images/arrow.PNG"></div>
 <div id ="allDevice">
     <table id="allDeviceTable" class="table table-hover">
         <thead>
@@ -47,7 +73,7 @@
         <span style="display: inherit;text-align: right;position: relative;">
                     <button class="btn btn-primary" type="button" id="btnList" ng-click="closeDeviceList()"><i class="fa fa-close"></i></button>
                     <button class="btn btn-primary" type="button" id="btnFirst" ng-click="reShowList()" title="回到首页"><i class="fa fa-angle-down"></i></button>
-            </span>
+            </span> -->
 
         </thead>
         <tbody id="showDevice">
@@ -57,9 +83,12 @@
         </tr>
         </tbody>
     </table>
-
-    <button class="btn btn-default button" style="opacity: 0.2;margin-right: 30px" id="pre" ng-click="prePage()">上一页</button>
-    <button class="btn btn-default button" style="opacity: 0.2;margin-left: 30px" id="next" ng-click="nextPage()">下一页</button>
+    
+    <button class="btn btn-default button" id="pre" ng-click="prePage()">上一页</button>
+    <button class="btn btn-default button" id="next" ng-click="nextPage()">下一页</button>
+           
+       
+    
 </div>
 
 
@@ -71,8 +100,8 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>设备名称：</th>
-            <th>{{name}}</th>
+            <th colspan="2">{{name}}</th>
+            
         </tr>
         </thead>
         <tbody>
@@ -133,28 +162,33 @@
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>位置
         </label>
-        <input type="text" id="manufacturerName" required/>
-
+        <input type="text" style="pixels: 300px"  id="manufacturerName" required/>
+    </div>
+    <div>
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>X
         </label>
-        <input type="text" id="deviceType" required/>
-
+        <input type="text" style="pixels: 300px"  id="deviceType" required/>
+    </div>
+    <div>
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>Y
         </label>
-        <input type="text" required/>
-
+        <input type="text" style="pixels: 300px" required/>
+    </div>
+    <div>
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>Z
         </label>
-        <input type="text" required/>
-
+        <input type="text" style="pixels: 300px" required/>
+    </div>
+    <div>
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>比例
         </label>
-        <input type="text" required/>
-
+        <input type="text" style="pixels: 300px" required/>
+    </div>
+    <div>
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>side
         </label>
