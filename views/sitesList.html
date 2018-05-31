@@ -86,7 +86,9 @@
             <span>站点ID：</span>
             <input type="text" id="searchValue"  onkeyup="deviceSearch1()" placeholder="请输入设备名称"/>
             <input type="button" id='keyup' value="查询" style="text-align: middle;" onclick="deviceSearch()" />
-        </div id="deviceList">
+            <input type="button" id='keyup' value="分配" style="text-align: middle;" onclick="siteDistribute()" />
+            </div>
+        <div id="deviceList" style="height: 600px;overflow-y: scroll">
         <!--供应商操作表格-->
       <!--   <table id ="myTable" class="providerTable" cellpadding="0" cellspacing="0">
             <tr class="firstTr">
@@ -124,6 +126,8 @@
                 <th width="10%">操作</th>
             </tr>
         </table>
+        <button class="btn btn-default button" style="opacity: 0.2;margin-right: 30px" id="pre" onclick="prePage()">上一页</button>
+    <button class="btn btn-default button" style="opacity: 0.2;margin-left: 30px" id="next" onclick="nextPage()">下一页</button>
 <!--         <span id="spanFirst">第一页</span>   
         <span id="spanPre">上一页</span>   
         <span id="spanNext">下一页</span>   
@@ -194,13 +198,14 @@
                         <tbody>
                         <tr>
                             <td class="attName">用户ID：</td>
-                            <td><input type="text"  name="tenantId1" id="tenantId1" required autocomplete="off" />
+                            <td><input type="text"  name="tenantId1" id="tenantId1" required autocomplete="off" 
+                            disabled="true"/>
                             <span>*</span></td>
                         </tr>
                         <tr>
                             <td class="attName">设备名称:</td>
                             <td>
-                                <input type="text"  name="deviceName" id="deviceName" required autocomplete="off" />
+                                <input type="text"  name="deviceName" id="deviceName" required autocomplete="off" disabled="true"/>
                             <span>*</span>
                             </td>
                         </tr>
@@ -216,7 +221,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="modalClose" >关闭</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="modalConfirm" onclick="markfinish()">确定</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="modalConfirm" onclick="siteDistribute()">确定</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

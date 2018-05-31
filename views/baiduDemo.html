@@ -98,7 +98,7 @@
         <h2 class="leftH2"><span ></span>功能列表 <span></span></h2>
         <nav>
             <ul class="list">
-                <li><input type="button" class="anjian" data-toggle="modal" value="测距" onclick="myDis.open();"  /></li>
+                <li><input type="button" class="anjian" data-toggle="modal" value="测距" onclick="myDis.open(),drawingManager.close()"  /></li>
                 <li><input type="button" class="anjian" data-toggle="modal" value="输入经纬度标注" onclick="mark1()" /></li>
                 <li><input type="button" class="anjian" data-toggle="modal" value="点击添加标注"  onclick="mark2();" /></li>
                 <!-- <li><input type="button" class="anjian" data-toggle="modal" value="绘制覆盖物个数" onclick="alert(overlays.length)"/></li>
@@ -143,7 +143,7 @@
                         <tbody>
                         <tr>
                             <td class="attName">用户ID：</td>
-                            <td><input type="text"  name="tenantId1" id="tenantId1" required autocomplete="off" />
+                            <td><input type="text"  name="tenantId1" id="tenantId1" required autocomplete="off" disabled="true"/>
                             <span>*</span></td>
                         </tr>
                         <tr>
@@ -193,7 +193,7 @@
                         <tbody>
                         <tr>
                             <td class="attName">站点ID：</td>
-                            <td><input type="text" name="siteId" id="siteId" autocomplete="off"/>
+                            <td><input type="text" name="siteId" id="siteId" autocomplete="off" disabled="true"/>
                             <span>*</span></td>
                         </tr>
                         <tr>
@@ -249,13 +249,13 @@
                         <tbody>
                         <tr>
                             <td class="attName">站点ID：</td>
-                            <td><input type="text" name="siteOldID" id="siteOldID" autocomplete="off"/>
+                            <td><input type="text" name="siteOldID" id="siteOldID" autocomplete="off" disabled="true"/>
                             <span>*</span></td>
                         </tr>
                         <tr>
                             <td class="attName">站点原名:</td>
                             <td>
-                            <input type="text" name="siteOldName" id="siteOldName" autocomplete="off"/>
+                            <input type="text" name="siteOldName" id="siteOldName" autocomplete="off" disabled="true"/>
                             <span>*</span>
                             </td>
                         </tr>
@@ -285,6 +285,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                     <h4 class="modal-title" style="font-weight: bold;">设备列表</h4>
                 </div>
+                <input type="text" class="form-control" placeholder="请输入设备名称..." id="searchDevice" onkeyup="deviceSearch()">
                 <div class="modal-body" id="deviceInfo" style="height: 500px;overflow-y: scroll";>
             <table id ="myTable2" class="table table-striped" cellpadding="0" cellspacing="0" style="width:100%" >
             <tr class="firstTr" id="tr1">
@@ -292,7 +293,7 @@
                 <th width="10%">租户名称</th>
                 <th width="10%">用户ID</th>
                 <th width="20%">设备名称</th>
-                <th width="10%">设备组ID</th>
+                <th width="10%">所属站点</th>
                 <th width="20%">操作</th>
             </tr>
         </table>

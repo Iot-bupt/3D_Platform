@@ -57,7 +57,29 @@ else {
 function uploadComplete(evt) {  
 /* 服务器端返回响应时候触发event事件*/  
 alert(evt.target.responseText); 
+// console.log(evt);
+// console.log(evt.target.response);
+// console.log($.parseJSON( evt.target.response ));
+// console.log($.parseJSON( evt.target.response ).url);
 $('#addSences').modal('hide');
+$.ajax({
+        url: 'api/siteUrl/'+$('#siteId') .val(),
+        data:
+            {url:$.parseJSON( evt.target.response ).url},
+        type: 'put',//提交方式
+        dataType: 'JSON',//返回字符串，T大写
+        // contentType: 'application/json;charset=UTF-8',
+
+        error:function(){
+            alert('失败');
+        },
+        success: function(req) {
+            console.log(req);
+            //请求成功时处理
+  
+               }
+           
+       });
 //document.getElementById("div1").style.display="none"; 
 }  
 function uploadFailed(evt) {  
