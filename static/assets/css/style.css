@@ -141,4 +141,10 @@ body {
     opacity: 0.2;
     margin-bottom: 20px;
 }
+#backList{
+    float: right;
+    margin-right: 12px;
+    cursor: pointer;
+    color: white;
 
+}

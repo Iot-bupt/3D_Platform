@@ -34,7 +34,7 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
     //显示初始化
     jQuery('#showDeviceInfo').css({'display':'none'});
     jQuery('#addModel').css({'display':'none'});
-
+    jQuery('#backList').css({'display':'none'});
 
 
 //==================================
@@ -241,6 +241,7 @@ $scope.searchDeviceInfo = function(){
 
 /*搜索*/
     $scope.searchDeviceInfo = function(){
+        jQuery('#backList').css({'display':''});
         var temp= window.location.search;
         var tenantId = temp.split("=");
         console.log(tenantId[1]);
@@ -288,6 +289,7 @@ $scope.searchDeviceInfo = function(){
                 }
             });
         }
+
     }
 
 
@@ -337,6 +339,30 @@ $scope.searchDeviceInfo = function(){
         //camera.position.set(-2.37, 6.90, 10.16);
         
         
+    }
+
+    //返回设备列表首页
+    $scope.backList = function () {
+        jQuery.ajax({
+            url:"/api/3d815/siteDevicePaging/2/133?limit=6&idOffset=&textOffset=",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(msg) {
+                if(msg.data.length != 0){
+                    $scope.deviceList = msg.data;
+                    if($scope.deviceList.length>=6){
+                        idOffset = msg.nextPageLink.idOffset;//用于查找下一页
+                        textOffset = msg.nextPageLink.textOffset;//用于查找下一页
+                        hasNext = msg.hasNext;//判断是否存在下一页
+                        preDeviceId.push(idOffset);
+                        preDeviceName.push(textOffset);
+
+                    }
+                }
+            }
+        });
+        jQuery('#backList').css({'display':'none'});
     }
 
 
