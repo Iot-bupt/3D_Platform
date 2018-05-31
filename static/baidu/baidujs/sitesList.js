@@ -4,17 +4,15 @@ var siteId1
 var siteId2
 var idArray=[];
 var nameArray=[];
+var deviceID;
+var siteID;
 var str
-var table = document.getElementById("myTable");
-var row ;
-var cell0 ;
-var cell1 ;
-var cell2 ;
-var cell3 ;
-var cell4 ;
-var cell5 ;
-var cell6 ;
-
+var idOffset;//用于查找下一页
+var textOffset;//用于查找下一页
+var hasNext;//判断是否存在下一页
+var preDeviceId = [];//用于查找上一页
+var preDeviceName = [];//用于查找上一页
+var pageNum = 1;//记录当前页面
     $.ajax({
         url: '/api/tenantsites/'+tenantId,
         type: 'get',
@@ -40,21 +38,135 @@ var cell6 ;
 
        });
 
-    $.ajax({
-        url: 'api/3d815/paging/2?limit=9&idOffset=&textOffset=',
-        type: 'get',
-        async : false,
+//默认设备列表
+jQuery.ajax({
+    url:"/api/3d815/paging/2?limit=12&idOffset=&textOffset=",
+    contentType: "application/json; charset=utf-8",
+    async: false,
+    type:"GET",
+    success:function(req) {
+        if(req.data.length != 0){
+           showTable(req)
+             console.log(req);
+            idOffset = req.nextPageLink.idOffset;
+            textOffset = req.nextPageLink.textOffset;
+            hasNext = req.hasNext;
+            // console.log(idOffset);
+            // console.log(textOffset);
+            // console.log(hasNext);
+            preDeviceId.push(idOffset);
+            preDeviceName.push(textOffset);
+        }
+    }
+});
+
+// 下一页
+function nextPage(){
+    console.log(hasNext);
+    if(hasNext){
+        jQuery.ajax({
+            url:"/api/3d815/paging/2?limit=12&idOffset="+idOffset+"&textOffset="+textOffset,
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(req) { 
+                console.log("/api/3d815/paging/2?limit=12&idOffset="+idOffset+"&textOffset="+textOffset);
+                pageNum++;  
+                showTable(req)
+                if( req.hasNext == true){
+                    idOffset = req.nextPageLink.idOffset;
+                    textOffset = req.nextPageLink.textOffset;
+                    hasNext = req.hasNext;
+                    preDeviceId.push(idOffset);
+                    preDeviceName.push(textOffset);
+                    //console.log($scope.deviceList);
+                }else{
+                    hasNext = req.hasNext;
+                    
+                }
+            },
+            error:function(err){
+                alert("当前已是最后一页！");
+            }
+        });
+    }else{
+        alert("当前已是最后一页！");
+    }
+}
+
+//上一页
+function prePage(){
+    if(pageNum == 1){
+        alert("当前已是第一页！");
+    }
+    else if(pageNum == 2){
+        jQuery.ajax({
+            url:"/api/3d815/paging/2?limit=12&idOffset=&textOffset=",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(req) {
+                pageNum--;
+                if(req.data.length != 0){
+
+                    showTable(req)
+                    idOffset = req.nextPageLink.idOffset;
+                    textOffset = req.nextPageLink.textOffset;
+                    hasNext = req.hasNext;
+                    preDeviceId.push(idOffset);
+                    preDeviceName.push(textOffset);
+                }
+            }
+        }); 
+    }else{
+        jQuery.ajax({
+            url:"/api/3d815/paging/2?limit=12&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(req) { 
+                pageNum--;
+                showTable(req);
+                idOffset = req.nextPageLink.idOffset;
+                textOffset = req.nextPageLink.textOffset;
+                hasNext = req.hasNext;
+                //console.log(idOffset);
+                //console.log(textOffset);
+                //console.log(hasNext);
+                preDeviceId.push(idOffset);
+                preDeviceName.push(textOffset);
+                
+            }
+        });
+    }
+}
+
+function siteDistribute()
+{
+  $.ajax({
+        url: '/api/assignDevice/site',
+        type: 'POST',
+        // async : false,
+        data:
+                {"id":deviceID,"tenantId":2, "name":deviceName,"siteId":$('#siteId2 option:selected') .text()},
         dataType: 'json',
-        contentType: 'application/json;charset=UTF-8',
+        // contentType: 'application/json;charset=UTF-8',
 
         error:function(){
             alert('失败');
         },
         success: function(req) {
-            //console.log(req.data);
+            //console.log(req);
             //请求成功时处理
-            reqArray=req.data;
-            for (var i = 0; i < req.data.length; i++) {
+            alert('分配成功')
+         }  
+       });
+}
+
+function showTable(req)
+{
+                $("#myTable1  tr:not(:first)").empty(""); 
+                for (var i = 0; i < req.data.length; i++) {
                 var table = document.getElementById("myTable1");
                 var row = table.insertRow(i+1);
                 row.id = (i + 1);
@@ -71,41 +183,35 @@ var cell6 ;
                 cell2.innerHTML = req.data[i].customerId;
                 cell3.innerHTML = req.data[i].name;
                 cell4.innerHTML = req.data[i].parentDeviceId;
-                cell5.innerHTML = '未分配';
-                // cell6.innerHTML = '';
+                cell5.innerHTML = req.data[i].siteId;
                 cell6.innerHTML =  '<a onclick=look();><img src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+
                     '<a onclick=distributeSite();><img src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'
-  
                }
-           }
-       });
- 
- function look()
+}
+function showTable1(req)
 {
-        var tableObj = document.getElementById("myTable");
-            //获取表格中的所有行      
-        var rows = tableObj.getElementsByTagName("tr");
-         
-        //给tr绑定click事件
-        for(var i in rows){
-          rows[i].onclick = rowClick;
-        }
-      
-      function rowClick(e){ 
-        //alert(this.rowIndex); //显示所点击的行的索引
-        //console.log(this );
-        var td = this.getElementsByTagName("td");
-        //console.log(td[0].innerHTML);
-        alert(td[0].innerHTML);
-        //<a href="/" target="_self">+详情+</a>
-        //window.location.href='/baidu';
-         //document.location.href("/baidu?cc="+td[0].innerHTML);
-         location.href="/baidu?listID="+td[0].innerHTML;
-         //alert(location.href);
-         //console.log(location.href );
-      }
+                $("#myTable1  tr:not(:first)").empty(""); 
+                //for (var i = 0; i < req.data.length; i++) {
+                var table = document.getElementById("myTable1");
+                var row = table.insertRow(1);
+                row.id = (1);
+                var cell0 = row.insertCell(0);
+                var cell1 = row.insertCell(1);
+                var cell2 = row.insertCell(2);
+                var cell3 = row.insertCell(3);
+                var cell4 = row.insertCell(4);
+                var cell5 = row.insertCell(5);
+                var cell6 = row.insertCell(6);
 
-               
+                cell0.innerHTML = '<td id=row.id>'+req.id+'</td>' ;
+                cell1.innerHTML = req.tenantId;
+                cell2.innerHTML = req.customerId;
+                cell3.innerHTML = req.name;
+                cell4.innerHTML = req.parentDeviceId;
+                cell5.innerHTML = req.siteId;
+                cell6.innerHTML =  '<a onclick=look();><img src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+
+                    '<a onclick=distributeSite();><img src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'
+               //}
 }
 
 function distributeSite()
@@ -118,17 +224,28 @@ function distributeSite()
     for(var i in rows)
     {
       rows[i].onclick = rowClick;
+      //console.log(rows[i])
+      //console.log(document.getElementById("2"))
+      //console.log(rows[i].getElementsByTagName("td"));
     }
   
-  function rowClick(e){ 
-
+  function rowClick(e){
+  console.log(document.getElementById("siteId12")) 
     var td = this.getElementsByTagName("td");
+    //console.log(td)
+    //console.log(td[5])
+    deviceID=td[0].innerHTML;
+    deviceName=td[3].innerHTML;
+
     $('#deviceName').val(td[3].innerHTML);
     $('#tenantId1').val(tenantId);
+    deviceID=td[0].innerHTML;
+    console.log(td[5].innerHTML);
 
     }
   for (i=0;i < idArray.length; i++) {
-   document.getElementById("siteId2").options[i] = new Option(nameArray[i],i);
+   document.getElementById("siteId2").options[i] = new Option(idArray[i],i);
+   //siteId=idArray[i];
    }
 }   
 
@@ -150,7 +267,7 @@ function deviceSearch() {
     } 
   }
 }
-///////////////文本框-表格搜索/////////////
+// ///////////////文本框-表格搜索/////////////
 function deviceSearch1() 
 {
   var input = document.getElementById("searchValue");
@@ -166,6 +283,137 @@ function deviceSearch1()
       } 
     } 
 }
+//     $.ajax({
+//         url: 'api/3d815/paging/2?limit=90&idOffset=&textOffset=',
+//         type: 'get',
+//         async : false,
+//         dataType: 'json',
+//         contentType: 'application/json;charset=UTF-8',
+
+//         error:function(){
+//             alert('失败');
+//         },
+//         success: function(req) {
+//             //console.log(req.data);
+//             //请求成功时处理
+//             reqArray=req.data;
+//             for (var i = 0; i < req.data.length; i++) {
+//                 var table = document.getElementById("myTable1");
+//                 var row = table.insertRow(i+1);
+//                 row.id = (i + 1);
+//                 var cell0 = row.insertCell(0);
+//                 var cell1 = row.insertCell(1);
+//                 var cell2 = row.insertCell(2);
+//                 var cell3 = row.insertCell(3);
+//                 var cell4 = row.insertCell(4);
+//                 var cell5 = row.insertCell(5);
+//                 var cell6 = row.insertCell(6);
+
+//                 cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>' ;
+//                 cell1.innerHTML = req.data[i].tenantId;
+//                 cell2.innerHTML = req.data[i].customerId;
+//                 cell3.innerHTML = req.data[i].name;
+//                 cell4.innerHTML = req.data[i].parentDeviceId;
+//                 cell5.innerHTML = '未分配';
+//                 // cell6.innerHTML = '';
+//                 cell6.innerHTML =  '<a onclick=look();><img src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+
+//                     '<a onclick=distributeSite();><img src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'
+  
+//                }
+//            }
+//        });
+ 
+ function look()
+{
+        var tableObj = document.getElementById("myTable1");
+            //获取表格中的所有行      
+        var rows = tableObj.getElementsByTagName("tr");
+         
+        //给tr绑定click事件
+        for(var i in rows){
+          rows[i].onclick = rowClick;
+        }
+      
+      function rowClick(e){ 
+        //alert(this.rowIndex); //显示所点击的行的索引
+        //console.log(this );
+        var td = this.getElementsByTagName("td");
+        if(td[5].innerHTML=='')
+        {
+            alert('该设备没有分配站点')
+        }
+        //console.log(td[0].innerHTML);
+        //alert(td[5].innerHTML);
+        //<a href="/" target="_self">+详情+</a>
+        //window.location.href='/baidu';
+         //document.location.href("/baidu?cc="+td[0].innerHTML);
+         else
+         {
+            location.href="/baidu#listID="+td[5].innerHTML;
+         }
+         
+         //alert(location.href);
+         //console.log(location.href );
+      }
+
+               
+}
+
+
+
+
+// 
+// 
+
+
+
+
+
+
+
+// 搜索
+// $scope.searchDeviceInfo = function(){
+//     var temp= window.location.search;
+//     var tenantId = temp.split("=");
+//     console.log(tenantId[1]);
+//     tenantId[1] = 2;//用于测试
+//     var textSearch = jQuery("#searchDevice").val();
+//     if(textSearch == ""){
+//         jQuery.ajax({
+//             url:"/api/3d815/paging/2?limit=6&idOffset=&textOffset=",
+//             contentType: "application/json; charset=utf-8",
+//             async: false,
+//             type:"GET",
+//             success:function(msg) {
+//                 if(msg.data.length != 0){
+//                     $scope.deviceList = msg.data;
+//                     // console.log($scope.deviceList);
+//                     idOffset = msg.nextPageLink.idOffset;
+//                     textOffset = msg.nextPageLink.textOffset;
+//                     hasNext = msg.hasNext;
+//                     // console.log(idOffset);
+//                     // console.log(textOffset);
+//                     // console.log(hasNext);
+//                     preDeviceId.push(idOffset);
+//                     preDeviceName.push(textOffset);
+//                 }
+//             }
+//         });
+//     }else{
+//         jQuery.ajax({
+//             url:"/api/3d815/search/"+tenantId[1]+"?limit=1000&textSearch="+textSearch,
+//             contentType: "application/json; charset=utf-8",
+//             async: false,
+//             type:"GET",
+//             success:function(msg) {
+//                 jQuery("#showDevice tr").remove();
+//                 console.log(msg.res.data);
+//                $scope.deviceList = msg.res.data;
+//             }
+//         });
+//     }
+   
+// }
 //     $.ajax({
 //         url: '/api/tenantsites/'+tenantId,
 //         type: 'get',

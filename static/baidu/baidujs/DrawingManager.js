@@ -1138,6 +1138,8 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
          * 绘制矩形结束
          */
         var idArray=[];
+        var siteIdArray=[];
+        var deviceArray=[];
         var endAction = function (e) {
             var calculate = me._calculate(polygon, polygon.getPath()[2]);
             me._dispatchOverlayComplete(polygon, calculate);
@@ -1180,31 +1182,72 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
             }
         for(var k=0;k<idArray.length;k++)
         {
-                var table = document.getElementById("myTable2");
-                var row = table.insertRow(k+1);
-                row.id = (k + 1);
+        var table = document.getElementById("myTable2");
+             
+       //  $.ajax({
+       //  url: '/api/3d815/paging/2?limit=50&idOffset=&textOffset=',
+       //  type: 'get',
+       //  async : false,
+       //  dataType: 'json',
+       //  contentType: 'application/json;charset=UTF-8',
+
+       //  error:function(){
+       //      alert('失败');
+       //  },
+       //  success: function(req) {
+       //      console.log(req.data);
+       //      // for(var i=0;i<req.data.length;i++)
+       //      // {
+       //      //     console.log(req.data[i].siteId);
+       //      //     siteIdArray.push(req.data[i].siteId)
+       //      //     console.log(siteIdArray);
+       //      // }
+           
+       //     }
+       // });
+                
+
+        $.ajax({
+        url: 'api/3d815/siteDevicePaging/2/'+idArray[k]+'?limit=10000&idOffset=&textOffset=',
+        type: 'get',
+        async : false,
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+
+        error:function(){
+            alert('失败');
+        },
+        success: function(req) {
+            //console.log(req.data);
+            for(var i=0;i<req.data.length;i++)
+            {
+                var row = table.insertRow(i+1);
+                row.id = (i + 1); 
                 var cell0 = row.insertCell(0);
                 var cell1 = row.insertCell(1);
                 var cell2 = row.insertCell(2);
                 var cell3 = row.insertCell(3);
                 var cell4 = row.insertCell(4);
-                // // cell5 = row.insertCell(5);
-                // // cell6 = row.insertCell(6);
                 var cell5 = row.insertCell(5);
-
-                cell0.innerHTML = idArray[k];
-                cell1.innerHTML = ''
-                cell2.innerHTML = ''
-                cell3.innerHTML = ''
-                cell4.innerHTML = ''
-                // 
+                cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>'
+                cell1.innerHTML = req.data[i].tenantId;
+                cell2.innerHTML = req.data[i].customerId;
+                cell3.innerHTML = req.data[i].name;
+                cell4.innerHTML = req.data[i].siteId; 
                 cell5.innerHTML = '<a href="/demo" >'+'进入场景'+'</a>'
+            }
+            //请求成功时处理
+           }
+       });
                 
                 }
                 $('#deviceList').modal('show');
                 clearAll(); 
                 // drawingManager.close();
         }
+
+        
+
        
         mask.addEventListener('mousedown', startAction);
 

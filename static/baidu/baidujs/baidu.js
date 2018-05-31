@@ -212,8 +212,8 @@ function getSites()
     });
 }
 /////////////////////////////初始化//////////////////
-window.onload=onload1();
-function onload1(){
+window.onload=
+function (){
     $.ajax({
         url: '/api/tenantsites/'+tenantId,
         type: 'get',
@@ -252,7 +252,7 @@ function onload1(){
             alert('连接完成');
             ///////////////////////////列表跳转///////////////////////////////////////
             
-            if(loc.indexOf("?listID=")!=-1)
+            if(loc.indexOf("#listID=")!=-1)
             {
               //console.log(loc);
               //console.log(loc.substr(loc.indexOf("=")+1));
@@ -330,6 +330,7 @@ function onload1(){
 function mark1()
 {
     myDis.close();  //关闭鼠标测距大
+    drawingManager.close();
     //myMark.open();
     $('#tenantId1').val(tenantId);
     //document.getElementById('nav').style.display='block';
@@ -350,6 +351,7 @@ function getPoint(e)
 function mark2()
 {
     myDis.close();  //关闭鼠标测距大
+    drawingManager.close();
     //myMark.open();
     //map.setCursor("url('bird.cur')");
     map.setDefaultCursor("crosshair");
@@ -394,6 +396,7 @@ function renameSite() {
         type: 'put',//提交方式
         dataType: 'JSON',//返回字符串，T大写
         success: function (req) {
+            console.log(req)
             //document.getElementById('div2').style.display='none';
             $('#renameSite').modal('hide')
             if (req != '') {
@@ -433,39 +436,46 @@ else{
 $(btn).click(function(){
     //console.log(nameArray)
 //console.log($.inArray(address.value, nameArray));
-    var a=nameArray.indexOf(address.value);
-    if(a!=-1)
-    {
-         //logArray=req.sites[i].longtitude;
-         //lohArray=req.sites[i].latitude;
-         point=new BMap.Point(logArray[a],lohArray[a]);
-         map.centerAndZoom(point, 22);
-    }
-    else
-    {
-        alert('没有发现该站点')
-    }
-    // $.ajax({
-    //     url:'/api/sites/'+address.value,
-    //     type:'get',//提交方式
-    //     dataType:'JSON',//返回字符串，T大写
-    //     success: function(req){
-    //         if(req.sites[0].tenantId==tenantId)
-    //         {
-    //             point=new BMap.Point(req.sites[0].longtitude,req.sites[0].latitude);
-    //             map.centerAndZoom(point, 22);
-    //         }
-    //         else
-    //         {
-    //             alert('没有发现该站点');
-    //         }
+    // var a=nameArray.indexOf(address.value);
+    // if(a!=-1)
+    // {
+    //      //logArray=req.sites[i].longtitude;
+    //      //lohArray=req.sites[i].latitude;
+    //      point=new BMap.Point(logArray[a],lohArray[a]);
+    //      map.centerAndZoom(point, 22);
+    // }
+    // else
+    // {
+    //     alert('没有发现该站点')
+    // }
+    $.ajax({
+        url:'/api/sites/'+address.value,
+        type:'get',//提交方式
+        dataType:'JSON',//返回字符串，T大写
+        success: function(req){
+            console.log(req.sites)
             
-    //     },
-    //     error:function(error)
-    //     {
-    //         alert(error.message);
-    //     }
-    // });
+            if(req.sites=='')
+            {
+                alert('没有发现该站点');
+            }
+            else if(req.sites[0].tenantId==tenantId)
+            {
+                
+                point=new BMap.Point(req.sites[0].longtitude,req.sites[0].latitude);
+                map.centerAndZoom(point, 22);
+            }
+            else
+            {
+                alert('没有发现该站点');
+            }
+            
+        },
+        error:function(error)
+        {
+            alert(error.message);
+        }
+    });
 });
 
 ///////////////////三级地图加载/////////////////
@@ -585,9 +595,21 @@ function clearAll() {
     overlays.length = 0
 }
 
-    $(".homeIconBackground,.side-menu-icon,.chooseBtn").mouseover(function(){
-        $(this).siblings().stop().fadeTo(300, 0.3);//动画速度用数字表示时不需加引号
-    });
-    $(".homeIconBackground,.side-menu-icon,.chooseBtn").mouseout(function () {
-        $(this).siblings().stop().fadeTo(300, 1);
-    });
+function deviceSearch()
+{
+  var input = document.getElementById("searchDevice");
+  var filter = input.value.toUpperCase();//转换为大写
+  var table = document.getElementById("myTable2");
+  var tr = table.getElementsByTagName("tr");
+  // 循环表格每一行，查找匹配项
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+}
