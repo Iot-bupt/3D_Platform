@@ -18,8 +18,15 @@ module.exports = {
                 var ext ='.'+tmparr[tmparr.length-1];  
                 var newpath =path.join('public/upload/scenes', generateId()+'%'+item.name);  
                 
-                console.log(newpath);  
-                var stream = fs.createWriteStream(newpath);//创建一个可写流  
+                console.log(newpath); 
+                const defaults = {
+                    flags: 'r+',
+                    encoding: 'utf8',
+                    fd: null,
+                    mode: 0o666,
+                    autoClose: true
+                  };
+                var stream = fs.createWriteStream(newpath,defaults);//创建一个可写流  
                 fs.createReadStream(tmpath).pipe(stream);//可读流通过管道写入可写流  
             } 
             var time = moment().format();
