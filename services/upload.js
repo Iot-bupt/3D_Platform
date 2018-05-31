@@ -20,7 +20,7 @@ module.exports = {
                 
                 console.log(newpath); 
                 const defaults = {
-                    flags: 'r+',
+                    flags: 'a+',
                     encoding: 'utf8',
                     fd: null,
                     mode: 0o666,
