@@ -66,6 +66,16 @@ module.exports = {
         ctx.rest(res);
     },
 
+    'GET /api/devices/siteSearch/:tenantId/:siteId': async (ctx, next) => {      //租户站点下设备搜索
+        var tid = ctx.params.tenantId;
+        var siteId = ctx.params.siteId;
+        var limit = ctx.query.limit;
+        var textSearch = ctx.query.textSearch;
+        var res = await devices.siteDevicesSearch(tid,siteId,limit,textSearch);
+        
+        ctx.rest(res);
+    },
+
     'POST /api/assignDevice/site': async (ctx,next) => {
         
         var body = ctx.request.body;

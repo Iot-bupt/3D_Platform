@@ -171,12 +171,11 @@ module.exports = {
         }
     },
 
-    siteDevicesSearch: async (tid,siteId,limit,textSearch) => {
+    siteDevicesSearch: async (tid,siteId,limit,textSearch) => {   //待定,底层接口有问题
         try{
             var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit+'&textSearch='+textSearch);
             var res = data.data;
-
-            
+     
             return res;
         }catch(e){
             throw e;
