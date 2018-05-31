@@ -392,7 +392,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                  */
                 intersected = intersections[0].object;
                 intersected.material.color.setHex(intersectColor);
-//                intersected.mesh.
+                window.addEventListener('keydown', changeMode);
+
                 var name_uid =  intersected.tooltip;
                var nameUid =  name_uid.split("_");
 //                var temp ;

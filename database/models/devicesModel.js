@@ -1,7 +1,7 @@
 //const TYPES = ['STRING', 'INTEGER', 'BIGINT', 'TEXT', 'DOUBLE', 'DATEONLY', 'BOOLEAN'];
 const db = require('../db');
 
-module.exports = db.defineModel('devicesModel', {
+module.exports = db.defineModel('devicesmodel', {
     // deviceModelId: {
     //     type:db.STRING(50),
     //     primaryKey: true,
@@ -15,7 +15,7 @@ module.exports = db.defineModel('devicesModel', {
     tenantId: db.INTEGER,
     deviceId: db.STRING(50),
     name: db.STRING(50),
-    sceneModelId:db.INTEGER,   //外键
+    siteId:db.INTEGER,   //外键
     deviceModelUrl: db.STRING(100),
     compressStatus: {
         type: db.BOOLEAN,
@@ -27,7 +27,7 @@ module.exports = db.defineModel('devicesModel', {
         comment:"toOSS or not",
         defaultValue: false
     },
-    locationInfo: {
+    location: {
         type:db.STRING(100),//存设备模型坐标信息，xyz
         allowNull:true
     },    

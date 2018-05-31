@@ -12,6 +12,21 @@
     <link href="static/assets/css/toastr.css" rel="stylesheet" type="text/css"/>
     <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular.js"></script>
     <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular-resource.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/three.js/92/three.min.js"></script>
+    <script src="static/gis_815/js/libs/stats.min.js"></script>
+    <script src="static/gis_815/js/libs/dat.gui.min.js"></script>
+    <script src="static/gis_815/js/controls/OrbitControls.js"></script>
+    <script src="static/gis_815/js/controls/TransformControls.js"></script>
+    <script src="static/gis_815/js/controls/PointerLockControls.js"></script>
+    <script src="static/gis_815/js/loaders/STLLoader.js"></script>
+    <script src="static/gis_815/js/Detector.js"></script>
+    <script src="static/gis_815/DRACOLoader.js"></script>
+    <script src="static/gis_815/geometry_helper.js"></script>
+    <script src="static/gis_815/draco_decoder.js"></script>
+    <script src="static/assets/js/bootstrap.js"></script>
+
+    
 </head>
 
 <body ng-controller="mainCtrl">
@@ -21,6 +36,9 @@
     Labroom_815_monitoring
 </div>
 <div id="Loading"></div>
+    <script src="static/assets/js/815_scene.js"></script>
+    <script src="static/assets/js/mainCtrl.js"></script>
+    <script src="static/assets/js/toastr.js"></script>
 <div id="packUpDiv">
     <span id="packUpSpan" ng-click="packSearchMenu()"><i class="fa fa-angle-double-right" id="packUp"></i></span>
 </div>
@@ -143,7 +161,7 @@
                 <button class="btn btn-primary" data-toggle="modal"
                         data-target="#assign">更新位置</button>
                 <button class="btn btn-primary" data-toggle="modal"
-                        data-target="#assign">定位模型</button>
+                        data-target="#assign" ng-click="lookAt()">定位模型</button>
 
             </td>
         </tr>
@@ -204,24 +222,6 @@
     </div>
 </div>
 
-
-<script src="https://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/three.js/92/three.min.js"></script>
-<script src="static/gis_815/js/libs/stats.min.js"></script>
-<script src="static/gis_815/js/libs/dat.gui.min.js"></script>
-<script src="static/gis_815/js/controls/OrbitControls.js"></script>
-<script src="static/gis_815/js/controls/TransformControls.js"></script>
-<script src="static/gis_815/js/controls/PointerLockControls.js"></script>
-<script src="static/gis_815/js/loaders/STLLoader.js"></script>
-<script src="static/gis_815/js/Detector.js"></script>
-<script src="static/gis_815/DRACOLoader.js"></script>
-<script src="static/gis_815/geometry_helper.js"></script>
-<script src="static/gis_815/draco_decoder.js"></script>
-<script src="static/assets/js/bootstrap.js"></script>
-
-<script src="static/assets/js/815_scene.js"></script>
-<script src="static/assets/js/mainCtrl.js"></script>
-<script src="static/assets/js/toastr.js"></script>
 </body>
 
 

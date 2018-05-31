@@ -155,7 +155,7 @@ module.exports = {
         }
     },
 
-    SiteDevicesPaging: async (tid,siteId,limit,idOffset,textOffset) => {
+    siteDevicesPaging: async (tid,siteId,limit,idOffset,textOffset) => {
         try{
             if ((idOffset) && (textOffset)){
             var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit+'&idOffset='+idOffset+'&textOffset='+textOffset);
@@ -170,6 +170,19 @@ module.exports = {
             throw e;
         }
     },
+
+    siteDevicesSearch: async (tid,siteId,limit,textSearch) => {
+        try{
+            var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit+'&textSearch='+textSearch);
+            var res = data.data;
+
+            
+            return res;
+        }catch(e){
+            throw e;
+        }
+    },
+
 
     assignDevicetoSite: async(id,tenantId,name,siteId) =>{
         try{

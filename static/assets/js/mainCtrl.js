@@ -331,5 +331,13 @@ $scope.searchDeviceInfo = function(){
         jQuery('#addModel').css({'display':''});
     }
 
+    $scope.lookAt = function() {
+        camera.position.set(-2.37, 6.90, 15.16);
+        camera.lookAt(-10.37, 6.90, 15.16);
+        //camera.position.set(-2.37, 6.90, 10.16);
+        
+        
+    }
+
 
 }]);

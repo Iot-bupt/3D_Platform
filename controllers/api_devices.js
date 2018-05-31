@@ -61,7 +61,7 @@ module.exports = {
         var limit = ctx.query.limit;
         var idOffset = ctx.query.idOffset;
         var textOffset = ctx.query.textOffset;
-        var res = await devices.SiteDevicesPaging(tid,siteId,limit,idOffset,textOffset);
+        var res = await devices.siteDevicesPaging(tid,siteId,limit,idOffset,textOffset);
         
         ctx.rest(res);
     },
