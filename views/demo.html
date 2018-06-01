@@ -10,6 +10,8 @@
     <link href='static/assets/css/font-Lobster.css' rel='stylesheet' type='text/css' />
     <link href="static/assets/css/style.css" rel="stylesheet" type="text/css"/>
     <link href="static/assets/css/toastr.css" rel="stylesheet" type="text/css"/>
+    <link href="static/assets/css/jquery-ui.css" rel="stylesheet" type="text/css"/>
+
     <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular.js"></script>
     <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular-resource.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -25,6 +27,7 @@
     <script src="static/gis_815/geometry_helper.js"></script>
     <script src="static/gis_815/draco_decoder.js"></script>
     <script src="static/assets/js/bootstrap.js"></script>
+    <script src="static/assets/js/jquery-ui.js"></script>
 
     
 </head>
@@ -51,9 +54,7 @@
                         <button class="btn btn-primary" type="button" id="btn" ng-click="searchDeviceInfo()" style="margin-bottom: 4px;"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
-              
-            
-           
+
                 <span ng-click="changeIcon()" id="iconSpan"><i class="fa fa-angle-double-down" id="icon"></i></span>
             
 </div>
@@ -105,8 +106,6 @@
     
     <button class="btn btn-default button" id="pre" ng-click="prePage()">上一页</button>
     <button class="btn btn-default button" id="next" ng-click="nextPage()">下一页</button>
-
-
 </div>
 
 
@@ -157,9 +156,9 @@
                 <button class="btn btn-primary" data-toggle="modal"
                         data-target="#refreshDevice"  ng-click="addModel()">添加模型</button>
                 <button class="btn btn-primary" data-toggle="modal"
-                        data-target="#token" ng-click="delModel()">消除模型</button>
+                        data-target="#deleteModel">消除模型</button>
                 <button class="btn btn-primary" data-toggle="modal"
-                        data-target="#assign">更新位置</button>
+                        data-target="#updatePosition" ng-click="update()">更新位置</button>
                 <button class="btn btn-primary" data-toggle="modal"
                         data-target="#assign" ng-click="lookAt(id)">定位模型</button>
 
@@ -169,38 +168,35 @@
     </table>
 </div>
 <!--添加模型弹出框-->
-<div id ="addModel">
+<!--div id ="addModel">
     <span style="display: inherit;text-align: right;position: relative;">
             <button class="btn btn-primary" type="button" id="b" ng-click="closeAddModel()"><i class="fa fa-close"></i></button>
     </span>
     <span class="modal-title">
-        添加模型
+        <button></button>
+        <button></button>
     </span>
-    <div>
+    <div id="defaultModel">
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>位置
         </label>
         <input type="text" id="manufacturerName" required/>
-    </div>
-    <div>
+
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>X
         </label>
         <input type="text" id="deviceType" required/>
-    </div>
-    <div>
+
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>Y
         </label>
         <input type="text" required/>
-    </div>
-    <div>
+
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>Z
         </label>
         <input type="text" required/>
-    </div>
-    <div>
+
         <label class="col-sm-3 control-label" style="text-align: left">
             <span style="color: red;">*</span>比例
         </label>
@@ -220,11 +216,128 @@
             重置
         </button>
     </div>
+
+</div-->
+<div id ="addModel">
+    <span style="display: inherit;text-align: right;position: relative;">
+            <button class="btn btn-primary" type="button" id="b" ng-click="closeAddModel()"><i class="fa fa-close"></i></button>
+    </span>
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">默认模型</a></li>
+            <li><a href="#tabs-2">上传模型</a></li>
+        </ul>
+        <div id="tabs-1" style="display: inline"><br/>
+            <label class="col-cm-3 control-label" style="text-align: left">
+                <span style="color: red;">*</span>位置:
+            </label>
+            <input type="text" required/>
+            <label class="col-cm-3 control-label" style="text-align: left">
+                <span style="color: red;">*</span>比例:
+            </label>
+            <input type="text" required/>
+            <label class="col-cm-3 control-label" style="text-align: left">
+                <span style="color: red;">*</span>旋转:
+            </label>
+            <input type="text" required/>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" ng-click="submit()">
+                    确认
+                </button>
+                <button type="button" class="btn btn-success" ng-click="reSet()">
+                    重置
+                </button>
+            </div>
+        </div>
+        <div id="tabs-2" style="display: inline"><br/>
+            <label class="col-cm-3 control-label" style="text-align: left">
+                <span style="color: red;">*</span>X值:
+            </label>
+            <input type="text" required/>
+            <label class="col-cm-3 control-label" style="text-align: left">
+                <span style="color: red;">*</span>Y值:
+            </label>
+            <input type="text" required/>
+            <label class="col-cm-3 control-label" style="text-align: left">
+                <span style="color: red;">*</span>Z值:
+            </label>
+            <input type="text" required/>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" ng-click="submit()">
+                    确认
+                </button>
+                <button type="button" class="btn btn-success" ng-click="reSet()">
+                    重置
+                </button>
+            </div>
+        </div>
+
+    </div>
 </div>
 
+<!--消除模型模态框-->
+    <div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModaLabel">
+                        删除模型
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    确定删除此模型？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="delAG()">
+                        确定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<!--更新位置-->
+<!--div id ="updatePosition">
+    <span style="display: inherit;text-align: right;position: relative;">
+            <button class="btn btn-primary" type="button" id="bd" ng-click="closeUpdateModel()"><i class="fa fa-close"></i></button>
+    </span>
+    <span class="modal-title">
+        更新模型
+    </span>
+    <div>
+        <label class="col-sm-3 control-label" style="text-align: left">
+            <span style="color: red;">*</span>X
+        </label>
+        <input type="text" id="deviceType" required/>
+    </div>
+    <div>
+        <label class="col-sm-3 control-label" style="text-align: left">
+            <span style="color: red;">*</span>Y
+        </label>
+        <input type="text" required/>
+    </div>
+    <div>
+        <label class="col-sm-3 control-label" style="text-align: left">
+            <span style="color: red;">*</span>Z
+        </label>
+        <input type="text" required/>
+    </div>
 
-
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" ng-click="submit()">
+            确认
+        </button>
+        <button type="button" class="btn btn-success" ng-click="reSet()">
+            重置
+        </button>
+    </div>
+</div-->
 </html>
 
 {% endraw %}

@@ -91,14 +91,18 @@ body {
 #addModel{
     top:150px;
     right: 550px;
-    height: 270px;
+    height: 210px;
+    width:250px;
     background-color:rgba(49, 47, 47, 1);
     color:#5087c3;
-    width:270px;
     position:absolute;
     z-index:3;
     font-weight: bold;
     border-radius:12px;
+}
+#tabs{
+    background-color:rgba(49, 47, 47, 1);
+    color:#5087c3;
 }
 #arrow{
     top: 75px;
@@ -147,4 +151,19 @@ body {
     cursor: pointer;
     color: white;
 
+}
+.control-label{
+    color: #5087c3;
+}
+#updatePosition{
+    top:150px;
+    right: 550px;
+    height: 270px;
+    width:270px;
+    background-color:rgba(49, 47, 47, 1);
+    color:#5087c3;
+    position:absolute;
+    z-index:3;
+    font-weight: bold;
+    border-radius:12px;
 }
