@@ -460,9 +460,9 @@ $scope.searchDeviceInfo = function(){
     }*/
 
 //初始化显示默认模型
-    jQuery( "#tabs" ).tabs();
+    jQuery("#tabs").tabs();
     //拖动框
     jQuery("#addModel").draggable();
-    //jQuery("#updatePosition").draggable();
+    jQuery("#updatePosition").draggable();
 
 }]);
