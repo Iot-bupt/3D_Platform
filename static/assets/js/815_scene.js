@@ -1,5 +1,8 @@
+
+
+
 if (!Detector.webgl) Detector.addGetWebGLMessage();
-    
+var addmodel = new AddModel();
     
     var camera, scene, renderer,
         bulbLight, bulbMat, ambientLight,
@@ -98,17 +101,17 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             tempDiv.style.backgroundColor = "rgba(0,0,0,0.4)";
         },
         showtip: function(mouse, cont) {
-            $("tip").innerHTML = "<p>" + cont + "</p>";
-            $("tip").style.left = mouse.clientX + 10 + "px";
-            $("tip").style.top = mouse.clientY - 10 + "px";
-            $("tip").style.zIndex = "10";
-            $("tip").style.display = "block";
+            jqq("tip").innerHTML = "<p>" + cont + "</p>";
+            jqq("tip").style.left = mouse.clientX + 10 + "px";
+            jqq("tip").style.top = mouse.clientY - 10 + "px";
+            jqq("tip").style.zIndex = "10";
+            jqq("tip").style.display = "block";
         },
         hidetip: function() {
-            $("tip").style.display = "none";
+            jqq("tip").style.display = "none";
         }
     }
-    var $ = function(str) {
+    var jqq = function(str) {
         return document.getElementById(str);
     }
     ToolTip.init();
@@ -269,35 +272,14 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     var intersectColor = 0x00D66B;
     var intersected;
 
-    var fun2cgq  = function(str,x,y,z,name_uid){
-            var loader = new THREE.STLLoader();
-            loader.load("static/gis_815/models/somedevices/" + str, function(geometry) {
-                var material = new THREE.MeshPhongMaterial({
-                    color: 0xFF0000,
-                    specular: 0x111111,
-                    shininess: 200
-                });
-                var mesh = new THREE.Mesh(geometry, material);
 
-                mesh.position.set(x,y,z);
-                mesh.rotation.set(Math.PI / 2, Math.PI / 2, 0);
-                mesh.scale.set(0.02, 0.02, 0.02);
-
-                mesh.castShadow = true;
-                mesh.receiveShadow = true;
-                mesh.tooltip = name_uid;
-                scene.add(mesh);
-                objects.push(mesh);
-                //console.log(objects)
-            });
-        };
-
-        fun2cgq('sensor_center.stl',-10.37, 6.90, 15.16,"开关1开_uid1_on");
-        fun2cgq('sensor_center.stl',-10.37, 6.90, 14.16,"开关1关_uid1_off");
-        fun2cgq('sensor_center.stl',0.0, 4.228, -6.5,"窗帘1开_uid3_on");
-        fun2cgq('sensor_center.stl',-1.0, 4.228, -6.5,"窗帘1关_uid3_off");
-        fun2cgq('sensor_center.stl',0.0,4.96,18,"温湿2_uid4");
+        //fun2cgq('sensor_center.stl',-10.37, 6.90, 15.16,"开关1开_uid1_on");
+        //fun2cgq('sensor_center.stl',-10.37, 6.90, 14.16,"开关1关_uid1_off");
+        //fun2cgq('sensor_center.stl',0.0, 4.228, -6.5,"窗帘1开_uid3_on");
+        //fun2cgq('sensor_center.stl',-1.0, 4.228, -6.5,"窗帘1关_uid3_off");
+        //fun2cgq('sensor_center.stl',0.0,4.96,18,"温湿2_uid4");
         
+        addmodel.addAllModel(133);    //加载场景ID133的所有设备模型
         
         
         
@@ -395,7 +377,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                 //window.addEventListener('keydown', changeMode);
 
                 var name_uid =  intersected.tooltip;
-               var nameUid =  name_uid.split("_");
+                var nameUid =  name_uid.split("_");
 //                var temp ;
                if(nameUid[0].indexOf("开关")!=-1){
                    ToolTip.showtip(event, nameUid[0]+":");

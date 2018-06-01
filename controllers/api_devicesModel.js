@@ -20,6 +20,14 @@ module.exports = {
         });
     },
 
+    'GET /api/dModel/getSitedModelByDid/:deviceId': async (ctx, next) => {  //通过设备Id获取模型
+        var deviceId = ctx.params.deviceId;
+        var res = await dModel.getSitedModelByDid(deviceId);     
+        ctx.rest({
+            dModels: res
+        });
+    },
+
 
     'DELETE /api/dModel/dModelDelete/:deviceId': async (ctx, next) => {   //删除站点dmodel，失败res=0,成功=1
         console.log(`delete dModel ${ctx.params.deviceId}...`);

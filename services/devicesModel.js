@@ -110,4 +110,13 @@ module.exports = {
             newLabel:label
         };
     },
+
+    getSitedModelByDid:async(deviceId) => {
+        var res = await devicesModel.findAll({
+            where:{
+                deviceId: deviceId
+            }
+        });
+        return res;
+    },
 }

@@ -9,6 +9,26 @@ const APIError = require('../rest').APIError;
 module.exports = {
     'GET /api/sites': async (ctx, next) => {
         var res = await sites.getSites();     //通过await执行promise对象，拿到结果
+        //======================测试测试
+            // var foo = {
+            //     position:{
+            //         x:0.0, 
+            //         y:4.228,
+            //         z:-6.5,
+            //     },
+            //     scale:{
+            //         x:Math.PI / 2,
+            //         y:Math.PI / 2,
+            //         z:0,
+            //     },
+            //     rotation:{
+            //         x:0.02,
+            //         y:0.02,
+            //         z:0.02,
+            //     }
+            // };
+            // console.log(JSON.stringify(foo));
+        //======================测试测试
         ctx.rest({
             sites: res
         });

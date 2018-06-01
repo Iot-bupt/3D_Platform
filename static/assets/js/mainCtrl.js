@@ -316,7 +316,7 @@ $scope.searchDeviceInfo = function(){
 //选中设备信息展示
     $scope.show = function(data){
         $scope.deviceInfo = data;
-        console.log($scope.deviceInfo);
+        //console.log($scope.deviceInfo);
         $scope.id = data.id;
         $scope.name = data.name;
         $scope.manufacture = data.manufacture;
@@ -333,10 +333,47 @@ $scope.searchDeviceInfo = function(){
         jQuery('#addModel').css({'display':''});
     }
 
-    $scope.lookAt = function() {
-        camera.position.set(-2.37, 6.90, 15.16);
-        camera.lookAt(-10.37, 6.90, 15.16);
-        //camera.position.set(-2.37, 6.90, 10.16);
+    var flag = 0;
+    $scope.lookAt = function(id) {
+        
+        var dModel = [];
+        $.ajax({
+            url:'/api/dModel/getSitedModelByDid/'+id,
+            type:'GET',
+            async:false,
+            success: function(res){
+                dModel = res.dModels;
+            },
+            error: function(e){
+                alert("获取该设备模型失败"+e.message);
+            }
+        });
+        var position = JSON.parse(dModel[0].location).position;
+        switch (flag)
+        {
+            case 0:
+                camera.position.set(position.x+8.0,position.y,position.z);
+                camera.lookAt(position.x,position.y,position.z);
+                flag+=1;
+                break;
+            case 1:
+                camera.position.set(position.x+6.0,position.y,position.z);
+                camera.lookAt(position.x,position.y,position.z);
+                flag+=1;
+                break;
+            case 2:
+                camera.position.set(position.x+2.0,position.y,position.z);
+                camera.lookAt(position.x,position.y,position.z);
+                flag+=1;
+                break;
+            case 3:
+                camera.position.set(position.x+1.0,position.y,position.z);
+                camera.lookAt(position.x,position.y,position.z);
+                flag+=1;
+                break;
+            default:
+                flag = 0;
+        }
         
         
     }
