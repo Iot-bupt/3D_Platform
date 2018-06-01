@@ -78,14 +78,14 @@
              <a href="#" title="close"> <i class="fa fa-close fa-2x menu-close-icon b-clr"></i></a>
             </li>
             <li class="side-menu-icon">
-                <a href ="baidu" title="首页" onclick="">
+                <a href ="" title="首页" onclick="">
                     <i class="fa fa-home fontStyle"></i>
                     <span class="textStyle">地图展示</span>
                 </a>
 
             </li>
             <li class="side-menu-icon">
-             <a href="sitesList" title="设备列表" onclick="">
+             <a href="javascript:void(0);" title="设备列表" onclick="lookSiteList()">
                  <i class="fa fa-file-text-o fontStyle"></i>
                  <span class="textStyle">设备列表</span>
              </a>
@@ -98,7 +98,7 @@
         <h2 class="leftH2"><span ></span>功能列表 <span></span></h2>
         <nav>
             <ul class="list">
-                <li><input type="button" class="anjian" data-toggle="modal" value="测距" onclick="myDis.open(),drawingManager.close()"  /></li>
+                <li><input type="button" class="anjian" data-toggle="modal" value="测距" onclick="measure()"  /></li>
                 <li><input type="button" class="anjian" data-toggle="modal" value="输入经纬度标注" onclick="mark1()" /></li>
                 <li><input type="button" class="anjian" data-toggle="modal" value="点击添加标注"  onclick="mark2();" /></li>
                 <!-- <li><input type="button" class="anjian" data-toggle="modal" value="绘制覆盖物个数" onclick="alert(overlays.length)"/></li>
@@ -279,7 +279,7 @@
 
     <div class="modal fade" tabindex="-1" role="dialog" id="deviceList">
         <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
-        <div class="modal-dialog" role="document" style="width:800px">
+        <div class="modal-dialog" role="document" style="width:900px">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
@@ -290,7 +290,7 @@
             <table id ="myTable2" class="table table-striped" cellpadding="0" cellspacing="0" style="width:100%" >
             <tr class="firstTr" id="tr1">
                 <th width="30%">设备ID</th>
-                <th width="10%">租户名称</th>
+                <th width="10%">租户ID</th>
                 <th width="10%">用户ID</th>
                 <th width="20%">设备名称</th>
                 <th width="10%">所属站点</th>

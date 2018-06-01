@@ -61,14 +61,14 @@
              <a href="#" title="close"> <i class="fa fa-close fa-2x menu-close-icon b-clr"></i></a>
             </li>
             <li class="side-menu-icon">
-                <a href ="baidu" title="首页" onclick="">
+                <a href="javascript:void(0);" title="首页" onclick="lookMap()">
                     <i class="fa fa-home fontStyle"></i>
                     <span class="textStyle">地图展示</span>
                 </a>
 
             </li>
             <li class="side-menu-icon">
-             <a href="sitesList" title="设备列表" onclick="">
+             <a href="" title="设备列表" onclick="">
                  <i class="fa fa-file-text-o fontStyle"></i>
                  <span class="textStyle">设备列表</span>
              </a>
@@ -86,7 +86,6 @@
             <span>站点ID：</span>
             <input type="text" id="searchValue"  onkeyup="deviceSearch1()" placeholder="请输入设备名称"/>
             <input type="button" id='keyup' value="查询" style="text-align: middle;" onclick="deviceSearch()" />
-            <input type="button" id='keyup' value="分配" style="text-align: middle;" onclick="siteDistribute()" />
             </div>
         <div id="deviceList" style="height: 600px;overflow-y: scroll">
         <!--供应商操作表格-->

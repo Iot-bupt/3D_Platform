@@ -1,5 +1,11 @@
- // document.write("<script language=javascript src='../static/baidu/baidujs/baidu.js'><\/script>"); 
-var tenantId=0;
+var loc = location.href;
+var tenantId
+if(loc.indexOf("?id=")!=-1)
+            {
+              var id = loc.substr(loc.indexOf("=")+1)//从=号后面的内容
+              tenantId=id
+            }
+console.log(tenantId)
 var siteId1
 var siteId2
 var idArray=[];
@@ -7,6 +13,7 @@ var nameArray=[];
 var deviceID;
 var siteID;
 var str
+var rowIdx
 var idOffset;//用于查找下一页
 var textOffset;//用于查找下一页
 var hasNext;//判断是否存在下一页
@@ -40,7 +47,7 @@ var pageNum = 1;//记录当前页面
 
 //默认设备列表
 jQuery.ajax({
-    url:"/api/3d815/paging/2?limit=12&idOffset=&textOffset=",
+    url:"/api/3d815/paging/"+tenantId+"?limit=12&idOffset=&textOffset=",
     contentType: "application/json; charset=utf-8",
     async: false,
     type:"GET",
@@ -65,12 +72,12 @@ function nextPage(){
     console.log(hasNext);
     if(hasNext){
         jQuery.ajax({
-            url:"/api/3d815/paging/2?limit=12&idOffset="+idOffset+"&textOffset="+textOffset,
+            url:"/api/3d815/paging/"+tenantId+"?limit=12&idOffset="+idOffset+"&textOffset="+textOffset,
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
             success:function(req) { 
-                console.log("/api/3d815/paging/2?limit=12&idOffset="+idOffset+"&textOffset="+textOffset);
+                console.log("/api/3d815/paging/"+tenantId+"?limit=12&idOffset="+idOffset+"&textOffset="+textOffset);
                 pageNum++;  
                 showTable(req)
                 if( req.hasNext == true){
@@ -101,7 +108,7 @@ function prePage(){
     }
     else if(pageNum == 2){
         jQuery.ajax({
-            url:"/api/3d815/paging/2?limit=12&idOffset=&textOffset=",
+            url:"/api/3d815/paging/"+tenantId+"?limit=12&idOffset=&textOffset=",
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -120,7 +127,7 @@ function prePage(){
         }); 
     }else{
         jQuery.ajax({
-            url:"/api/3d815/paging/2?limit=12&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+            url:"/api/3d815/paging/"+tenantId+"?limit=12&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -141,6 +148,7 @@ function prePage(){
     }
 }
 
+
 function siteDistribute()
 {
   $.ajax({
@@ -148,7 +156,7 @@ function siteDistribute()
         type: 'POST',
         // async : false,
         data:
-                {"id":deviceID,"tenantId":2, "name":deviceName,"siteId":$('#siteId2 option:selected') .text()},
+                {"id":deviceID,"tenantId":tenantId, "name":deviceName,"siteId":$('#siteId2 option:selected') .text()},
         dataType: 'json',
         // contentType: 'application/json;charset=UTF-8',
 
@@ -159,9 +167,17 @@ function siteDistribute()
             //console.log(req);
             //请求成功时处理
             alert('分配成功')
+            var tableObj = document.getElementById("myTable1");
+            //获取表格中的所有行      
+            var rows = tableObj.getElementsByTagName("tr");
+            var td = rows[rowIdx].getElementsByTagName("td");
+            //console.log(rows[rowIdx].getElementsByTagName("td"))
+            td[5].innerHTML=req.siteId
          }  
        });
+
 }
+
 
 function showTable(req)
 {
@@ -188,31 +204,6 @@ function showTable(req)
                     '<a onclick=distributeSite();><img src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'
                }
 }
-function showTable1(req)
-{
-                $("#myTable1  tr:not(:first)").empty(""); 
-                //for (var i = 0; i < req.data.length; i++) {
-                var table = document.getElementById("myTable1");
-                var row = table.insertRow(1);
-                row.id = (1);
-                var cell0 = row.insertCell(0);
-                var cell1 = row.insertCell(1);
-                var cell2 = row.insertCell(2);
-                var cell3 = row.insertCell(3);
-                var cell4 = row.insertCell(4);
-                var cell5 = row.insertCell(5);
-                var cell6 = row.insertCell(6);
-
-                cell0.innerHTML = '<td id=row.id>'+req.id+'</td>' ;
-                cell1.innerHTML = req.tenantId;
-                cell2.innerHTML = req.customerId;
-                cell3.innerHTML = req.name;
-                cell4.innerHTML = req.parentDeviceId;
-                cell5.innerHTML = req.siteId;
-                cell6.innerHTML =  '<a onclick=look();><img src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+
-                    '<a onclick=distributeSite();><img src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'
-               //}
-}
 
 function distributeSite()
 {
@@ -221,32 +212,31 @@ function distributeSite()
     //获取表格中的所有行      
     var rows = tableObj.getElementsByTagName("tr");
     //给tr绑定click事件
-    for(var i in rows)
+    for( i in rows)
     {
       rows[i].onclick = rowClick;
-      //console.log(rows[i])
-      //console.log(document.getElementById("2"))
-      //console.log(rows[i].getElementsByTagName("td"));
     }
   
-  function rowClick(e){
-  console.log(document.getElementById("siteId12")) 
+  function rowClick(e)
+  {
     var td = this.getElementsByTagName("td");
+    rowIdx = $(td).parent()[0].rowIndex ;
+    //alert("第 " + rowIdx + " 行");
+    console.log(rowIdx)
     //console.log(td)
     //console.log(td[5])
     deviceID=td[0].innerHTML;
     deviceName=td[3].innerHTML;
-
     $('#deviceName').val(td[3].innerHTML);
     $('#tenantId1').val(tenantId);
     deviceID=td[0].innerHTML;
-    console.log(td[5].innerHTML);
 
-    }
   for (i=0;i < idArray.length; i++) {
    document.getElementById("siteId2").options[i] = new Option(idArray[i],i);
-   //siteId=idArray[i];
    }
+
+}
+
 }   
 
 function deviceSearch() {
@@ -282,6 +272,40 @@ function deviceSearch1()
         tr[i].style.display = "";
       } 
     } 
+}
+
+////////////跳转///////
+function look()
+{
+        var tableObj = document.getElementById("myTable1");
+            //获取表格中的所有行      
+        var rows = tableObj.getElementsByTagName("tr");
+         
+        //给tr绑定click事件
+        for(var i in rows){
+          rows[i].onclick = rowClick;
+        }
+      
+      function rowClick(e){ 
+        //alert(this.rowIndex); //显示所点击的行的索引
+        //console.log(this );
+        var td = this.getElementsByTagName("td");
+        if(td[5].innerHTML=='')
+        {
+            alert('该设备没有分配站点')
+        }
+         else
+         {
+            location.href="/baidu?id="+tenantId+"#listID*"+td[5].innerHTML;
+         }
+         //alert(location.href);
+         //console.log(location.href );
+      }         
+}
+
+function lookMap()
+{
+    location.href="/baidu?id="+tenantId;
 }
 //     $.ajax({
 //         url: 'api/3d815/paging/2?limit=90&idOffset=&textOffset=',
@@ -323,41 +347,7 @@ function deviceSearch1()
 //            }
 //        });
  
- function look()
-{
-        var tableObj = document.getElementById("myTable1");
-            //获取表格中的所有行      
-        var rows = tableObj.getElementsByTagName("tr");
-         
-        //给tr绑定click事件
-        for(var i in rows){
-          rows[i].onclick = rowClick;
-        }
-      
-      function rowClick(e){ 
-        //alert(this.rowIndex); //显示所点击的行的索引
-        //console.log(this );
-        var td = this.getElementsByTagName("td");
-        if(td[5].innerHTML=='')
-        {
-            alert('该设备没有分配站点')
-        }
-        //console.log(td[0].innerHTML);
-        //alert(td[5].innerHTML);
-        //<a href="/" target="_self">+详情+</a>
-        //window.location.href='/baidu';
-         //document.location.href("/baidu?cc="+td[0].innerHTML);
-         else
-         {
-            location.href="/baidu#listID="+td[5].innerHTML;
-         }
-         
-         //alert(location.href);
-         //console.log(location.href );
-      }
 
-               
-}
 
 
 

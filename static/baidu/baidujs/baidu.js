@@ -1,6 +1,18 @@
-var tenantId=0;
-document.write("<script language=javascript src='../static/baidu/baidujs/upLoadFile.js'><\/script>");
 var loc = location.href;
+var tenantId
+if((loc.indexOf("?id=")!=-1)&&(loc.indexOf("#listID*")!=-1))
+{
+    tenantId=loc.substring(loc.indexOf('=')+1,loc.indexOf('#'));
+}
+
+
+else if(loc.indexOf("?id=")!=-1)
+            {
+              var id = loc.substr(loc.indexOf("=")+1)//从=号后面的内容
+              tenantId=id
+            }
+console.log(tenantId)
+document.write("<script language=javascript src='../static/baidu/baidujs/upLoadFile.js'><\/script>");
 var index = 0;
 var myGeo = new BMap.Geocoder();
 var reqArray=new Array;
@@ -47,7 +59,31 @@ var biaozhi;
     var point=new BMap.Point(116.404, 39.915);
     map.centerAndZoom(point, 12);
 
-
+    //覆盖物
+var overlaycomplete=function(e){
+    overlays.push(e.overlay);
+    //console.log(e);
+};
+var styleOptions = {
+    strokeColor:"red",    //边线颜色。
+    fillColor:"",      //填充颜色。当参数为空时，圆形将没有填充效果。
+    strokeWeight: 3,       //边线的宽度，以像素为单位。
+    strokeOpacity: 0.8,    //边线透明度，取值范围0 - 1。
+    fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+    strokeStyle: 'solid' //边线的样式，solid或dashed。
+}
+drawingManager = new BMapLib.DrawingManager(map, {
+    isOpen: false, //是否开启绘制模式
+    enableDrawingTool: false, //是否显示工具栏
+    drawingToolOptions: {
+        anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+        offset: new BMap.Size(5, 5), //偏离值
+    },
+    circleOptions: styleOptions, //圆的样式
+    polylineOptions: styleOptions, //线的样式
+    polygonOptions: styleOptions, //多边形的样式
+    rectangleOptions: styleOptions //矩形的样式
+});
 
 
 //百度地图API功能
@@ -252,11 +288,11 @@ function (){
             alert('连接完成');
             ///////////////////////////列表跳转///////////////////////////////////////
             
-            if(loc.indexOf("#listID=")!=-1)
+            if(loc.indexOf("#listID*")!=-1)
             {
               //console.log(loc);
               //console.log(loc.substr(loc.indexOf("=")+1));
-              var id = loc.substr(loc.indexOf("=")+1)//从=号后面的内容
+              var id = loc.substr(loc.indexOf("*")+1)//从=号后面的内容
               //alert(id.charAt(7));
                var a=idArray.indexOf(parseInt(id));
                 if(a!=-1)
@@ -329,9 +365,15 @@ function (){
 //标注
 function mark1()
 {
-    myDis.close();  //关闭鼠标测距大
-    drawingManager.close();
-    //myMark.open();
+    if(myDis.open())
+    {
+    	myDis.close();  //关闭鼠标测距大
+    }
+    console.log(drawingManager._isOpen)
+    if(drawingManager._isOpen)
+    {
+    	drawingManager.close();
+    }
     $('#tenantId1').val(tenantId);
     //document.getElementById('nav').style.display='block';
     $('#addSites').modal('show');  
@@ -350,10 +392,14 @@ function getPoint(e)
 
 function mark2()
 {
-    myDis.close();  //关闭鼠标测距大
-    drawingManager.close();
-    //myMark.open();
-    //map.setCursor("url('bird.cur')");
+    if(myDis.open())
+    {
+    	myDis.close();  //关闭鼠标测距大
+    }
+    if(drawingManager._isOpen)
+    {
+    	drawingManager.close();
+    }
     map.setDefaultCursor("crosshair");
     map.addEventListener("click",getPoint);
     //alert(map.getDefaultCursor());
@@ -551,31 +597,6 @@ function draw() {
         biaozhi=0;
     }
 
-//覆盖物
-var overlaycomplete=function(e){
-    overlays.push(e.overlay);
-    //console.log(e);
-};
-var styleOptions = {
-    strokeColor:"red",    //边线颜色。
-    fillColor:"",      //填充颜色。当参数为空时，圆形将没有填充效果。
-    strokeWeight: 3,       //边线的宽度，以像素为单位。
-    strokeOpacity: 0.8,    //边线透明度，取值范围0 - 1。
-    fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
-    strokeStyle: 'solid' //边线的样式，solid或dashed。
-}
-drawingManager = new BMapLib.DrawingManager(map, {
-    isOpen: false, //是否开启绘制模式
-    enableDrawingTool: false, //是否显示工具栏
-    drawingToolOptions: {
-        anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
-        offset: new BMap.Size(5, 5), //偏离值
-    },
-    circleOptions: styleOptions, //圆的样式
-    polylineOptions: styleOptions, //线的样式
-    polygonOptions: styleOptions, //多边形的样式
-    rectangleOptions: styleOptions //矩形的样式
-});
 drawingManager.open()
 //添加鼠标绘制工具监听事件，用于获取绘制结果
 drawingManager.addEventListener('overlaycomplete', overlaycomplete);
@@ -612,4 +633,17 @@ function deviceSearch()
       }
     } 
   }
+}
+
+function lookSiteList()
+{
+    location.href="/sitesList?id="+tenantId;
+}
+
+function measure(){
+	myDis.open();           
+    if(drawingManager._isOpen)
+    {
+    	drawingManager.close();
+    }
 }

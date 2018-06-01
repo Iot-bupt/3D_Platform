@@ -1137,9 +1137,16 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
         /**
          * 绘制矩形结束
          */
+        var i
         var idArray=[];
         var siteIdArray=[];
         var deviceArray=[];
+        var idOffset;//用于查找下一页
+        var textOffset;//用于查找下一页
+        var hasNext;//判断是否存在下一页
+        var preDeviceId = [];//用于查找上一页
+        var preDeviceName = [];//用于查找上一页
+        var pageNum = 1;//记录当前页面
         var endAction = function (e) {
             var calculate = me._calculate(polygon, polygon.getPath()[2]);
             me._dispatchOverlayComplete(polygon, calculate);
@@ -1208,18 +1215,21 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                 
 
         $.ajax({
-        url: 'api/3d815/siteDevicePaging/2/'+idArray[k]+'?limit=10000&idOffset=&textOffset=',
+        url: 'api/3d815/siteDevicePaging/'+tenantId+'/'+idArray[k]+'?limit=1000&idOffset=&textOffset=',
         type: 'get',
         async : false,
         dataType: 'json',
-        contentType: 'application/json;charset=UTF-8',
+        contentType: 'application/json;',
 
         error:function(){
             alert('失败');
         },
         success: function(req) {
+            //console.log(req);
             //console.log(req.data);
-            for(var i=0;i<req.data.length;i++)
+            //if(req.data.length != 0)
+            //{
+                for(i=0;i<req.data.length;i++)
             {
                 var row = table.insertRow(i+1);
                 row.id = (i + 1); 
@@ -1236,9 +1246,128 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                 cell4.innerHTML = req.data[i].siteId; 
                 cell5.innerHTML = '<a href="/demo" >'+'进入场景'+'</a>'
             }
+    //             idOffset = req.nextPageLink.idOffset;
+    //             textOffset = req.nextPageLink.textOffset;
+    //             hasNext = req.hasNext;
+    //             preDeviceId.push(idOffset);
+    //             preDeviceName.push(textOffset);
+    //         }
+    //         console.log(hasNext);
+    //         console.log(preDeviceId);
+    //         console.log(preDeviceName);
+    //         console.log(idOffset);
+    //         console.log(textOffset);
+
+    //         if(hasNext){
+    //             alert(hasNext)
+    //     jQuery.ajax({
+    //         url:'api/3d815/siteDevicePaging/2/'+idArray[k]+'?limit=1&idOffset='+idOffset+'&textOffset='+textOffset,
+    //         // contentType: "application/json ",
+    //         async: false,
+    //         dataType: 'json',
+    //         type:"GET",
+    //         success:function(req) { 
+    //             pageNum++;  
+    //             //showTable(req)
+    //             if( req.hasNext == true){
+    //                 idOffset = req.nextPageLink.idOffset;
+    //                 textOffset = req.nextPageLink.textOffset;
+    //                 hasNext = req.hasNext;
+    //                 preDeviceId.push(idOffset);
+    //                 preDeviceName.push(textOffset);
+    //                 if(req.data.length != 0)
+    //         {
+    //             for(i=0;i<req.data.length;i++)
+    //         {
+    //             var row = table.insertRow(i+1);
+    //             row.id = (i + 1); 
+    //             var cell0 = row.insertCell(0);
+    //             var cell1 = row.insertCell(1);
+    //             var cell2 = row.insertCell(2);
+    //             var cell3 = row.insertCell(3);
+    //             var cell4 = row.insertCell(4);
+    //             var cell5 = row.insertCell(5);
+    //             cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>'
+    //             cell1.innerHTML = req.data[i].tenantId;
+    //             cell2.innerHTML = req.data[i].customerId;
+    //             cell3.innerHTML = req.data[i].name;
+    //             cell4.innerHTML = req.data[i].siteId; 
+    //             cell5.innerHTML = '<a href="/demo" >'+'进入场景'+'</a>'
+    //         }
+            
+    //         }
+    //                 //console.log($scope.deviceList);
+    //             }else{
+    //                 hasNext = req.hasNext;
+                    
+    //             }
+    //         },
+    //         error:function(err){
+    //             alert("当前已是最后一页！");
+    //         }
+    //     });
+    // }
+    //else{}
+            
             //请求成功时处理
            }
        });
+
+//         jQuery.ajax({
+//     url:"/api/3d815/paging/2?limit=12&idOffset=&textOffset=",
+//     contentType: "application/json; charset=utf-8",
+//     async: false,
+//     type:"GET",
+//     success:function(req) {
+//         if(req.data.length != 0){
+//            showTable(req)
+//              console.log(req);
+//             idOffset = req.nextPageLink.idOffset;
+//             textOffset = req.nextPageLink.textOffset;
+//             hasNext = req.hasNext;
+//             // console.log(idOffset);
+//             // console.log(textOffset);
+//             // console.log(hasNext);
+//             preDeviceId.push(idOffset);
+//             preDeviceName.push(textOffset);
+//         }
+//     }
+// });
+
+// // 下一页
+// function nextPage(){
+//     console.log(hasNext);
+//     if(hasNext){
+//         jQuery.ajax({
+//             url:"/api/3d815/paging/2?limit=12&idOffset="+idOffset+"&textOffset="+textOffset,
+//             contentType: "application/json; charset=utf-8",
+//             async: false,
+//             type:"GET",
+//             success:function(req) { 
+//                 console.log("/api/3d815/paging/2?limit=12&idOffset="+idOffset+"&textOffset="+textOffset);
+//                 pageNum++;  
+//                 showTable(req)
+//                 if( req.hasNext == true){
+//                     idOffset = req.nextPageLink.idOffset;
+//                     textOffset = req.nextPageLink.textOffset;
+//                     hasNext = req.hasNext;
+//                     preDeviceId.push(idOffset);
+//                     preDeviceName.push(textOffset);
+//                     //console.log($scope.deviceList);
+//                 }else{
+//                     hasNext = req.hasNext;
+                    
+//                 }
+//             },
+//             error:function(err){
+//                 alert("当前已是最后一页！");
+//             }
+//         });
+//     }else{
+//         alert("当前已是最后一页！");
+//     }
+// }
+
                 
                 }
                 $('#deviceList').modal('show');
