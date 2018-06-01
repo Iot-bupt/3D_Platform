@@ -37,6 +37,7 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
     jQuery('#backList').css({'display':'none'});
 
 
+
 //==================================
 $scope.changeIcon = function(){
     
@@ -58,7 +59,7 @@ $scope.packSearchMenu = function(){
         jQuery("#packUp").attr("class","fa fa-angle-double-right");
         jQuery("#allDevice").slideUp();
         jQuery("#icon").attr("class","fa fa-angle-double-down");
-        
+
         
     }else{
         jQuery("#iconSpan").css("display","block");
@@ -313,6 +314,7 @@ $scope.searchDeviceInfo = function(){
         jQuery('#allDevice').css({'display':''});
     }
 
+
 //选中设备信息展示
     $scope.show = function(data){
         $scope.deviceInfo = data;
@@ -341,6 +343,9 @@ $scope.searchDeviceInfo = function(){
         
     }
 
+
+
+
     //返回设备列表首页
     $scope.backList = function () {
         jQuery.ajax({
@@ -364,6 +369,63 @@ $scope.searchDeviceInfo = function(){
         });
         jQuery('#backList').css({'display':'none'});
     }
+/*给当前租户，当前设备场景创建模型
+    $scope.submit = function(){
+        var context = [];
+        console.log($scope.deviceInfo);
+        deviceModel : {
+            $scope.deviceId = $scope.deviceInfo.id;
+            context.push("deviceId:"+$scope.deviceId);
+            console.log($scope.deviceId);
+            $scope.x = jQuery("#xPosition").val();
+            $scope.y = jQuery("#yPosition").val();
+            $scope.z = jQuery("#zPosition").val();
+            $scope.location = "x:"+$scope.x+","+"y:"+$scope.y+","+"z:"+$scope.z+",";
+            console.log($scope.location);
+            context.push("location:"+$scope.location);
+            console.log(context);
+            var JSONStr = JSON.stringify(context);
+            console.log(JSONStr);
+        }
 
+        jQuery.ajax({
+            url:"/api/dModel/createModel/2/133",
+            dataType:"json",
+            async:false,
+            type:"POST",
+            success:function(rec){
+                console.log(rec);
+            }
+        });
+    }
+
+//给当前租户，当前设备场景创建模型
+    $scope.submit = function(){
+        jQuery.post("/api/dModel/createModel/2/133",{
+            x : jQuery("#xPosition").val(),
+            y : jQuery("#yPosition").val(),
+            z : jQuery("#zPosition").val(),
+
+            },function(rec){
+
+
+            });
+        return false;
+        console.log(x);
+    }
+
+
+
+
+//重置
+    $scope.reSet = function(){
+
+    }*/
+
+//初始化显示默认模型
+    jQuery( "#tabs" ).tabs();
+    //拖动框
+    jQuery("#addModel").draggable();
+    //jQuery("#updatePosition").draggable();
 
 }]);
