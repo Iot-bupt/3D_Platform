@@ -213,7 +213,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         //轨道控件
         var controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.maxPolarAngle = Math.PI * 9 / 20;
+        controls.maxPolarAngle = 2*Math.PI;
         // controls.target.set(0, 2, 0);
         controls.update();
 
