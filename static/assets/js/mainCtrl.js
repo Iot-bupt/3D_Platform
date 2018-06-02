@@ -354,24 +354,28 @@ $scope.searchDeviceInfo = function(){
         switch (flag)
         {
             case 0:
-                camera.position.set(position.x+8.0,position.y,position.z);
+                camera.position.set(position.x+6.0,position.y,position.z);
                 camera.lookAt(position.x,position.y,position.z);
+                
                 flag+=1;
                 break;
             case 1:
-                camera.position.set(position.x+6.0,position.y,position.z);
+                camera.position.set(position.x,position.y,position.z-6.0);
                 camera.lookAt(position.x,position.y,position.z);
+                
                 flag+=1;
                 break;
             case 2:
-                camera.position.set(position.x+2.0,position.y,position.z);
+                camera.position.set(position.x-6.0,position.y,position.z);
                 camera.lookAt(position.x,position.y,position.z);
+                
                 flag+=1;
                 break;
             case 3:
-                camera.position.set(position.x+1.0,position.y,position.z);
+                camera.position.set(position.x,position.y,position.z+6.0);
                 camera.lookAt(position.x,position.y,position.z);
-                flag+=1;
+                
+                flag=0;
                 break;
             default:
                 flag = 0;

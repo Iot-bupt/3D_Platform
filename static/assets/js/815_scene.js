@@ -2,11 +2,11 @@
 
 
 if (!Detector.webgl) Detector.addGetWebGLMessage();
-var addmodel = new AddModel();
+   var addmodel = new AddModel();
     
     var camera, scene, renderer,
         bulbLight, bulbMat, ambientLight,
-        object, loader, stats;
+        object, loader, stats,firstScene;
 
     THREE.DRACOLoader.setDecoderPath('../draco_decoder.js');
     THREE.DRACOLoader.setDecoderConfig( { type: 'js' } );
@@ -56,6 +56,7 @@ var addmodel = new AddModel();
         "雾浓度": 0.02,
         shadows: false,
         exposure: 0.68,
+        opacity:0.7,
         bulbPower: Object.keys(bulbLuminousPowers)[2],
         hemiIrradiance: Object.keys(hemiLuminousIrradiances)[3]
     };
@@ -70,7 +71,16 @@ var addmodel = new AddModel();
         "上传设备模型": function() {
             window.open("/demoupload", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=no, resizable=no, copyhistory=yes, width=400, height=360")
         }  //upload/upload.html,原来.open()中的内容
-    }
+    };
+
+    var transformcontrol = {
+        "轨道控件": function(){
+
+        },
+        "漫游控件": function(){
+
+        }
+    };
     function setPosAndShade(obj) {
         /*obj.position.set(
          Math.random() * 20 - 45,
@@ -224,13 +234,12 @@ var addmodel = new AddModel();
         dracoLoader.load( 'static/gis_815/models/mydrc/lab_524drc.drc', function ( geometry ) {
 
         geometry.computeVertexNormals();
-        
 
         var material = new THREE.MeshStandardMaterial( { vertexColors: THREE.VertexColors } );
         var mesh = new THREE.Mesh( geometry, material );
         mesh.castShadow = true;
         mesh.receiveShadow = true;
-        mesh.material.side = THREE.DoubleSide;
+        //mesh.material.side = THREE.DoubleSide;
 
         mesh.scale.x = 0.5;
         mesh.scale.y = 0.5;     /*  改变几何的比例*/ 
@@ -238,7 +247,10 @@ var addmodel = new AddModel();
         mesh.position.x = 5;
         mesh.position.y = 2;     /*  改变几何的比例*/ 
         mesh.position.z = 0;
+        mesh.material.transparent = true;
+        mesh.material.opacity = params.opacity;
         // console.log(mesh.getWorldPosition());
+        firstScene = mesh;
         scene.add( mesh );
 
         // Release the cached decoder module.
@@ -254,6 +266,7 @@ var addmodel = new AddModel();
 
         var gui = new dat.GUI();
         gui.add(params, 'exposure', 0, 1);
+        gui.add(params, 'opacity', 0, 1);
         effectController = {
             shininess: 40.0
         }
@@ -262,10 +275,14 @@ var addmodel = new AddModel();
         gui.add(params, '雾浓度', 0, 0.1);
 
         //添加设备
-        var model = gui.addFolder("添加设备");
+        var transctrl = gui.addFolder("控制方式");
+        // transctrl.add(transformcontrol,"轨道控件");
+        // transctrl.add(transformcontrol,'漫游控件');
+
         gui.add(newcontrols, '清除物体');
         gui.add(newcontrols, '上传设备模型');
         gui.close();
+        
     }
     var baseColor = 0xFF0000;
     var foundColor = 0x12C0E3;
@@ -435,6 +452,9 @@ var addmodel = new AddModel();
     function render() {   //渲染
         renderer.toneMappingExposure = Math.pow(params.exposure, 5.0); // to allow for very bright scenes.
         renderer.shadowMap.enabled = params.shadows;
+        if (firstScene !== undefined){
+            firstScene.material.opacity = params.opacity;
+        }
         //bulbLight.castShadow = params.shadows;
         if (params.shadows !== previousShadowMap) {
 
