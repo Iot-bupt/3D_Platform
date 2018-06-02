@@ -73,9 +73,12 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         }  //upload/upload.html,原来.open()中的内容
     };
 
-    var transformcontrol = {
+    var transfctrl = {
         "轨道控件": function(){
-
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.maxPolarAngle = Math.PI * 9 / 20;
+            // controls.target.set(0, 2, 0);
+            controls.update();
         },
         "漫游控件": function(){
 
@@ -211,8 +214,10 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         //轨道控件
         var controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.maxPolarAngle = Math.PI * 9 / 20;
-        controls.target.set(0, 2, 0);
+        // controls.target.set(0, 2, 0);
         controls.update();
+
+        //改变模型形状
         transformcontrol = new THREE.TransformControls(camera, renderer.domElement);
         //transformcontrol.addEventListener('change', render);
         scene.add(transformcontrol);
@@ -270,18 +275,19 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         effectController = {
             shininess: 40.0
         }
+
         h = gui.addFolder("雾颜色");
         h.add(params, "fogColor", Object.keys(fogColor));
         gui.add(params, '雾浓度', 0, 0.1);
 
-        //添加设备
+        //控制方式
         var transctrl = gui.addFolder("控制方式");
-        // transctrl.add(transformcontrol,"轨道控件");
-        // transctrl.add(transformcontrol,'漫游控件');
+        transctrl.add(transfctrl,"轨道控件");
+        transctrl.add(transfctrl,'漫游控件');
 
         gui.add(newcontrols, '清除物体');
         gui.add(newcontrols, '上传设备模型');
-        gui.close();
+        gui.open();
         
     }
     var baseColor = 0xFF0000;
