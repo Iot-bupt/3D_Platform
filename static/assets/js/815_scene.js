@@ -6,7 +6,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     
     var camera, scene, renderer,
         bulbLight, bulbMat, ambientLight,
-        object, loader, stats,firstScene;
+        object, loader, stats,firstScene,orbitctr;
 
     THREE.DRACOLoader.setDecoderPath('../draco_decoder.js');
     THREE.DRACOLoader.setDecoderConfig( { type: 'js' } );
@@ -60,6 +60,10 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         bulbPower: Object.keys(bulbLuminousPowers)[2],
         hemiIrradiance: Object.keys(hemiLuminousIrradiances)[3]
     };
+    var sceneCtrl = {
+        "旋转-y":0,
+        "缩放":0.5,
+    };
     var newcontrols = {
 
         "清除物体": function() {
@@ -80,9 +84,89 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             // controls.target.set(0, 2, 0);
             controls.update();
         },
-        "漫游控件": function(){
+        "轨迹球控件": function(){   //未搞定
+            var trballctr = new THREE.TrackballControls( camera );
+                trballctr.rotateSpeed = 1.0;
+                trballctr.zoomSpeed = 1.2;
+                trballctr.panSpeed = 0.8;
 
-        }
+                trballctr.noZoom = false;
+                trballctr.noPan = false;
+
+                trballctr.staticMoving = true;
+                trballctr.dynamicDampingFactor = 0.3;
+
+                trballctr.keys = [ 65, 83, 68 ];
+
+                trballctr.addEventListener( 'change', render );
+
+        },
+        "行走漫游": function(){   //未搞定
+            var pointerLock = new THREE.PointerLockControls( camera );
+                scene.add( pointerLock.getObject() );
+                var onKeyDown = function ( event ) {
+
+					switch ( event.keyCode ) {
+
+						case 38: // up
+						case 87: // w
+							moveForward = true;
+							break;
+
+						case 37: // left
+						case 65: // a
+							moveLeft = true; break;
+
+						case 40: // down
+						case 83: // s
+							moveBackward = true;
+							break;
+
+						case 39: // right
+						case 68: // d
+							moveRight = true;
+							break;
+
+						case 32: // space
+							if ( canJump === true ) velocity.y += 350;
+							canJump = false;
+							break;
+
+					}
+
+				};
+
+				var onKeyUp = function ( event ) {
+
+					switch( event.keyCode ) {
+
+						case 38: // up
+						case 87: // w
+							moveForward = false;
+							break;
+
+						case 37: // left
+						case 65: // a
+							moveLeft = false;
+							break;
+
+						case 40: // down
+						case 83: // s
+							moveBackward = false;
+							break;
+
+						case 39: // right
+						case 68: // d
+							moveRight = false;
+							break;
+
+					}
+
+				};
+
+				document.addEventListener( 'keydown', onKeyDown, false );
+				document.addEventListener( 'keyup', onKeyUp, false );
+        },
     };
     function setPosAndShade(obj) {
         /*obj.position.set(
@@ -212,10 +296,12 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         renderer.setClearColor(0x363636);  /*设置环境的背景色 */
 
         //轨道控件
-        var controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.maxPolarAngle = 2*Math.PI;
-        // controls.target.set(0, 2, 0);
-        controls.update();
+        // orbitctr = new THREE.OrbitControls(camera, renderer.domElement);
+        // orbitctr.maxPolarAngle = 2*Math.PI;
+        // // controls.target.set(0, 2, 0);
+        // orbitctr.minDistance = 0;
+        // orbitctr.maxDistance = 1000;
+        
 
         //改变模型形状
         transformcontrol = new THREE.TransformControls(camera, renderer.domElement);
@@ -276,14 +362,19 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             shininess: 40.0
         }
 
-        h = gui.addFolder("雾颜色");
-        h.add(params, "fogColor", Object.keys(fogColor));
-        gui.add(params, '雾浓度', 0, 0.1);
+        // h = gui.addFolder("雾颜色");
+        // h.add(params, "fogColor", Object.keys(fogColor));
+        // gui.add(params, '雾浓度', 0, 0.1);
 
         //控制方式
-        var transctrl = gui.addFolder("控制方式");
+        var transctrl = gui.addFolder("场景控制方式");
         transctrl.add(transfctrl,"轨道控件");
-        transctrl.add(transfctrl,'漫游控件');
+        transctrl.add(transfctrl,'轨迹球控件');
+        transctrl.add(transfctrl,'行走漫游');
+        //场景模型控制
+        var scectr = gui.addFolder("场景模型变换");
+        scectr.add(sceneCtrl,"旋转-y",0, 2*Math.PI);
+        scectr.add(sceneCtrl,"缩放",0,5);
 
         gui.add(newcontrols, '清除物体');
         gui.add(newcontrols, '上传设备模型');
@@ -458,9 +549,15 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     function render() {   //渲染
         renderer.toneMappingExposure = Math.pow(params.exposure, 5.0); // to allow for very bright scenes.
         renderer.shadowMap.enabled = params.shadows;
-        if (firstScene !== undefined){
+        if (firstScene !== undefined){        //控制调节场景模型透明度,旋转,缩放
             firstScene.material.opacity = params.opacity;
+            firstScene.rotation.y = sceneCtrl["旋转-y"];
+            var _scale = sceneCtrl["缩放"];
+            firstScene.scale.x = _scale;
+            firstScene.scale.y = _scale;
+            firstScene.scale.z = _scale;
         }
+
         //bulbLight.castShadow = params.shadows;
         if (params.shadows !== previousShadowMap) {
 
