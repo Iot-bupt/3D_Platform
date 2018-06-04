@@ -230,7 +230,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         var ambientLight = new THREE.AmbientLight(0xffffff);
         scene.add(ambientLight);
         //坐标辅助
-        var axes = new THREE.AxisHelper(100);
+        var axes = new THREE.AxesHelper(100);
         scene.add(axes);
         
         //地板
@@ -296,6 +296,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         renderer.setClearColor(0x363636);  /*设置环境的背景色 */
 
         //轨道控件
+        transfctrl["轨道控件"]();
         // orbitctr = new THREE.OrbitControls(camera, renderer.domElement);
         // orbitctr.maxPolarAngle = 2*Math.PI;
         // // controls.target.set(0, 2, 0);
@@ -366,15 +367,17 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         // h.add(params, "fogColor", Object.keys(fogColor));
         // gui.add(params, '雾浓度', 0, 0.1);
 
+        //场景模型控制
+        var scectr = gui.addFolder("场景模型变换");
+        scectr.add(sceneCtrl,"旋转-y",0, 2*Math.PI);
+        scectr.add(sceneCtrl,"缩放",0,5);
+
         //控制方式
         var transctrl = gui.addFolder("场景控制方式");
         transctrl.add(transfctrl,"轨道控件");
         transctrl.add(transfctrl,'轨迹球控件');
         transctrl.add(transfctrl,'行走漫游');
-        //场景模型控制
-        var scectr = gui.addFolder("场景模型变换");
-        scectr.add(sceneCtrl,"旋转-y",0, 2*Math.PI);
-        scectr.add(sceneCtrl,"缩放",0,5);
+        
 
         gui.add(newcontrols, '清除物体');
         gui.add(newcontrols, '上传设备模型');
@@ -421,7 +424,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     }
 
     function onDocumentMouseDown(event) {
-        event.preventDefault();
+        event.preventDefault();    
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
@@ -437,35 +440,41 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         if (intersections.length > 0) {
                 var name_uid =  intersections[0].object.tooltip;
                 var nameUid =  name_uid.split("_");
+                var downIntersected = intersections[0].object;
                 console.log('名字:'+nameUid[0]);
+                if (event.button === 2){
+                    window.addEventListener('keydown', changeMode);
+                    event.preventDefault();
+                    transformcontrol.attach(downIntersected);
+
+                }else{
                 if(nameUid[0].indexOf("窗帘")!=-1){
                     getAjax("/api/3d815/controlCurtain/"+nameUid[1]+'?turn='+nameUid[2], function(response) {
-                         
-                         console.log('窗帘结果:'+response);
-                         if (response.indexOf("on")!=-1){
+                        
+                        console.log('窗帘结果:'+response);
+                        if (response.indexOf("on")!=-1){
                             params.exposure = 0.81;
-                         }else if (response.indexOf("off")!=-1){
-                             params.exposure = 0.68
-                         }else {
-                             alert("控制失败！"+response);
-                         }
+                        }else if (response.indexOf("off")!=-1){
+                            params.exposure = 0.68
+                        }else {
+                            alert("控制失败！"+response);
+                        }
                     });
                 }else if (nameUid[0].indexOf("开关")!=-1){
                     getAjax("/api/3d815/controlSwitch/"+nameUid[1]+'?turn='+nameUid[2], function(response) {
-                         
-                         console.log('开关结果:'+response);
-                         if (response.indexOf("on")!=-1){
+                        
+                        console.log('开关结果:'+response);
+                        if (response.indexOf("on")!=-1){
                             params.exposure = 0.81;
-                         }else if (response.indexOf("off")!=-1){
-                             params.exposure = 0.68
-                         }else {
-                             alert("控制失败！"+response);
-                         }
+                        }else if (response.indexOf("off")!=-1){
+                            params.exposure = 0.68
+                        }else {
+                            alert("控制失败！"+response);
+                        }
                         });
                 }
-                 }
-        
-        
+                }                                                                                             
+                }                                                
     }
 
     function onDocumentMouseMove(event) {
@@ -475,12 +484,10 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         raycaster.setFromCamera(mouse, camera);
         //var octreeObjects;
         var numObjects;
-        //var numFaces = 0;
         var intersections;
         intersections = raycaster.intersectObjects(objects);
         numObjects = objects.length;
-        //numFaces = totalFaces;
-        //console.log(intersections.length)
+        
         if (intersections.length > 0) {
             if (intersected != intersections[0].object) {
                 if (intersected) intersected.material.color.setHex(baseColor);
@@ -488,7 +495,6 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                  */
                 intersected = intersections[0].object;
                 intersected.material.color.setHex(intersectColor);
-                //window.addEventListener('keydown', changeMode);
 
                 var name_uid =  intersected.tooltip;
                 var nameUid =  name_uid.split("_");
@@ -515,7 +521,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             intersected.material.color.setHex(baseColor);
             intersected = null;
             document.body.style.cursor = 'auto';
-            transformcontrol.detach();
+            //transformcontrol.detach();
+            //window.removeEventListener("keydown", changeMode)
             ToolTip.hidetip();
         }
     }
@@ -532,6 +539,18 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                 break;
             case 69: // E
                 transformcontrol.setMode("scale");
+                break;
+            case 27: //esc
+                transformcontrol.detach();
+                window.removeEventListener("keydown", changeMode);
+                break;
+            case 187:
+            case 107: // +, =, num+
+                transformcontrol.setSize( transformcontrol.size + 0.1 );
+                break;
+            case 189:
+            case 109: // -, _, num-
+                transformcontrol.setSize( Math.max( transformcontrol.size - 0.1, 0.1 ) );
                 break;
         }
     }

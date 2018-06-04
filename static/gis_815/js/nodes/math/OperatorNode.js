@@ -2,7 +2,7 @@
  * @author sunag / http://www.sunag.com.br/
  */
 
-THREE.OperatorNode = function( a, b, op ) {
+THREE.OperatorNode = function ( a, b, op ) {
 
 	THREE.TempNode.call( this );
 
@@ -19,28 +19,57 @@ THREE.OperatorNode.DIV = '/';
 
 THREE.OperatorNode.prototype = Object.create( THREE.TempNode.prototype );
 THREE.OperatorNode.prototype.constructor = THREE.OperatorNode;
+THREE.OperatorNode.prototype.nodeType = "Operator";
 
-THREE.OperatorNode.prototype.getType = function( builder ) {
+THREE.OperatorNode.prototype.getType = function ( builder ) {
 
-	// use the greater length vector
-	if ( builder.getFormatLength( this.b.getType( builder ) ) > builder.getFormatLength( this.a.getType( builder ) ) ) {
+	var a = this.a.getType( builder );
+	var b = this.b.getType( builder );
 
-		return this.b.getType( builder );
+	if ( builder.isFormatMatrix( a ) ) {
+
+		return 'v4';
+
+	} else if ( builder.getFormatLength( b ) > builder.getFormatLength( a ) ) {
+
+		// use the greater length vector
+
+		return b;
 
 	}
 
-	return this.a.getType( builder );
+	return a;
 
 };
 
-THREE.OperatorNode.prototype.generate = function( builder, output ) {
+THREE.OperatorNode.prototype.generate = function ( builder, output ) {
 
-	var material = builder.material;
-	var data = material.getDataNode( this.uuid );
+	var material = builder.material,
+		data = material.getDataNode( this.uuid );
 
-	var a = this.a.build( builder, output );
-	var b = this.b.build( builder, output );
+	var type = this.getType( builder );
 
-	return '(' + a + this.op + b + ')';
+	var a = this.a.build( builder, type );
+	var b = this.b.build( builder, type );
+
+	return builder.format( '(' + a + this.op + b + ')', type, output );
+
+};
+
+THREE.OperatorNode.prototype.toJSON = function ( meta ) {
+
+	var data = this.getJSONNode( meta );
+
+	if ( ! data ) {
+
+		data = this.createJSONNode( meta );
+
+		data.a = this.a.toJSON( meta ).uuid;
+		data.b = this.b.toJSON( meta ).uuid;
+		data.op = this.op;
+
+	}
+
+	return data;
 
 };

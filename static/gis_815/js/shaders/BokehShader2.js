@@ -14,37 +14,37 @@ THREE.BokehShader = {
 
 	uniforms: {
 
-		"textureWidth":  { type: "f", value: 1.0 },
-		"textureHeight":  { type: "f", value: 1.0 },
+		"textureWidth":  { value: 1.0 },
+		"textureHeight":  { value: 1.0 },
 
-		"focalDepth":   { type: "f", value: 1.0 },
-		"focalLength":   { type: "f", value: 24.0 },
-		"fstop": { type: "f", value: 0.9 },
+		"focalDepth":   { value: 1.0 },
+		"focalLength":   { value: 24.0 },
+		"fstop": { value: 0.9 },
 
-		"tColor":   { type: "t", value: null },
-		"tDepth":   { type: "t", value: null },
+		"tColor":   { value: null },
+		"tDepth":   { value: null },
 
-		"maxblur":  { type: "f", value: 1.0 },
+		"maxblur":  { value: 1.0 },
 
-		"showFocus":   { type: "i", value: 0 },
-		"manualdof":   { type: "i", value: 0 },
-		"vignetting":   { type: "i", value: 0 },
-		"depthblur":   { type: "i", value: 0 },
+		"showFocus":   { value: 0 },
+		"manualdof":   { value: 0 },
+		"vignetting":   { value: 0 },
+		"depthblur":   { value: 0 },
 
-		"threshold":  { type: "f", value: 0.5 },
-		"gain":  { type: "f", value: 2.0 },
-		"bias":  { type: "f", value: 0.5 },
-		"fringe":  { type: "f", value: 0.7 },
+		"threshold":  { value: 0.5 },
+		"gain":  { value: 2.0 },
+		"bias":  { value: 0.5 },
+		"fringe":  { value: 0.7 },
 
-		"znear":  { type: "f", value: 0.1 },
-		"zfar":  { type: "f", value: 100 },
+		"znear":  { value: 0.1 },
+		"zfar":  { value: 100 },
 
-		"noise":  { type: "i", value: 1 },
-		"dithering":  { type: "f", value: 0.0001 },
-		"pentagon": { type: "i", value: 0 },
+		"noise":  { value: 1 },
+		"dithering":  { value: 0.0001 },
+		"pentagon": { value: 0 },
 
-		"shaderFocus":  { type: "i", value: 1 },
-		"focusCoords":  { type: "v2", value: new THREE.Vector2() },
+		"shaderFocus":  { value: 1 },
+		"focusCoords":  { value: new THREE.Vector2() }
 
 
 	},
@@ -65,6 +65,7 @@ THREE.BokehShader = {
 	fragmentShader: [
 
 		"#include <common>",
+		"#include <packing>",
 
 		"varying vec2 vUv;",
 
@@ -141,6 +142,14 @@ THREE.BokehShader = {
 
 		"//------------------------------------------",
 
+		"float getDepth( const in vec2 screenPosition ) {",
+		"	#if DEPTH_PACKING == 1",
+		"	return unpackRGBAToDepth( texture2D( tDepth, screenPosition ) );",
+		"	#else",
+		"	return texture2D( tDepth, screenPosition ).x;",
+		"	#endif",
+		"}",
+
 		"float penta(vec2 coords) {",
 			"//pentagonal shape",
 			"float scale = float(rings) - 1.3;",
@@ -202,7 +211,7 @@ THREE.BokehShader = {
 
 
 			"for( int i=0; i<9; i++ ) {",
-				"float tmp = texture2D(tDepth, coords + offset[i]).r;",
+				"float tmp = getDepth( coords + offset[ i ] );",
 				"d += tmp * kernel[i];",
 			"}",
 
@@ -264,7 +273,7 @@ THREE.BokehShader = {
 		"void main() {",
 			"//scene depth calculation",
 
-			"float depth = linearize(texture2D(tDepth,vUv.xy).x);",
+			"float depth = linearize( getDepth( vUv.xy ) );",
 
 			"// Blur depth?",
 			"if (depthblur) {",
@@ -277,7 +286,7 @@ THREE.BokehShader = {
 
 			"if (shaderFocus) {",
 
-				"fDepth = linearize(texture2D(tDepth,focusCoords).x);",
+				"fDepth = linearize( getDepth( focusCoords ) );",
 
 			"}",
 

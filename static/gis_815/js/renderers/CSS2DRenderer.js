@@ -42,6 +42,15 @@ THREE.CSS2DRenderer = function () {
 
 	this.domElement = domElement;
 
+	this.getSize = function () {
+
+		return {
+			width: _width,
+			height: _height
+		};
+
+	};
+
 	this.setSize = function ( width, height ) {
 
 		_width = width;
@@ -60,7 +69,7 @@ THREE.CSS2DRenderer = function () {
 		if ( object instanceof THREE.CSS2DObject ) {
 
 			vector.setFromMatrixPosition( object.matrixWorld );
-			vector.applyProjection( viewProjectionMatrix );
+			vector.applyMatrix4( viewProjectionMatrix );
 
 			var element = object.element;
 			var style = 'translate(-50%,-50%) translate(' + ( vector.x * _widthHalf + _widthHalf ) + 'px,' + ( - vector.y * _heightHalf + _heightHalf ) + 'px)';
@@ -92,9 +101,7 @@ THREE.CSS2DRenderer = function () {
 
 		if ( camera.parent === null ) camera.updateMatrixWorld();
 
-		camera.matrixWorldInverse.getInverse( camera.matrixWorld );
-
-		viewMatrix.copy( camera.matrixWorldInverse.getInverse( camera.matrixWorld ) );
+		viewMatrix.copy( camera.matrixWorldInverse );
 		viewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, viewMatrix );
 
 		renderObject( scene, camera );
