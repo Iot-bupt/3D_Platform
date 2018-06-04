@@ -229,28 +229,45 @@
             <li><a href="#tabs-1">默认模型</a></li>
             <li><a href="#tabs-2">上传模型</a></li>
         </ul>
-        <div id="tabs-1" style="display: inline"><br/>
-            <label class="col-cm-3 control-label" style="text-align: left">
-                <span style="color: red;">*</span>位置:
-            </label>
-            <input type="text" required/>
-            <label class="col-cm-3 control-label" style="text-align: left">
-                <span style="color: red;">*</span>比例:
-            </label>
-            <input type="text" required/>
-            <label class="col-cm-3 control-label" style="text-align: left">
-                <span style="color: red;">*</span>旋转:
-            </label>
-            <input type="text" required/>
+        <div id="tabs-1">
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>位置
+                </label><br/>
+                <span>X:</span><input type="text" required/>
+                <span>Y:</span><input type="text" required/>
+                <span>Z:</span><input type="text" required/><br/>
+            </div>
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>比例
+                </label><br/>
+                <span>X:</span><input type="text" required/>
+                <span>Y:</span><input type="text" required/>
+                <span>Z:</span><input type="text" required/><br/>
+            </div>
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>旋转
+                </label><br/>
+                <span>X:</span><input type="text" required/>
+                <span>Y:</span><input type="text" required/>
+                <span>Z:</span><input type="text" required/>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" ng-click="submit()">
                     确认
                 </button>
-                <button type="button" class="btn btn-success" ng-click="reSet()">
+                <button type="button" class="btn btn-info" ng-click="reSet()">
+                    应用
+                </button>
+                <button type="button" class="btn btn-success" ng-click="application()">
                     重置
                 </button>
             </div>
         </div>
+
+        <!--上传模型（功能点待完善）-->
         <div id="tabs-2" style="display: inline"><br/>
             <label class="col-cm-3 control-label" style="text-align: left">
                 <span style="color: red;">*</span>X值:
@@ -273,6 +290,8 @@
                 </button>
             </div>
         </div>
+
+
 
     </div>
 </div>

@@ -92,8 +92,8 @@ body {
 #addModel{
     top:150px;
     right: 550px;
-    height: 210px;
-    width:250px;
+    height: 300px;
+    width:265px;
     background-color:rgba(49, 47, 47, 1);
     color:#5087c3;
     position:absolute;
@@ -153,8 +153,11 @@ body {
     color: white;
 
 }
-.control-label{
+.fontColor{
     color: #5087c3;
+    text-align: left;
+    margin-left: 0px;
+    position: relative;
 }
 #updatePosition{
     top:150px;
@@ -167,4 +170,7 @@ body {
     z-index:3;
     font-weight: bold;
     border-radius:12px;
+}
+.control-label{
+    color: #5087c3;
 }
