@@ -410,60 +410,44 @@ $scope.searchDeviceInfo = function(){
         });
         jQuery('#backList').css({'display':'none'});
     }
-/*给当前租户，当前设备场景创建模型
-    $scope.submit = function(){
-        var context = [];
-        console.log($scope.deviceInfo);
-        deviceModel : {
-            $scope.deviceId = $scope.deviceInfo.id;
-            context.push("deviceId:"+$scope.deviceId);
-            console.log($scope.deviceId);
-            $scope.x = jQuery("#xPosition").val();
-            $scope.y = jQuery("#yPosition").val();
-            $scope.z = jQuery("#zPosition").val();
-            $scope.location = "x:"+$scope.x+","+"y:"+$scope.y+","+"z:"+$scope.z+",";
-            console.log($scope.location);
-            context.push("location:"+$scope.location);
-            console.log(context);
-            var JSONStr = JSON.stringify(context);
-            console.log(JSONStr);
-        }
 
+    /*给当前租户，当前设备场景创建模型*/
+    $scope.submitModel = function(){
+        console.log($scope.deviceInfo.id);
+        console.log($scope.deviceInfo.name);//均能正常获得；
+        var x = Number(jQuery("#xValue").val());
+        var y = Number(jQuery("#yValue").val());
+        var z = Number(jQuery("#zValue").val());
+        console.log(x);
         jQuery.ajax({
-            url:"/api/dModel/createModel/2/133",
-            dataType:"json",
-            async:false,
-            type:"POST",
-            success:function(rec){
-                console.log(rec);
+            url: '/api/dModel/createModel/2/133',
+            dataType: 'json',
+            method: 'POST',
+            data: {
+                "deviceId": $scope.deviceInfo.id,
+                "location": 'x:'+x+',y:'+y+',z:'+z,
+                "name": $scope.deviceInfo.name,
+                "dModelUrl": ""
+            },
+            success:function(res){
+                console.log(res);
+                alert("sssss");
             }
         });
+
     }
-
-//给当前租户，当前设备场景创建模型
-    $scope.submit = function(){
-        jQuery.post("/api/dModel/createModel/2/133",{
-            x : jQuery("#xPosition").val(),
-            y : jQuery("#yPosition").val(),
-            z : jQuery("#zPosition").val(),
-
-            },function(rec){
-
-
-            });
-        return false;
-        console.log(x);
-    }
-
-
-
-
-//重置
-    $scope.reSet = function(){
-
-    }*/
-
-//初始化显示默认模型
+/*
+* var JSONBody = {
+            "deviceId": $scope.deviceInfo.id,
+            "location": 'x:'+x+',y:'+y+',z:'+z,
+            "name": $scope.deviceInfo.name,
+            "dModelUrl": ""
+        }
+        console.log(JSONBody);
+        var Body = JSON.stringify(JSONBody);
+        console.log(Body);
+* */
+//初始化显示默认模型jQuery-ui
     jQuery("#tabs").tabs();
     //拖动框
     jQuery("#addModel").draggable();
