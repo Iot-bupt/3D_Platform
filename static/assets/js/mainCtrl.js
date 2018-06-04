@@ -35,6 +35,7 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
     jQuery('#showDeviceInfo').css({'display':'none'});
     jQuery('#addModel').css({'display':'none'});
     jQuery('#backList').css({'display':'none'});
+    jQuery('#updatePosition').css({'display':'none'});
 
 
 
@@ -313,7 +314,9 @@ $scope.searchDeviceInfo = function(){
         jQuery('#arrow').css({'display':'none'});
         jQuery('#allDevice').css({'display':''});
     }
-
+    $scope.closeUpdate = function(){
+        jQuery('#updatePosition').css({'display':'none'});
+    }
 
 //选中设备信息展示
     $scope.show = function(data){
@@ -333,6 +336,13 @@ $scope.searchDeviceInfo = function(){
 //点击添加模型显示框
     $scope.addModel = function(){
         jQuery('#addModel').css({'display':''});
+        jQuery('#updatePosition').css({'display':'none'});
+    }
+
+    //更新位置
+    $scope.update = function(){
+        jQuery('#addModel').css({'display':'none'});
+        jQuery('#updatePosition').css({'display':''});
     }
 
     var flag = 0;
@@ -484,6 +494,9 @@ $scope.searchDeviceInfo = function(){
             }
         });
     }
+
+
+
 
 //初始化显示默认模型jQuery-ui
     jQuery("#tabs").tabs();

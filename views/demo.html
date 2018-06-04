@@ -324,41 +324,48 @@
     </div>
 </body>
 <!--更新位置-->
-<!--div id ="updatePosition">
+<div id ="updatePosition">
     <span style="display: inherit;text-align: right;position: relative;">
-            <button class="btn btn-primary" type="button" id="bd" ng-click="closeUpdateModel()"><i class="fa fa-close"></i></button>
+            <button class="btn btn-primary" type="button" ng-click="closeUpdate()"><i class="fa fa-close"></i></button>
     </span>
-    <span class="modal-title">
-        更新模型
-    </span>
-    <div>
-        <label class="col-sm-3 control-label" style="text-align: left">
-            <span style="color: red;">*</span>X
-        </label>
-        <input type="text" id="deviceType" required/>
-    </div>
-    <div>
-        <label class="col-sm-3 control-label" style="text-align: left">
-            <span style="color: red;">*</span>Y
-        </label>
-        <input type="text" required/>
-    </div>
-    <div>
-        <label class="col-sm-3 control-label" style="text-align: left">
-            <span style="color: red;">*</span>Z
-        </label>
-        <input type="text" required/>
-    </div>
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>位置
+                </label><br/>
+                <span>X:</span><input type="text" required/><br/>
+                <span>Y:</span><input type="text" required/><br/>
+                <span>Z:</span><input type="text" required/><br/>
+            </div>
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>比例
+                </label><br/>
+                <span>X:</span><input type="text" required/><br/>
+                <span>Y:</span><input type="text" required/><br/>
+                <span>Z:</span><input type="text" required/><br/>
+            </div>
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>旋转
+                </label><br/>
+                <span>X:</span><input type="text" required/><br/>
+                <span>Y:</span><input type="text" required/><br/>
+                <span>Z:</span><input type="text" required/><br/><br/>
+            </div>
+            <div class="fontColor" style="text-align: right">
+                <button type="button" class="btn btn-danger" ng-click="submitModel()">
+                    确认
+                </button>
+                <button type="button" class="btn btn-info" ng-click="application()">
+                    应用
+                </button>
+                <button type="button" class="btn btn-success" ng-click="reSet()">
+                    重置
+                </button>
+            </div>
+</div>
 
-    <div class="modal-footer">
-        <button type="button" class="btn btn-danger" ng-click="submit()">
-            确认
-        </button>
-        <button type="button" class="btn btn-success" ng-click="reSet()">
-            重置
-        </button>
-    </div>
-</div-->
+
 </html>
 
 {% endraw %}
