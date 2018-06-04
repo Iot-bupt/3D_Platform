@@ -413,12 +413,12 @@ $scope.searchDeviceInfo = function(){
 
     /*给当前租户，当前设备场景创建模型*/
     $scope.submitModel = function(){
-        console.log($scope.deviceInfo.id);
-        console.log($scope.deviceInfo.name);//均能正常获得；
+        //console.log($scope.deviceInfo.id);
+        //console.log($scope.deviceInfo.name);//均能正常获得；
         var x = Number(jQuery("#xValue").val());
         var y = Number(jQuery("#yValue").val());
         var z = Number(jQuery("#zValue").val());
-        console.log(x);
+        //console.log(x);
         jQuery.ajax({
             url: '/api/dModel/createModel/2/133',
             dataType: 'json',
@@ -429,9 +429,12 @@ $scope.searchDeviceInfo = function(){
                 "name": $scope.deviceInfo.name,
                 "dModelUrl": ""
             },
-            success:function(res){
-                console.log(res);
-                alert("sssss");
+            success:function(){
+                $("#addModel").modal("hide");
+                location.reload();
+            },
+            error:function(){
+                alert("创建失败！");
             }
         });
 
@@ -447,6 +450,41 @@ $scope.searchDeviceInfo = function(){
         var Body = JSON.stringify(JSONBody);
         console.log(Body);
 * */
+
+/*重置参数*/
+    $scope.reSet = function(){
+        jQuery('#xValue').val("");
+        jQuery('#yValue').val("");
+        jQuery('#zValue').val("");
+        jQuery('#xScaleValue').val("");
+        jQuery('#yScaleValue').val("");
+        jQuery('#zScaleValue').val("");
+        jQuery('#xRotationValue').val("");
+        jQuery('#yRotationValue').val("");
+        jQuery('#zRotationValue').val("");
+    }
+
+    /*删除模型*/
+    $scope.delModel = function(){
+        console.log($scope.deviceInfo);
+        var deviceId = $scope.deviceInfo.id;
+        console.log(deviceId);
+        jQuery.ajax({
+            url: '/api/dModel/dModelDelete/'+deviceId,
+            dataType: 'json',
+            method: 'DELETE',
+            success:function(res){
+                console.log(res);
+                //alert("ssss");
+                $("#deleteModel").modal("hide");
+                location.reload();
+            },
+            error:function(){
+                alert("已无模型！");
+            }
+        });
+    }
+
 //初始化显示默认模型jQuery-ui
     jQuery("#tabs").tabs();
     //拖动框

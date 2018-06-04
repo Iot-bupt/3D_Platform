@@ -242,17 +242,17 @@
                 <label class="col-cm-3 control-label">
                     <span style="color: red;">*</span>比例
                 </label><br/>
-                <span>X:</span><input type="text" required/>
-                <span>Y:</span><input type="text" required/>
-                <span>Z:</span><input type="text" required/><br/>
+                <span>X:</span><input type="text" id="xScaleValue" required/>
+                <span>Y:</span><input type="text" id="yScaleValue" required/>
+                <span>Z:</span><input type="text" id="zScaleValue" required/><br/>
             </div>
             <div class="fontColor">
                 <label class="col-cm-3 control-label">
                     <span style="color: red;">*</span>旋转
                 </label><br/>
-                <span>X:</span><input type="text" required/>
-                <span>Y:</span><input type="text" required/>
-                <span>Z:</span><input type="text" required/>
+                <span>X:</span><input type="text" id="xRotationValue" required/>
+                <span>Y:</span><input type="text" id="yRotationValue" required/>
+                <span>Z:</span><input type="text" id="zRotationValue" required/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" ng-click="submitModel()">
@@ -315,7 +315,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消
                     </button>
-                    <button type="button" class="btn btn-primary" ng-click="delAG()">
+                    <button type="button" class="btn btn-primary" ng-click="delModel()">
                         确定
                     </button>
                 </div>
