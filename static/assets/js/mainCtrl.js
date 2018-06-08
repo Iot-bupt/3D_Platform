@@ -465,9 +465,9 @@ $scope.searchDeviceInfo = function(){
                 "dModelUrl": "sensor_center.stl"
             },
             success:function(res){
-                //$("#addModel").modal("hide");
-                //location.reload();
-                console.log(res);
+                $("#addModel").modal("hide");
+                location.reload();
+                //console.log(res);
             },
             error:function(){
                 alert("创建失败！");
