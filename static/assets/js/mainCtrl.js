@@ -447,11 +447,12 @@ $scope.searchDeviceInfo = function(){
                 z:Number(jQuery("#zScaleValue").val())
             },
             rotation:{
-                x:Number(jQuery("#xRotationValue").val()),
-                y:Number(jQuery("#yRotationValue").val()),
+                x:Math.PI/2,
+                y:Math.PI/2,
                 z:Number(jQuery("#zRotationValue").val())
             }
         }
+        console.log(JSONBody);
 
         jQuery.ajax({
             url: '/api/dModel/createModel/2/133',
@@ -459,16 +460,14 @@ $scope.searchDeviceInfo = function(){
             method: 'POST',
             data: {
                 "deviceId": $scope.deviceInfo.id,
-                "location": '{position:{x:'+ JSONBody.position.x+',y:'+JSONBody.position.y+',z:'+JSONBody.position.z+'}，'+
-                            'scale:{x:'+JSONBody.scale.x+',y:'+JSONBody.scale.y+',z:'+JSONBody.scale.z+'}，'+
-                            'rotation:{x:'+JSONBody.rotation.x+',y:'+JSONBody.rotation.y+',z:'+JSONBody.rotation.z+'}}',
+                "location": JSON.stringify(JSONBody),
                 "name": $scope.deviceInfo.name,
                 "dModelUrl": "sensor_center.stl"
             },
-            success:function(){
-                $("#addModel").modal("hide");
-                location.reload();
-                //console.log(res);
+            success:function(res){
+                //$("#addModel").modal("hide");
+                //location.reload();
+                console.log(res);
             },
             error:function(){
                 alert("创建失败！");
@@ -486,7 +485,10 @@ $scope.searchDeviceInfo = function(){
         console.log(JSONBody);
         var Body = JSON.stringify(JSONBody);
         console.log(Body);
-* */
+
+        '{position:{x:'+ JSONBody.position.x+',y:'+JSONBody.position.y+',z:'+JSONBody.position.z+'}，'+
+                            'scale:{x:'+JSONBody.scale.x+',y:'+JSONBody.scale.y+',z:'+JSONBody.scale.z+'}，'+
+                            'rotation:{x:'+JSONBody.rotation.x+',y:'+JSONBody.rotation.y+',z:'+JSONBody.rotation.z+'}}',
 
 /*重置参数*/
     $scope.reSet = function(){
