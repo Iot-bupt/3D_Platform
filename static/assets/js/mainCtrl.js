@@ -38,6 +38,11 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
     jQuery('#updatePosition').css({'display':'none'});
 
 
+    jQuery("#searchBanner").animate({width:"470px"},500);//初始显示搜索框
+    jQuery("#iconSpan").css("display","block");
+    jQuery("#searchDeviceDiv").css("opacity","0.2");
+
+
 
 //==================================
 $scope.changeIcon = function(){
@@ -52,6 +57,7 @@ $scope.changeIcon = function(){
     }
    
 }
+    /*
 $scope.packSearchMenu = function(){
     if(jQuery("#packUp").attr("class") == "fa fa-angle-double-left"){
         jQuery("#iconSpan").css("display","none");
@@ -61,14 +67,14 @@ $scope.packSearchMenu = function(){
         jQuery("#allDevice").slideUp();
         jQuery("#icon").attr("class","fa fa-angle-double-down");
 
-        
+
     }else{
         jQuery("#iconSpan").css("display","block");
         jQuery("#searchDeviceDiv").css("opacity","0.2");
         jQuery("#searchBanner").animate({width:"470px"},500);
         jQuery("#packUp").attr("class","fa fa-angle-double-left");
     }
-}
+} */
     // $scope.changeIcon = function(){
     //     if(jQuery("#icon").attr("class") == "fa fa-angle-double-down"){
     //         jQuery("#icon").attr("class","fa  fa-angle-double-up");
@@ -503,5 +509,6 @@ $scope.searchDeviceInfo = function(){
     //拖动框
     jQuery("#addModel").draggable();
     jQuery("#updatePosition").draggable();
+    jQuery("#showDeviceInfo").draggable();
 
 }]);

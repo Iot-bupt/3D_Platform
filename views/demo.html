@@ -46,7 +46,11 @@
     <script src="static/assets/js/mainCtrl.js"></script>
     <script src="static/assets/js/toastr.js"></script>
 <div id="packUpDiv">
-    <span id="packUpSpan" ng-click="packSearchMenu()"><i class="fa fa-angle-double-right" id="packUp"></i></span>
+    <div id="packUpSpan"><i class="fa fa-reorder" id="packUp"></i>
+    <div class="tooltiptext">
+        菜单
+    </div>
+    </div>
 </div>
 <div id="searchBanner">
                 
@@ -57,13 +61,13 @@
                     </span>
                 </div>
 
-                <span ng-click="changeIcon()" id="iconSpan"><i class="fa fa-angle-double-down" id="icon"></i></span>
+                <div ng-click="changeIcon()" id="iconSpan"><i class="fa fa-angle-double-down" id="icon" title="显示设备列表"></i>
+                </div>
             
 </div>
 <div id ="allDevice">
     <table id="allDeviceTable" class="table table-hover">
         <thead>
-            
             <tr>
                 <td style="font-weight: bold;">设备id</td>
                 <td style="font-weight: bold;">设备名称<span id="backList" ng-click="backList()" title="返回设备列表"><i class="fa fa-mail-reply"></i></span></td>
