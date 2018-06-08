@@ -41,7 +41,8 @@ class AddModel{
         });
 
         allModel.forEach(element => {
-            var name_uid = element.label;
+            //var name_uid = element.label;      //暂时使用默认
+            var name_uid = "默认设备_uid1_on";
             var location = JSON.parse(element.location);
             var position = location.position;
             var scale = location.scale;

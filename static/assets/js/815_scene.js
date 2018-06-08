@@ -498,13 +498,13 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
                 var name_uid =  intersected.tooltip;
                 var nameUid =  name_uid.split("_");
-//                var temp ;
+              
                if(nameUid[0].indexOf("开关")!=-1){
                    ToolTip.showtip(event, nameUid[0]+":");
                }else if(nameUid[0].indexOf("窗帘")!=-1){
                    ToolTip.showtip(event, nameUid[0]+":");
                }
-                else{
+                else if(nameUid[0].indexOf("温湿")!=-1){
                    getAjax("/api/3d815/getdata/"+nameUid[1], function(response) {
                        var data = JSON.parse(response);
                        var temp = (parseFloat((data.res[1].value))/100).toFixed(2);
@@ -512,6 +512,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                        console.log(temp);
                        ToolTip.showtip(event, nameUid[0]+"<br>temp:"+temp+"℃<br>humitity:"+humidity);
                    });
+               }else {
+                ToolTip.showtip(event, nameUid[0]+":");
                }
 
 
