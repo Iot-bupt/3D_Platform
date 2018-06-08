@@ -92,6 +92,7 @@ li{
     display: flex;  /*变为弹性盒模型*/
     display: -webkit-flex;
     background: #fff;
+    height:100%;
 }
 /*左边*/
 .left{
@@ -170,6 +171,7 @@ li{
 /*右边*/
 .right{
     width: 85%;
+     height: 85%;
 }
 /*右边所在位置栏*/
 .location{
