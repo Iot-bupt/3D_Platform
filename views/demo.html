@@ -246,17 +246,17 @@
                 <label class="col-cm-3 control-label">
                     <span style="color: red;">*</span>比例
                 </label><br/>
-                <span>X:</span><input type="text" id="xScaleValue" required/>
-                <span>Y:</span><input type="text" id="yScaleValue" required/>
-                <span>Z:</span><input type="text" id="zScaleValue" required/><br/>
+                <span>X:</span><input type="text" id="xScaleValue" value ="0.02" placeholder="0.02" required/>
+                <span>Y:</span><input type="text" id="yScaleValue" value ="0.02" placeholder="0.02" required/>
+                <span>Z:</span><input type="text" id="zScaleValue" value ="0.02" placeholder="0.02" required/><br/>
             </div>
             <div class="fontColor">
                 <label class="col-cm-3 control-label">
                     <span style="color: red;">*</span>旋转
                 </label><br/>
-                <span>X:</span><input type="text" id="xRotationValue" required/>
-                <span>Y:</span><input type="text" id="yRotationValue" required/>
-                <span>Z:</span><input type="text" id="zRotationValue" required/>
+                <span>X:</span><input type="text" id="xRotationValue" value ="Math.PI/2" placeholder="Math.PI/2" required/>
+                <span>Y:</span><input type="text" id="yRotationValue" value ="Math.PI/2" placeholder="Math.PI/2" required/>
+                <span>Z:</span><input type="text" id="zRotationValue" value ="0" placeholder="0" required/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" ng-click="submitModel()">
@@ -344,17 +344,17 @@
                 <label class="col-cm-3 control-label">
                     <span style="color: red;">*</span>比例
                 </label><br/>
-                <span>X:</span><input type="text" required/><br/>
-                <span>Y:</span><input type="text" required/><br/>
-                <span>Z:</span><input type="text" required/><br/>
+                <span>X:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
+                <span>Y:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
+                <span>Z:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
             </div>
             <div class="fontColor">
                 <label class="col-cm-3 control-label">
                     <span style="color: red;">*</span>旋转
                 </label><br/>
-                <span>X:</span><input type="text" required/><br/>
-                <span>Y:</span><input type="text" required/><br/>
-                <span>Z:</span><input type="text" required/><br/><br/>
+                <span>X:</span><input type="text" value ="Math.PI/2" placeholder="Math.PI/2" required/><br/>
+                <span>Y:</span><input type="text" value ="Math.PI/2" placeholder="Math.PI/2" required/><br/>
+                <span>Z:</span><input type="text" value ="0" placeholder="0" required/><br/><br/>
             </div>
             <div class="fontColor" style="text-align: right">
                 <button type="button" class="btn btn-danger" ng-click="submitModel()">

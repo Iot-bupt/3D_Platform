@@ -431,23 +431,44 @@ $scope.searchDeviceInfo = function(){
     $scope.submitModel = function(){
         //console.log($scope.deviceInfo.id);
         //console.log($scope.deviceInfo.name);//均能正常获得；
-        var x = Number(jQuery("#xValue").val());
-        var y = Number(jQuery("#yValue").val());
-        var z = Number(jQuery("#zValue").val());
+        //var x = Number(jQuery("#xValue").val());
+        //var y = Number(jQuery("#yValue").val());
+        //var z = Number(jQuery("#zValue").val());
         //console.log(x);
+        var JSONBody = {
+            position:{
+                x:Number(jQuery("#xValue").val()),
+                y:Number(jQuery("#yValue").val()),
+                z:Number(jQuery("#zValue").val())
+            },
+            scale:{
+                x:Number(jQuery("#xScaleValue").val()),
+                y:Number(jQuery("#yScaleValue").val()),
+                z:Number(jQuery("#zScaleValue").val())
+            },
+            rotation:{
+                x:Number(jQuery("#xRotationValue").val()),
+                y:Number(jQuery("#yRotationValue").val()),
+                z:Number(jQuery("#zRotationValue").val())
+            }
+        }
+
         jQuery.ajax({
             url: '/api/dModel/createModel/2/133',
             dataType: 'json',
             method: 'POST',
             data: {
                 "deviceId": $scope.deviceInfo.id,
-                "location": 'x:'+x+',y:'+y+',z:'+z,
+                "location": '{position:{x:'+ JSONBody.position.x+',y:'+JSONBody.position.y+',z:'+JSONBody.position.z+'}，'+
+                            'scale:{x:'+JSONBody.scale.x+',y:'+JSONBody.scale.y+',z:'+JSONBody.scale.z+'}，'+
+                            'rotation:{x:'+JSONBody.rotation.x+',y:'+JSONBody.rotation.y+',z:'+JSONBody.rotation.z+'}}',
                 "name": $scope.deviceInfo.name,
-                "dModelUrl": ""
+                "dModelUrl": "sensor_center.stl"
             },
             success:function(){
                 $("#addModel").modal("hide");
                 location.reload();
+                //console.log(res);
             },
             error:function(){
                 alert("创建失败！");
