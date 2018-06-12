@@ -45,9 +45,12 @@ var pageNum = 1;//记录当前页面
 
        });
 
-//默认设备列表
+init();
+function init()
+{
+    //默认设备列表
 jQuery.ajax({
-    url:"/api/3d815/paging/"+tenantId+"?limit=12&idOffset=&textOffset=",
+    url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset=&textOffset=",
     contentType: "application/json; charset=utf-8",
     async: false,
     type:"GET",
@@ -66,18 +69,48 @@ jQuery.ajax({
         }
     }
 });
+}
+
+
+    // if(hasNext){
+    //     jQuery.ajax({
+    //         url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset="+idOffset+"&textOffset="+textOffset,
+    //         contentType: "application/json; charset=utf-8",
+    //         async: false,
+    //         type:"GET",
+    //         success:function(req) { 
+    //             console.log("/api/3d815/paging/"+tenantId+"?limit=8&idOffset="+idOffset+"&textOffset="+textOffset);
+    //             pageNum++;  
+    //             showTable(req)
+    //             if( req.hasNext == true){
+    //                 idOffset = req.nextPageLink.idOffset;
+    //                 textOffset = req.nextPageLink.textOffset;
+    //                 hasNext = req.hasNext;
+    //                 preDeviceId.push(idOffset);
+    //                 preDeviceName.push(textOffset);
+    //                 //console.log($scope.deviceList);
+    //             }else{
+    //                 hasNext = req.hasNext;
+                    
+    //             }
+    //         },
+    //         error:function(err){
+    //             alert("当前已是最后一页！");
+    //         }
+    //     });
+    // }
 
 // 下一页
 function nextPage(){
     console.log(hasNext);
     if(hasNext){
         jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+"?limit=12&idOffset="+idOffset+"&textOffset="+textOffset,
+            url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset="+idOffset+"&textOffset="+textOffset,
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
             success:function(req) { 
-                console.log("/api/3d815/paging/"+tenantId+"?limit=12&idOffset="+idOffset+"&textOffset="+textOffset);
+                console.log("/api/3d815/paging/"+tenantId+"?limit=8&idOffset="+idOffset+"&textOffset="+textOffset);
                 pageNum++;  
                 showTable(req)
                 if( req.hasNext == true){
@@ -99,6 +132,8 @@ function nextPage(){
     }else{
         alert("当前已是最后一页！");
     }
+    
+   
 }
 
 //上一页
@@ -108,7 +143,7 @@ function prePage(){
     }
     else if(pageNum == 2){
         jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+"?limit=12&idOffset=&textOffset=",
+            url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset=&textOffset=",
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -127,7 +162,7 @@ function prePage(){
         }); 
     }else{
         jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+"?limit=12&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+            url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -156,7 +191,7 @@ function siteDistribute()
         type: 'POST',
         // async : false,
         data:
-                {"id":deviceID,"tenantId":tenantId, "name":deviceName,"siteId":$('#siteId2 option:selected') .text()},
+                {"id":deviceID,"tenantId":tenantId, "name":deviceName,"siteId":idArray[nameArray.indexOf($('#siteId2 option:selected') .text())]},
         dataType: 'json',
         // contentType: 'application/json;charset=UTF-8',
 
@@ -172,7 +207,7 @@ function siteDistribute()
             var rows = tableObj.getElementsByTagName("tr");
             var td = rows[rowIdx].getElementsByTagName("td");
             //console.log(rows[rowIdx].getElementsByTagName("td"))
-            td[5].innerHTML=req.siteId
+            td[5].innerHTML=nameArray[idArray.indexOf(parseInt(req.siteId))]
          }  
        });
 
@@ -199,9 +234,17 @@ function showTable(req)
                 cell2.innerHTML = req.data[i].customerId;
                 cell3.innerHTML = req.data[i].name;
                 cell4.innerHTML = req.data[i].parentDeviceId;
-                cell5.innerHTML = req.data[i].siteId;
-                cell6.innerHTML =  '<a onclick=look();><img src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+
-                    '<a onclick=distributeSite();><img src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'
+                if(req.data[i].siteId==null)
+                {
+                    cell5.innerHTML ="未分配";
+                }
+                else
+                {
+                    cell5.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)]
+                }
+                cell6.innerHTML =  '<a onclick=look();><img style="width:30px;" src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+                    '<a onclick=distributeSite();><img style="width:30px;" src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+                     '<a onclick=delectSite();><img style="width:30px;" src="../static/baidu/img/schu.png" alt="取消站点" title="取消站点"/></a>'
                }
 }
 
@@ -232,46 +275,109 @@ function distributeSite()
     deviceID=td[0].innerHTML;
 
   for (i=0;i < idArray.length; i++) {
-   document.getElementById("siteId2").options[i] = new Option(idArray[i],i);
+   document.getElementById("siteId2").options[i] = new Option(nameArray[i],i);
    }
 
 }
 
 }   
 
-function deviceSearch() {
-  // 声明变量
-  var input = document.getElementById("searchValue");
-  var filter = input.value.toUpperCase();//转换为大写
-  var table = document.getElementById("myTable1");
-  var tr = table.getElementsByTagName("tr");
-  // 循环表格每一行，查找匹配项
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[3];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    } 
-  }
+function delectSite()
+{
+   var mymessage=confirm("确认删除站点？");
+                    if(mymessage==true)
+                    {
+                        var tableObj = document.getElementById("myTable1");
+                        //获取表格中的所有行      
+                        var rows = tableObj.getElementsByTagName("tr");
+                        //给tr绑定click事件
+                        for( i in rows)
+                        {
+                          rows[i].onclick = rowClick;
+                        }
+                      
+                      function rowClick(e)
+                      {
+                        var td = this.getElementsByTagName("td");
+                        rowIdx = $(td).parent()[0].rowIndex ;
+                        //alert("第 " + rowIdx + " 行");
+                        console.log(rowIdx)
+                        //console.log(td)
+                        //console.log(td[5])
+                        // deviceID=td[0].innerHTML;
+                        // deviceName=td[3].innerHTML;
+                        // $('#deviceName').val(td[3].innerHTML);
+                        // $('#tenantId1').val(tenantId);
+                        // deviceID=td[0].innerHTML;
+
+                    
+
+                    $.ajax({
+                        url: '/api/assignDevice/site',
+                        type: 'POST',
+                        // async : false,
+                        data:
+                                {"id":td[0].innerHTML,"tenantId":tenantId, "name":td[3].innerHTML,"siteId":null},
+                        dataType: 'json',
+                        // contentType: 'application/json;charset=UTF-8',
+
+                        error:function(){
+                            alert('失败');
+                        },
+                        success: function(req) {
+                            //console.log(req);
+                            //请求成功时处理
+                            alert('取消成功')
+                            var tableObj = document.getElementById("myTable1");
+                            //获取表格中的所有行      
+                            var rows = tableObj.getElementsByTagName("tr");
+                            var td = rows[rowIdx].getElementsByTagName("td");
+                            //console.log(rows[rowIdx].getElementsByTagName("td"))
+                            td[5].innerHTML="未分配"
+                         }  
+                       });
 }
+                    }
+                    else if(mymessage==false)
+                    {
+                       
+                    }
+    
+
+}  
+
+function deviceSearch() {
+    if($("#searchValue").val()!='')
+    {
+        jQuery.ajax({
+                url:"/api/3d815/search/"+tenantId+"?limit=1000&textSearch="+$("#searchValue").val(),
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                type:"GET",
+                success:function(req) {
+                    showTable(req.res)
+                }
+            });
+    }
+
+}
+
 // ///////////////文本框-表格搜索/////////////
 function deviceSearch1() 
 {
-  var input = document.getElementById("searchValue");
-  var filter = input.value.toUpperCase();//转换为大写
-  var table = document.getElementById("myTable1");
-  var tr = table.getElementsByTagName("tr");
+  // var input = document.getElementById("searchValue");
+  // var filter = input.value.toUpperCase();//转换为大写
+  // var table = document.getElementById("myTable1");
+  // var tr = table.getElementsByTagName("tr");
 
-  for (var i = 0; i < tr.length; i++) {
-    //td = tr[i].getElementsByTagName("td")[0];
-    if (filter=='') {
-      //if (filter==parseInt(td.innerHTML.toUpperCase())) {
-        tr[i].style.display = "";
-      } 
-    } 
+  // for (var i = 0; i < tr.length; i++) {
+  //   //td = tr[i].getElementsByTagName("td")[0];
+  //   if (filter=='') {
+  //     //if (filter==parseInt(td.innerHTML.toUpperCase())) {
+  //       tr[i].style.display = "";
+  //     } 
+  //   } 
+  init();
 }
 
 ////////////跳转///////
@@ -290,13 +396,13 @@ function look()
         //alert(this.rowIndex); //显示所点击的行的索引
         //console.log(this );
         var td = this.getElementsByTagName("td");
-        if(td[5].innerHTML=='')
+        if(td[5].innerHTML=="未分配")
         {
             alert('该设备没有分配站点')
         }
          else
          {
-            location.href="/baidu?id="+tenantId+"#listID*"+td[5].innerHTML;
+            location.href="/baidu?id="+tenantId+"#listID*"+idArray[nameArray.indexOf(td[5].innerHTML)]
          }
          //alert(location.href);
          //console.log(location.href );
@@ -307,6 +413,26 @@ function lookMap()
 {
     location.href="/baidu?id="+tenantId;
 }
+
+// function deviceSearch2() {
+//   // 声明变量
+//   var input = document.getElementById("searchValue");
+//   var filter = input.value.toUpperCase();//转换为大写
+//   var table = document.getElementById("myTable1");
+//   var tr = table.getElementsByTagName("tr");
+//   // 循环表格每一行，查找匹配项
+//   for (i = 0; i < tr.length; i++) {
+//     td = tr[i].getElementsByTagName("td")[3];
+//     if (td) {
+//       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+//         tr[i].style.display = "";
+//       } else {
+//         tr[i].style.display = "none";
+//       }
+//     } 
+//   }
+// }
+
 //     $.ajax({
 //         url: 'api/3d815/paging/2?limit=90&idOffset=&textOffset=',
 //         type: 'get',

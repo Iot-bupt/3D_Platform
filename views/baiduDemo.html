@@ -279,7 +279,7 @@
 
     <div class="modal fade" tabindex="-1" role="dialog" id="deviceList">
         <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
-        <div class="modal-dialog" role="document" style="width:900px">
+        <div class="modal-dialog" role="document" style="width:900px" >
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
@@ -299,9 +299,8 @@
         </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="modalClose" onclick="
-                    closeWin()">关闭</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="modalConfirm" onclick="markfinish()">确定</button>
+                    <button type="button" class="btn btn-default"  id="modalClose" >上一页</button>
+                    <button type="button" class="btn btn-primary"  id="modalConfirm1" >下一页</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -315,4 +314,11 @@
 
 </html>
 <script type="text/javascript">
+// function a1()
+// {
+//     alert('1')
+// }
+// $(modalConfirm1).click(function(){
+//    alert('1')
+// });
 </script>

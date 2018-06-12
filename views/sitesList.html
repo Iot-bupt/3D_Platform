@@ -87,7 +87,7 @@
             <input type="text" id="searchValue"  onkeyup="deviceSearch1()" placeholder="请输入设备名称"/>
             <input type="button" id='keyup' value="查询" style="text-align: middle;" onclick="deviceSearch()" />
             </div>
-        <div id="deviceList" style="height: 600px;overflow-y: scroll">
+        <div id="deviceList" style="height: 88%;overflow-y: scroll">
         <!--供应商操作表格-->
       <!--   <table id ="myTable" class="providerTable" cellpadding="0" cellspacing="0">
             <tr class="firstTr">
@@ -114,15 +114,15 @@
                 </td>
             </tr> -->
         <!-- </table> -->
-        <table id ="myTable1" class="table table-striped" cellpadding="0" cellspacing="0" >
+        <table id ="myTable1" class="table table-striped" cellpadding="0" cellspacing="0" style="height: 70%">
             <tr class="firstTr">
-                <th width="30%">设备ID</th>
+                <th width="25%">设备ID</th>
                 <th width="10%">租户名称</th>
                 <th width="10%">租户ID</th>
                 <th width="10%">设备名称</th>
                 <th width="20%">设备组ID</th>
                 <th width="10%">所属站点</th>
-                <th width="10%">操作</th>
+                <th width="15%">操作</th>
             </tr>
         </table>
         <button class="btn btn-default button" style="opacity: 0.2;margin-right: 30px" id="pre" onclick="prePage()">上一页</button>
