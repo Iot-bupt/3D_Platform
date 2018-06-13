@@ -475,6 +475,51 @@ $scope.searchDeviceInfo = function(){
         });
 
     }
+
+    $scope._updatePosition = function() {
+        var target_p = new THREE.Vector3();
+        downIntersected.getWorldPosition(target_p);
+        var target_s = new THREE.Vector3();
+        downIntersected.getWorldScale(target_s);
+        var target_r = new THREE.Quaternion();
+        downIntersected.getWorldQuaternion(target_r);
+        var newLocation = {
+            position:{
+                x:target_p.x,
+                y:target_p.y,
+                z:target_p.z,
+            },
+            scale:{
+                x:target_s.x,
+                y:target_s.y,
+                z:target_s.z,
+            },
+            rotation:{
+                x:target_r.x,
+                y:target_r.y,
+                z:target_r.z,
+            }
+        };
+        $.ajax({
+            url:'/api/dModel/dModelLocation/'+ $scope.id,
+            type:'PUT',
+            dataType:'application/json',
+            data:{
+                "location":JSON.stringify(newLocation)
+            },
+            async:false,
+            success: function(res){
+                if(res.res[0] === 1){
+                    alert("更新位置成功！");
+                } else{
+                    alert("更新位置失败！");
+                }
+            },
+            error: function(e){
+                alert("更新位置失败！可能是数据库问题"+e.message);
+            }
+        });
+    }
 /*
 * var JSONBody = {
             "deviceId": $scope.deviceInfo.id,

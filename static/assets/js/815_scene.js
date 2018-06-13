@@ -388,6 +388,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     var foundColor = 0x12C0E3;
     var intersectColor = 0x00D66B;
     var intersected;
+    var downIntersected;
 
 
         //fun2cgq('sensor_center.stl',-10.37, 6.90, 15.16,"开关1开_uid1_on");
@@ -440,7 +441,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         if (intersections.length > 0) {
                 var name_uid =  intersections[0].object.tooltip;
                 var nameUid =  name_uid.split("_");
-                var downIntersected = intersections[0].object;
+                downIntersected = intersections[0].object;
                 console.log('名字:'+nameUid[0]);
                 if (event.button === 2){
                     window.addEventListener('keydown', changeMode);

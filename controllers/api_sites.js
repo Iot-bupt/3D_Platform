@@ -89,7 +89,7 @@ module.exports = {
     },
     'PUT /api/siteUrl/:id': async (ctx,next) => {
         console.log(`update siteUrl ${ctx.params.id}...`);
-        var s = await sites.addSceneUrl(ctx.params.id,ctx.query.url);
+        var s = await sites.addSceneUrl(ctx.params.id,ctx.request.body.url);
         if (s[0] === 1) {
             ctx.rest(s);
         } else {
