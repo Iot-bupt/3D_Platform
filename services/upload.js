@@ -10,50 +10,17 @@ function generateId() {
 }
 
 module.exports = {
-    // uploadScene: async (files) => {
-    //     if(files.length>0){  
-    //         for(var item of files){  
-                
-    //             var tmpath = item.path;  
-    //             var tmparr = item.name.split('.');  
-    //             var ext ='.'+tmparr[tmparr.length-1];  
-    //             var newpath =path.join('public/upload/scenes', generateId()+'%'+item.name);  
-                
-    //             console.log(newpath); 
-    //             const defaults = {
-    //                 flags: 'a+',
-    //                 encoding: 'utf8',
-    //                 fd: null,
-    //                 mode: 0o666,
-    //                 autoClose: true
-    //               };
-    //             var stream = fs.createWriteStream(newpath,defaults);//创建一个可写流  
-    //             fs.createReadStream(tmpath).pipe(stream);//可读流通过管道写入可写流  
-    //         } 
-    //         var time = moment().format();
-    //         var resData = {
-    //             uploadTime:time,
-    //             res:"success",
-    //             url:newpath
-    //         }
-            
-    //         return resData;
-    //     }else{
-    //         return null;
-    //     }  
-        
-    
-    // }
 
-    uploadScene: async (files) => {
+    uploadScene: async (files,which) => {
         if(files.length>0){  
             for(var item of files){  
                 
                 var tmpath = item.path;  
-                //var tmparr = item.name.split('.');  
-                //var ext ='.'+tmparr[tmparr.length-1];  
-                var newpath =path.join('public/upload/scenes', generateId()+'%'+item.name);  
-                
+                if (which === 's'){
+                    var newpath =path.join('public/upload/scenes', generateId()+'%'+item.name);  
+                }else if(which === 'd'){
+                    var newpath =path.join('public/upload/devices', generateId()+'%'+item.name); 
+                }
                 console.log(newpath); 
                 const defaults = {
                     flags: 'a+',
@@ -79,6 +46,6 @@ module.exports = {
         }else{
             return null;
         }  
-    }
+    },
 
 };
