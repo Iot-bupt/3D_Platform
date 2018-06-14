@@ -483,27 +483,27 @@ $scope.searchDeviceInfo = function(){
         downIntersected.getWorldScale(target_s);
         var target_r = new THREE.Quaternion();
         downIntersected.getWorldQuaternion(target_r);
+        var eu = new THREE.Euler().setFromQuaternion(target_r);
         var newLocation = {
             position:{
-                x:target_p.x,
-                y:target_p.y,
-                z:target_p.z,
+                x:Number(target_p.x.toFixed(9)),
+                y:Number(target_p.y.toFixed(9)),
+                z:Number(target_p.z.toFixed(9)),
             },
             scale:{
-                x:target_s.x,
-                y:target_s.y,
-                z:target_s.z,
+                x:Number(target_s.x.toFixed(6)),
+                y:Number(target_s.y.toFixed(6)),
+                z:Number(target_s.z.toFixed(6)),
             },
             rotation:{
-                x:target_r.x,
-                y:target_r.y,
-                z:target_r.z,
+                x:Number(eu.x.toFixed(9)),
+                y:Number(eu.y.toFixed(9)),
+                z:Number(eu.z.toFixed(9)),
             }
         };
         $.ajax({
             url:'/api/dModel/dModelLocation/'+ $scope.id,
             type:'PUT',
-            dataType:'application/json',
             data:{
                 "location":JSON.stringify(newLocation)
             },
@@ -512,11 +512,11 @@ $scope.searchDeviceInfo = function(){
                 if(res.res[0] === 1){
                     alert("更新位置成功！");
                 } else{
-                    alert("更新位置失败！");
+                    alert("更新位置失败！请重试");
                 }
             },
             error: function(e){
-                alert("更新位置失败！可能是数据库问题"+e.message);
+                alert("更新位置失败！可能是数据库问题~"+e.message);
             }
         });
     }
