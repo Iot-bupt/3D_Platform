@@ -74,7 +74,12 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         },
         "上传设备模型": function() {
             window.open("/demoupload", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=no, resizable=no, copyhistory=yes, width=400, height=360")
-        }  //upload/upload.html,原来.open()中的内容
+        },  //upload/upload.html,原来.open()中的内容
+
+        "返回首页": function() {
+            var search = window.location.search;
+            window.location.href= '/'+search;
+        }
     };
 
     var transfctrl = {
@@ -381,6 +386,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         gui.add(newcontrols, '清除物体');
         gui.add(newcontrols, '上传设备模型');
+        gui.add(newcontrols,'返回首页');
         gui.open();
         
     }
