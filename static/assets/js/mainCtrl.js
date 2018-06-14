@@ -36,6 +36,8 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
     jQuery('#addModel').css({'display':'none'});
     jQuery('#backList').css({'display':'none'});
     jQuery('#updatePosition').css({'display':'none'});
+    jQuery('#menu').css({'display':'none'});
+
 
 
     jQuery("#searchBanner").animate({width:"470px"},500);//初始显示搜索框
@@ -57,6 +59,12 @@ $scope.changeIcon = function(){
     }
    
 }
+
+    $scope.packSearchMenu = function(){
+        jQuery("#menu").css("display","block");
+    }
+
+
     /*
 $scope.packSearchMenu = function(){
     if(jQuery("#packUp").attr("class") == "fa fa-angle-double-left"){
@@ -323,6 +331,9 @@ $scope.searchDeviceInfo = function(){
     $scope.closeUpdate = function(){
         jQuery('#updatePosition').css({'display':'none'});
     }
+    $scope.left = function(){
+        jQuery('#showDeviceInfo').css({'display':''});
+    }
 
 //选中设备信息展示
     $scope.show = function(data){
@@ -569,7 +580,47 @@ $scope.searchDeviceInfo = function(){
         });
     }
 
+/*更新设备模型*/
+$scope.updateDeviceModel = function(){
+    //console.log($scope.deviceInfo.id);
+    var ids = $scope.deviceInfo.id;
+    var JSONBody = {
+        position:{
+            x:Number(jQuery("#xUpdate").val()),
+            y:Number(jQuery("#yUpdate").val()),
+            z:Number(jQuery("#zUpdate").val())
+        },
+        scale:{
+            x:Number(jQuery("#xBili").val()),
+            y:Number(jQuery("#yBili").val()),
+            z:Number(jQuery("#zBili").val())
+        },
+        rotation:{
+            x:Math.PI/2,
+            y:Math.PI/2,
+            z:Number(jQuery("#zXuan").val())
+        }
+    }
+    console.log(JSONBody);
+    console.log(JSON.stringify(JSONBody));
 
+    jQuery.ajax({
+        url: '/api/dModel/dModelLocation/'+ids,
+        dataType: 'json',
+        method: 'PUT',
+        data: {
+            "location": JSON.stringify(JSONBody)
+        },
+        success:function(res){
+            //$("#addModel").modal("hide");
+            //location.reload();
+            console.log(res);
+        },
+        error:function(){
+            alert("更新失败！");
+        }
+    });
+}
 
 
 //初始化显示默认模型jQuery-ui
