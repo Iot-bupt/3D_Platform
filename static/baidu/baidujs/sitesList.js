@@ -50,7 +50,7 @@ function init()
 {
     //默认设备列表
 jQuery.ajax({
-    url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset=&textOffset=",
+    url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset=&textOffset=",
     contentType: "application/json; charset=utf-8",
     async: false,
     type:"GET",
@@ -105,12 +105,12 @@ function nextPage(){
     console.log(hasNext);
     if(hasNext){
         jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset="+idOffset+"&textOffset="+textOffset,
+            url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset="+idOffset+"&textOffset="+textOffset,
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
             success:function(req) { 
-                console.log("/api/3d815/paging/"+tenantId+"?limit=8&idOffset="+idOffset+"&textOffset="+textOffset);
+                console.log("/api/3d815/paging/"+tenantId+"?limit=9&idOffset="+idOffset+"&textOffset="+textOffset);
                 pageNum++;  
                 showTable(req)
                 if( req.hasNext == true){
@@ -143,7 +143,7 @@ function prePage(){
     }
     else if(pageNum == 2){
         jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset=&textOffset=",
+            url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset=&textOffset=",
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -162,7 +162,7 @@ function prePage(){
         }); 
     }else{
         jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+"?limit=8&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+            url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -229,7 +229,7 @@ function showTable(req)
                 var cell5 = row.insertCell(5);
                 var cell6 = row.insertCell(6);
 
-                cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>' ;
+                cell0.innerHTML = '<td style="font-size:20px; ">'+req.data[i].id+'</td>' ;
                 cell1.innerHTML = req.data[i].tenantId;
                 cell2.innerHTML = req.data[i].customerId;
                 cell3.innerHTML = req.data[i].name;

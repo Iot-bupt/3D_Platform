@@ -5,18 +5,18 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../static/baidu/baidujs/area.js"></script>
-    <script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script type="text/javascript" src="../static/baidu/baidujs/area.js"></script> -->
+    <!-- <script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script> -->
+    <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script> -->
     <!-- <script src="../static/js/jquery.min.js"></script> -->
     <!-- <script type="text/javascript" src="../static/baidu/baidujs/MarkerTool.js"></script> -->
     <!-- <script type="text/javascript" src="../static/baidu/baidujs/DistanceTool.js"></script> -->
     <!-- <script type="text/javascript" src="../static/baidu/baidujs/SearchInfoWindow.js"></script> -->
     <!-- <script type="text/javascript" src="../static/baidu/baidujs/searchInRectangle.js"></script> -->
-    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+    <!-- <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script> -->
+    <!-- <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script> -->
+    <!-- <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script> -->
     <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
@@ -27,7 +27,8 @@
     <link rel="stylesheet" href="../static/baidu/css/font-awesome.css"/>
 	<title>列表展示</title>
 </head>
-
+<style>
+</style>
 <body>
 <section class="sec-menu" >
     <div class="container"  style="margin: 0;width:100%;">
@@ -37,11 +38,11 @@
                                     <i class="fa fa-bars pull-left fa-2x b-clr"></i>
                                 </span>
                             </div>
-                        <div class="col-md-5 col-sm-12" >
+                        <div class="col-md-7 col-sm-12" >
                             <i class="pull-left"> 欢迎来到3DGIS平台 &nbsp;&nbsp;</i>
                         </div>
-                        <div class="col-md-4 col-sm-12">
-                <span id="time">2015年1月1日 11:11  星期一</span>
+                        <div class="">
+                <span id="time" style=" font-family:'黑体'; font-size:20px;">2015年1月1日 11:11  星期一</span>
             </div>
             <div class="col-md-1 col-sm-12">
                 <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id={{tenantId}}'"/>
@@ -81,52 +82,29 @@
     <div class="left">
         <h2 class="leftH2"><span ></span>设备列表 <span></span></h2>
     </div>
-<div class="right">
+<div class="right" >
         <div class="search">
             <span>站点ID：</span>
             <input type="text" id="searchValue"  onkeyup="deviceSearch1()" placeholder="请输入设备名称"/>
             <input type="button" id='keyup' value="查询" style="text-align: middle;" onclick="deviceSearch()" />
             </div>
-        <div id="deviceList" style="height: 88%;overflow-y: scroll">
-        <!--供应商操作表格-->
-      <!--   <table id ="myTable" class="providerTable" cellpadding="0" cellspacing="0">
-            <tr class="firstTr">
-                <th width="10%">站点ID</th>
-                <th width="20%">站点名称</th>
-                <th width="10%">用户ID</th>
-                <th width="10%">经度</th>
-                <th width="10%">纬度</th>
-                <th width="10%">创建时间</th>
-                <th width="10%">状态</th>
-                <th width="20%">操作</th>
-            </tr> -->
-            <!-- <tr class="secondTr">
-                <td id="firstTd1"></td>
-                <td id="firstTd2"></td>
-                <td id="firstTd3"></td>
-                <td id="firstTd4"></td>
-                <td id="firstTd5"></td>
-                <td id="firstTd6"></td>
-                <td>
-                    <a href="providerView.html"><img src="img/read.png" alt="查看" title="查看"/></a>
-                    <a href="providerUpdate.html"><img src="img/xiugai.png" alt="修改" title="修改"/></a>
-                    <a href="#" class="removeProvider"><img src="img/schu.png" alt="删除" title="删除"/></a>
-                </td>
-            </tr> -->
-        <!-- </table> -->
-        <table id ="myTable1" class="table table-striped" cellpadding="0" cellspacing="0" style="height: 70%">
-            <tr class="firstTr">
-                <th width="25%">设备ID</th>
-                <th width="10%">租户名称</th>
-                <th width="10%">租户ID</th>
-                <th width="10%">设备名称</th>
-                <th width="20%">设备组ID</th>
-                <th width="10%">所属站点</th>
-                <th width="15%">操作</th>
+        <div id="deviceList" style="height: 100%;overflow-y: scroll ">
+
+        <table id ="myTable1" class="table table-striped" cellpadding="0" cellspacing="0" style="height: 85%">
+            <tr class="firstTr" >
+                <th width="25%" style=" font-size:20px;">设备ID</th>
+                <th width="10%" style=" font-size:20px;">租户名称</th>
+                <th width="10%" style=" font-size:20px;">租户ID</th>
+                <th width="10%" style=" font-size:20px;">设备名称</th>
+                <th width="20%" style=" font-size:20px;">设备组ID</th>
+                <th width="10%" style=" font-size:20px;">所属站点</th>
+                <th width="15%" style=" font-size:20px;">操作</th>
             </tr>
         </table>
-        <button class="btn btn-default button" style="opacity: 0.2;margin-right: 30px" id="pre" onclick="prePage()">上一页</button>
-    <button class="btn btn-default button" style="opacity: 0.2;margin-left: 30px" id="next" onclick="nextPage()">下一页</button>
+        <div id='btn1'>
+            <button class="btn btn-primary" style="margin-right: 30px" id="pre" onclick="prePage()">上一页</button>
+            <button class="btn btn-primary" style="margin-left: 30px" id="next" onclick="nextPage()">下一页</button>
+        </div>
 <!--         <span id="spanFirst">第一页</span>   
         <span id="spanPre">上一页</span>   
         <span id="spanNext">下一页</span>   
@@ -225,105 +203,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <div id='div1' class="providerAdd">
-            <form >
-                <!--div的class 为error是验证错误，ok是验证成功-->
-                <b>长传场景</b>
-                <div class="">
-                    <label for="siteId">站点ID：</label>
-                    <input type="text" name="siteId" id="siteId" autocomplete="off"/>
-                    <span></span>
-                </div>
-                <div>
-                    <label for="modelName">模型命名：</label>
-                    <input type="text" name="modelName" id="modelName" autocomplete="off"/>
-                    <span >*</span>
-                </div>
-                <div>
-                    <label for="other">其他：</label>
-                    <input type="text" name="other" id="other" autocomplete="off"/>
-                    <span></span>
-
-                </div>
-                <div>
-                    <label for="fileImport">模型文件：</label>
-                    <!-- <input type="text" name="fileImport" id="fileImport"/> -->
-                    <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();" autocomplete="off"/>
-                </div>
-
-                <div class="progressNumber">
-                    <progress max="100" value="0" id="progressNumber"></progress> 
-                </div>
-                <div class="providerAddBtn">
-                    <!--<a href="#">保存</a>-->
-                    <!--<a href="providerList.html">返回</a>-->
-                    <input type="button" value="上传" onclick="uploadFile()"/>
-                    <input type="button" value="返回" onclick="CloseDiv1()"/>
-                </div>
-            </form>
-        </div>
-
-<div id='div2' class="providerAdd">
-            <form >
-                <b>修改站点</b>
-                <div class="">
-                    <label for="siteOldID">站点ID：</label>
-                    <input type="text" name="siteOldID" id="siteOldID" autocomplete="off"/>
-                    <span></span>
-                </div>
-                <div>
-                    <label for="siteOldName">站点原名：</label>
-                    <input type="text" name="siteOldName" id="siteOldName" autocomplete="off"/>
-                    <span ></span>
-                </div>
-                <div>
-                    <label for="siteNewName">重命名：</label>
-                    <input type="text" name="siteNewName" id="siteNewName" required autocomplete="off"/>
-                    <span>*</span>
-                </div>
-                <div class="providerAddBtn">
-                    <!--<a href="#">保存</a>-->
-                    <!--<a href="providerList.html">返回</a>-->
-                    <input type="submit" value="保存" onclick="renameSite1();"/>
-                    <input type="button" value="返回" onclick="CloseDiv2()"/>
-                </div>
-            </form>
-        </div>
-
-<div id='nav' class="providerAdd">
-            <form >
-             <b>添加站点</b>
-                <div class="">
-                    <label for="longitude">经度：</label>
-                    <input name=txt1 id="longitude" value="116.404" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}" required autocomplete="off">
-                    <span>*</span>
-                </div>
-                <div>
-                    <label for="latitude">纬度：</label>
-                   <input name=txt1 id="latitude" value="39.915" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}" required autocomplete="off">
-                    <span >*</span>
-                </div>
-                <div>
-                    <label for="name1">名称：</label>
-                    <input type="text" name="name1" id="name1" required/ autocomplete="off">
-                    <span>*</span>
-
-                </div>
-                <div>
-                    <label for="scenesID">场景ID：</label>
-                    <input type="text" name="scenesID" id="scenesID" required/ autocomplete="off">
-                    <span>*</span>
-                </div>
-
-                <div class="providerAddBtn">
-                    <!--<a href="#">保存</a>-->
-                    <!--<a href="providerList.html">返回</a>-->
-                    <input type="submit" value="确认" onclick="markfinish();"/>
-                    <input type="button" value="返回" onclick="closeWin();"/>
-                </div>
-            </form>
-        </div>
-
 </section>
 </body>
 

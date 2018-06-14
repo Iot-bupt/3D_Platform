@@ -8,15 +8,12 @@
 	<script type="text/javascript" src="../static/baidu/baidujs/area.js"></script>
 	<script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
-    <!-- <script src="../static/js/jquery.min.js"></script> -->
-	<!-- <script type="text/javascript" src="../static/baidu/baidujs/MarkerTool.js"></script> -->
-	<!-- <script type="text/javascript" src="../static/baidu/baidujs/DistanceTool.js"></script> -->
-	<!-- <script type="text/javascript" src="../static/baidu/baidujs/SearchInfoWindow.js"></script> -->
-    <!-- <script type="text/javascript" src="../static/baidu/baidujs/searchInRectangle.js"></script> -->
+    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+    <!-- <script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script> -->
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
@@ -34,18 +31,6 @@
 </head>
 
 <body>
-<!-- div id="progressNumber"></div> -->
-<!-- <progress max="100" value="0" id="progressNumber"  ></progress>   -->
-<!-- <header class="publicHeader">
-    <h1>地图展示</h1>  <h1><a href="sitesList">列表展示</a></h1>
-    <div class="publicHeaderR">
-        <p><span>下午好！</span><span style="color: #fff21b"> Admin</span> , 欢迎你！</p>
-        <a href="login.html">退出</a>
-    </div>
-</header>
-<section class="publicTime">
-    <span id="time">2015年1月1日 11:11  星期一</span>
-</section> -->
 <section class="sec-menu" >
     <div class="container"  style="margin: 0;width:100%;">
         <div class="row" id="head-menu">
@@ -54,11 +39,11 @@
                                     <i class="fa fa-bars pull-left fa-2x b-clr"></i>
                                 </span>
                             </div>
-                        <div class="col-md-5 col-sm-12" >
+                        <div class="col-md-7 col-sm-12" >
                             <i class="pull-left"> 欢迎来到3DGIS平台 &nbsp;&nbsp;</i>
                         </div>
-                        <div class="col-md-4 col-sm-12">
-                <span id="time">2015年1月1日 11:11  星期一</span>
+                        <div class="">
+                <span id="time" style=" font-family:'黑体'; font-size:20px;">2015年1月1日 11:11  星期一</span>
             </div>
             <div class="col-md-1 col-sm-12">
                 <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id={{tenantId}}'"/>
@@ -98,13 +83,14 @@
         <h2 class="leftH2"><span ></span>功能列表 <span></span></h2>
         <nav>
             <ul class="list">
-                <li><input type="button" class="anjian" data-toggle="modal" value="测距" onclick="measure()"  /></li>
+                <li><input type="button" class="anjian" data-toggle="modal" value="距离测距" onclick="measure()"  /></li>
+                <li><input type="button" class="anjian" value="面积测量" onclick="areaMeasure()"/></li>
                 <li><input type="button" class="anjian" data-toggle="modal" value="输入经纬度标注" onclick="mark1()" /></li>
                 <li><input type="button" class="anjian" data-toggle="modal" value="点击添加标注"  onclick="mark2();" /></li>
                 <!-- <li><input type="button" class="anjian" data-toggle="modal" value="绘制覆盖物个数" onclick="alert(overlays.length)"/></li>
                 <li><input type="button" class="anjian" data-toggle="modal" value="清除所有覆盖物" onclick="clearAll1()"/></li>  -->
-               <!--  <li><input type="button" class="anjian" value="开启"  id="searchOn" /></li>
-                <li><input type="button" class="anjian" value="关闭" id="searchOff" /></li> -->
+                
+                <!-- <li><input type="button" class="anjian" value="关闭" id="searchOff" /></li> -->
                 <li><input type="button" class="anjian" value="框选搜索" id ="jiexi" onclick="draw()" /></li>
             </ul>
         </nav>
@@ -121,7 +107,7 @@
             县区：<select name="county">
             </select>
             <span class="tips" style="color: green">请选择地区</span>   
-            <span><input type="text" id="address" placeholder="请输站点名称"></span> 
+            <input type="text" id="address" placeholder="请输入站点名称"> 
             <input type="button" id="btn" value="定位"/>  
         </div>
         <div id="allmap" class="allmap"></div>
