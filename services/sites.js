@@ -119,4 +119,23 @@ module.exports = {
         return site;
     },
 
+    sceneModelLoca: async(id,location) => {
+        try{
+            var res = await Site.update(
+                {
+                    sceneModelLoca:location,
+                    updatedAt: Date.now()
+                },
+                {
+                where:{
+                    id:id
+                }
+            });
+
+            return res;
+        }catch(e){
+            throw e;
+        }
+    }
+
 };
