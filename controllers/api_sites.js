@@ -97,6 +97,25 @@ module.exports = {
         }
     },
 
+    'PUT /api/sites/sceneModelLoca/:id': async(ctx,next) => {
+        console.log(`update sceneModelLoca ${ctx.params.id}...`);
+        try{
+            var s = await sites.sceneModelLoca(ctx.params.id,ctx.request.body.location);
+            if(s[0] === 1) {
+                ctx.rest({
+                    res:"update success!"
+                });
+            } else{
+                ctx.rest({
+                    res:"update failed!"
+                });
+            }
+        }catch(e){
+            throw new APIError('site:update failed','update sceneModel failed.');
+        }
+
+    }
+
     
     
 

@@ -61,7 +61,12 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         hemiIrradiance: Object.keys(hemiLuminousIrradiances)[3]
     };
     var sceneCtrl = {
+        "平移-x":5,
+        "平移-y":2,
+        "平移-z":0,
+        "旋转-x":0,
         "旋转-y":0,
+        "旋转-z":0,
         "缩放":0.5,
     };
     var newcontrols = {
@@ -74,7 +79,16 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         },
         "上传设备模型": function() {
             window.open("/demoupload", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=no, resizable=no, copyhistory=yes, width=400, height=360")
-        }  //upload/upload.html,原来.open()中的内容
+        },  //upload/upload.html,原来.open()中的内容
+
+        "☆返回首页": function() {
+            var search = window.location.search;
+            window.location.href= '/'+search;
+        },
+
+        "✔保存场景设置": function() {
+
+        }
     };
 
     var transfctrl = {
@@ -337,7 +351,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         mesh.scale.y = 0.5;     /*  改变几何的比例*/ 
         mesh.scale.z = 0.5;
         mesh.position.x = 5;
-        mesh.position.y = 2;     /*  改变几何的比例*/ 
+        mesh.position.y = 2;     /*  改变几何的位置*/ 
         mesh.position.z = 0;
         mesh.material.transparent = true;
         mesh.material.opacity = params.opacity;
@@ -369,7 +383,12 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         //场景模型控制
         var scectr = gui.addFolder("场景模型变换");
+        scectr.add(sceneCtrl,"平移-x",0, 20);
+        scectr.add(sceneCtrl,"平移-y",0, 20);
+        scectr.add(sceneCtrl,"平移-z",0, 20);
+        scectr.add(sceneCtrl,"旋转-x",0, 2*Math.PI);
         scectr.add(sceneCtrl,"旋转-y",0, 2*Math.PI);
+        scectr.add(sceneCtrl,"旋转-z",0, 2*Math.PI);
         scectr.add(sceneCtrl,"缩放",0,5);
 
         //控制方式
@@ -381,6 +400,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         gui.add(newcontrols, '清除物体');
         gui.add(newcontrols, '上传设备模型');
+        gui.add(newcontrols,'☆返回首页');
+        gui.add(newcontrols,'✔保存场景设置');
         gui.open();
         
     }
@@ -573,7 +594,12 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         renderer.shadowMap.enabled = params.shadows;
         if (firstScene !== undefined){        //控制调节场景模型透明度,旋转,缩放
             firstScene.material.opacity = params.opacity;
+            firstScene.position.x = sceneCtrl["平移-x"];
+            firstScene.position.y = sceneCtrl["平移-y"];
+            firstScene.position.z = sceneCtrl["平移-z"];
+            firstScene.rotation.x = sceneCtrl["旋转-x"];
             firstScene.rotation.y = sceneCtrl["旋转-y"];
+            firstScene.rotation.z = sceneCtrl["旋转-z"];
             var _scale = sceneCtrl["缩放"];
             firstScene.scale.x = _scale;
             firstScene.scale.y = _scale;
