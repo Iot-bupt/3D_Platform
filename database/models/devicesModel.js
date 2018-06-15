@@ -28,7 +28,7 @@ module.exports = db.defineModel('devicesmodel', {
         defaultValue: false
     },
     location: {
-        type:db.STRING(200),//存设备模型坐标信息，xyz
+        type:db.STRING(300),//存设备模型坐标信息，xyz
     },    
     label: {
         type:db.TEXT,

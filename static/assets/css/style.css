@@ -100,6 +100,7 @@ body {
     z-index:3;
     font-weight: bold;
     border-radius:12px;
+
 }
 #tabs{
     background-color:rgba(49, 47, 47, 1);
@@ -108,10 +109,32 @@ body {
 #arrow{
     top: 75px;
     position: absolute;
-    width: 10px;
-    height: 5px;
-    margin-left: -10px;
+    width: 180px;
+    height: 440px;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+    z-index: 0;
+
 }
+#arrow .active {
+    display: block;
+    color: #000;
+    padding: 15px 20px;
+    text-decoration: none;
+    text-align: left;
+    border-bottom: 1px dashed #000000;
+    cursor: pointer;
+
+}
+#arrow .active:hover{
+    color: #5087c3;
+
+}
+.centerMove{
+    margin-left: 20px;
+}
+
 
 #icon{
     font-size: 20px;
@@ -171,6 +194,12 @@ body {
     font-weight: bold;
     border-radius:12px;
 }
+.fontColors{
+    color: #5087c3;
+    text-align: left;
+    margin-left: 5px;
+    position: relative;
+}
 .control-label{
     color: #5087c3;
 }
@@ -212,39 +241,3 @@ body {
 #packUpSpan:hover .tooltiptext {
     visibility: visible;
 }
-/*显示提示框---展示设备详情
-#iconSpan {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-}
-
-#iconSpan .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    top: 150%;
-    left: 50%;
-    margin-left: -60px;
-}
-
-#iconSpan .tooltiptext::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent black transparent;
-}
-
-#iconSpan:hover .tooltiptext {
-    visibility: visible;
-}*/

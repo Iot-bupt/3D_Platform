@@ -28,21 +28,25 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
         jQuery("#arrow").css({"margin-left":"-60px"});
     })
     jQuery('#arrow').css({'display':'none'});
-    */
 
+*/
 
     //显示初始化
     jQuery('#showDeviceInfo').css({'display':'none'});
     jQuery('#addModel').css({'display':'none'});
     jQuery('#backList').css({'display':'none'});
     jQuery('#updatePosition').css({'display':'none'});
+    jQuery('#menu').css({'display':'none'});
 
 
-    jQuery("#searchBanner").animate({width:"470px"},500);//初始显示搜索框
-    jQuery("#iconSpan").css("display","block");
-    jQuery("#searchDeviceDiv").css("opacity","0.2");
 
 
+    jQuery("#searchBanner").animate({width:"11"},500);//初始隐藏搜索框
+    jQuery("#iconSpan").css("display","none");
+    //jQuery("#searchDeviceDiv").css("opacity","0.2");
+    //jQuery("#arrow").animate({width:'0'},400);
+    jQuery("#arrow").animate({width:"0"},200);//初始隐藏导航栏
+    jQuery(".active").css('display','none');
 
 //==================================
 $scope.changeIcon = function(){
@@ -57,6 +61,41 @@ $scope.changeIcon = function(){
     }
    
 }
+    $scope.packSearchMenu = function(){
+        jQuery("#menu").css("display","block");
+    }
+//动态显示导航栏
+    $scope.packSearchMenu = function(){
+            jQuery(".active").css("display","block");
+            jQuery("#arrow").animate({width:"180px"},200);
+            jQuery("#iconSpan").css("display","none");
+            jQuery("#searchDeviceDiv").css("opacity","0");
+            jQuery("#searchBanner").animate({width:"11px"},500);
+            jQuery('#allDevice').css({'display':'none'});
+            jQuery("#icon").attr("class","fa fa-angle-double-down");
+    }
+    $scope.shows = function(){
+        jQuery("#arrow").animate({width:"0px"},200);
+        jQuery(".active").css("display","none");
+    }
+    $scope.searchShows = function(){
+        jQuery("#arrow").animate({width:"0px"},200);
+        jQuery(".active").css("display","none");
+        jQuery("#iconSpan").css("display","block");
+        jQuery("#searchDeviceDiv").css("opacity","0.2");
+        jQuery("#searchBanner").animate({width:"470px"},500);
+    }
+    $scope.showList = function(){
+        jQuery("#arrow").animate({width:"0px"},200);
+        jQuery(".active").css("display","none");
+        jQuery("#iconSpan").css("display","block");
+        jQuery("#searchDeviceDiv").css("opacity","0.2");
+        jQuery("#searchBanner").animate({width:"470px"},500);
+        jQuery("#icon").attr("class","fa fa-angle-double-up");
+        jQuery("#allDevice").slideDown();
+    }
+
+
     /*
 $scope.packSearchMenu = function(){
     if(jQuery("#packUp").attr("class") == "fa fa-angle-double-left"){
@@ -74,7 +113,7 @@ $scope.packSearchMenu = function(){
         jQuery("#searchBanner").animate({width:"470px"},500);
         jQuery("#packUp").attr("class","fa fa-angle-double-left");
     }
-} */
+}*/
     // $scope.changeIcon = function(){
     //     if(jQuery("#icon").attr("class") == "fa fa-angle-double-down"){
     //         jQuery("#icon").attr("class","fa  fa-angle-double-up");
@@ -316,12 +355,12 @@ $scope.searchDeviceInfo = function(){
         jQuery('#addModel').css({'display':'none'});
     }
 
-    $scope.arrowHidden = function(){
-        jQuery('#arrow').css({'display':'none'});
-        jQuery('#allDevice').css({'display':''});
-    }
+
     $scope.closeUpdate = function(){
         jQuery('#updatePosition').css({'display':'none'});
+    }
+    $scope.left = function(){
+        jQuery('#showDeviceInfo').css({'display':''});
     }
 
 //选中设备信息展示
@@ -475,6 +514,51 @@ $scope.searchDeviceInfo = function(){
         });
 
     }
+
+    $scope._updatePosition = function() {
+        var target_p = new THREE.Vector3();
+        downIntersected.getWorldPosition(target_p);
+        var target_s = new THREE.Vector3();
+        downIntersected.getWorldScale(target_s);
+        var target_r = new THREE.Quaternion();
+        downIntersected.getWorldQuaternion(target_r);
+        var eu = new THREE.Euler().setFromQuaternion(target_r);
+        var newLocation = {
+            position:{
+                x:Number(target_p.x.toFixed(9)),
+                y:Number(target_p.y.toFixed(9)),
+                z:Number(target_p.z.toFixed(9)),
+            },
+            scale:{
+                x:Number(target_s.x.toFixed(6)),
+                y:Number(target_s.y.toFixed(6)),
+                z:Number(target_s.z.toFixed(6)),
+            },
+            rotation:{
+                x:Number(eu.x.toFixed(9)),
+                y:Number(eu.y.toFixed(9)),
+                z:Number(eu.z.toFixed(9)),
+            }
+        };
+        $.ajax({
+            url:'/api/dModel/dModelLocation/'+ $scope.id,
+            type:'PUT',
+            data:{
+                "location":JSON.stringify(newLocation)
+            },
+            async:false,
+            success: function(res){
+                if(res.res[0] === 1){
+                    alert("更新位置成功！");
+                } else{
+                    alert("更新位置失败！请重试");
+                }
+            },
+            error: function(e){
+                alert("更新位置失败！可能是数据库问题~"+e.message);
+            }
+        });
+    }
 /*
 * var JSONBody = {
             "deviceId": $scope.deviceInfo.id,
@@ -495,12 +579,12 @@ $scope.searchDeviceInfo = function(){
         jQuery('#xValue').val("");
         jQuery('#yValue').val("");
         jQuery('#zValue').val("");
-        jQuery('#xScaleValue').val("");
-        jQuery('#yScaleValue').val("");
-        jQuery('#zScaleValue').val("");
-        jQuery('#xRotationValue').val("");
-        jQuery('#yRotationValue').val("");
-        jQuery('#zRotationValue').val("");
+        //jQuery('#xScaleValue').val("");
+        //jQuery('#yScaleValue').val("");
+        //jQuery('#zScaleValue').val("");
+        //jQuery('#xRotationValue').val("");
+        //jQuery('#yRotationValue').val("");
+        //jQuery('#zRotationValue').val("");
     }
 
     /*删除模型*/
@@ -524,6 +608,49 @@ $scope.searchDeviceInfo = function(){
         });
     }
 
+/*更新设备模型*/
+$scope.updateDeviceModel = function(){
+    //console.log($scope.deviceInfo.id);
+    var ids = $scope.deviceInfo.id;
+    var JSONBody = {
+        position:{
+            x:Number(jQuery("#xUpdate").val()),
+            y:Number(jQuery("#yUpdate").val()),
+            z:Number(jQuery("#zUpdate").val())
+        },
+        scale:{
+            x:Number(jQuery("#xBili").val()),
+            y:Number(jQuery("#yBili").val()),
+            z:Number(jQuery("#zBili").val())
+        },
+        rotation:{
+            x:Math.PI/2,
+            y:Math.PI/2,
+            z:Number(jQuery("#zXuan").val())
+        }
+    }
+    console.log(JSONBody);
+    console.log(JSON.stringify(JSONBody));
+
+    jQuery.ajax({
+        url: '/api/dModel/dModelLocation/'+ids,
+        dataType: 'json',
+        method: 'PUT',
+        data: {
+            "location": JSON.stringify(JSONBody)
+        },
+        success:function(res){
+            //$("#addModel").modal("hide");
+            //location.reload();
+            console.log(res);
+        },
+        error:function(){
+            alert("更新失败！");
+        }
+    });
+}
+
+/*导航栏的实现效果*/
 
 
 

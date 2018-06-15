@@ -1139,6 +1139,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
          */
         var i
         var idArray=[];
+        var nameArray=[];
         var siteIdArray=[];
         var deviceArray=[];
         var idOffset;//用于查找下一页
@@ -1165,6 +1166,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                     {
                     //console.log(reqArray[j].id);
                     idArray.push(reqArray[j].id)
+                    nameArray.push(reqArray[j].name)
                 //      var table = document.getElementById("myTable2");
                 // var row = table.insertRow(1);
                 // row.id = (j + 1);
@@ -1243,7 +1245,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                 cell1.innerHTML = req.data[i].tenantId;
                 cell2.innerHTML = req.data[i].customerId;
                 cell3.innerHTML = req.data[i].name;
-                cell4.innerHTML = req.data[i].siteId; 
+                cell4.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)] 
                 cell5.innerHTML = '<a href="/demo" >'+'进入场景'+'</a>'
             }
     //             idOffset = req.nextPageLink.idOffset;
@@ -1412,7 +1414,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                 result.data = 0;
             } else {
                 //保留2位小数位
-                result.data = result.data.toFixed(2);
+                result.data = '总面积为：'+result.data.toFixed(2)+'平方米';
             }
             result.label = this._addLabel(point, result.data);
         }

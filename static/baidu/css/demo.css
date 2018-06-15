@@ -3,7 +3,7 @@
 .demo_main { padding: 20px; padding-top: 10px; }
 .demo_title { padding: 10px; margin-bottom: 10px; background-color: #D3D8E0; border: solid 1px gray; }
 .demo_title .author{float: right;}
-.demo_content { padding: 10px; margin-bottom: 10px; border: solid 1px gray;height:100%;}
+.demo_content { padding: 10px; margin-bottom: 10px; border: solid 1px gray;height:105%;}
 body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
         #allmap{width:100%;height:95%;}
         #r-result{width:100%;margin-top:5px;}
@@ -32,8 +32,7 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
  color:#fff;  
 } 
 #btn {
-    margin-left: 0;
-    /*position: absolute;*/
+    float:right;
     width: 100px;
     padding: 0 20px;
     height: 25px;
@@ -42,7 +41,10 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
     /*font-weight: bold;*/
 }
 #address {
-    margin-left: 25%;
+    /*left: 80px;*/
+    position:absolute;
+    right:11%;
+    /*float:right;*/
 }
 .anjian {
     width:125px;
@@ -92,11 +94,23 @@ progress
 
 
 /*设备列表*/
-.deviceList {
-                 display: block;
-                 height: 100%;
-                 overflow-y: scroll;
-             }
+.deviceList 
+{
+    display: block;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.right table td 
+{
+    font-size:15px;
+
+}
+/*翻页按钮*/
+#btn1
+{
+    text-align: center;
+}
 
 /*---------------------------------------自定义样式---------------------------------------------*/
 

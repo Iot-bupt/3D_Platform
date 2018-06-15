@@ -40,5 +40,6 @@ module.exports = db.defineModel('sites', {
     devicesModelCount: {
         type: db.INTEGER,
         defaultValue: 0
-    }
+    },
+    sceneModelLoca: db.STRING(300)
 });

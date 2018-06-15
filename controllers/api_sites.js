@@ -89,13 +89,32 @@ module.exports = {
     },
     'PUT /api/siteUrl/:id': async (ctx,next) => {
         console.log(`update siteUrl ${ctx.params.id}...`);
-        var s = await sites.addSceneUrl(ctx.params.id,ctx.query.url);
+        var s = await sites.addSceneUrl(ctx.params.id,ctx.request.body.url);
         if (s[0] === 1) {
             ctx.rest(s);
         } else {
             throw new APIError('site:not_found', 'site not found by id.');
         }
     },
+
+    'PUT /api/sites/sceneModelLoca/:id': async(ctx,next) => {
+        console.log(`update sceneModelLoca ${ctx.params.id}...`);
+        try{
+            var s = await sites.sceneModelLoca(ctx.params.id,ctx.request.body.location);
+            if(s[0] === 1) {
+                ctx.rest({
+                    res:"update success!"
+                });
+            } else{
+                ctx.rest({
+                    res:"update failed!"
+                });
+            }
+        }catch(e){
+            throw new APIError('site:update failed','update sceneModel failed.');
+        }
+
+    }
 
     
     
