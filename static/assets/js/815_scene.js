@@ -60,14 +60,33 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         bulbPower: Object.keys(bulbLuminousPowers)[2],
         hemiIrradiance: Object.keys(hemiLuminousIrradiances)[3]
     };
+    var _sceneLoca;
+    var initScene = function(){
+        var siteId = 133;
+            $.ajax({
+                url: '/api/sites/' + siteId,
+                type: 'GET',
+                async:false,
+                success: function(res){
+                    _sceneLoca =  res.sites[0].sceneModelLoca;
+                },
+                error: function(e){
+                    $.alert('场景模型初始位置信息获取失败！'+ e.message);
+                }
+            });
+            return _sceneLoca;
+    }
+    initScene();
+    _sceneLoca = JSON.parse(_sceneLoca);
     var sceneCtrl = {
-        "平移-x":5,
-        "平移-y":2,
-        "平移-z":0,
-        "旋转-x":0,
-        "旋转-y":0,
-        "旋转-z":0,
-        "缩放":0.5,
+        
+        "平移-x": Number(_sceneLoca.position.x) || 5 ,
+        "平移-y": Number(_sceneLoca.position.y) || 2,
+        "平移-z": Number(_sceneLoca.position.z) || 0.01,
+        "旋转-x": Number(_sceneLoca.rotation.x) || 0.01,
+        "旋转-y": Number(_sceneLoca.rotation.y) || 0.01,
+        "旋转-z": Number(_sceneLoca.rotation.z) || 0.01,
+        "缩放": Number(_sceneLoca.scale.x) || 0.5,
     };
     var newcontrols = {
 
@@ -87,6 +106,58 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         },
 
         "✔保存场景设置": function() {
+            $.confirm({
+                title:"Confirm!",
+                content:'确认修改场景位置信息吗？',
+                confirmButtonClass: 'btn-info',
+                cancelButtonClass: 'btn-danger',
+                closeIcon: true,
+                animation:'rotateY',
+                closeAnimation: 'rotateY',
+                confirm: function(){
+                    var sceneLocation = {
+                        position:{
+                            x:sceneCtrl['平移-x'].toFixed(6),
+                            y:sceneCtrl['平移-y'].toFixed(6),
+                            z:sceneCtrl['平移-z'].toFixed(6),
+                        },
+                        scale:{
+                            x:sceneCtrl['缩放'].toFixed(6),
+                            // y:sceneCtrl['缩放'].toFixed(6),
+                            // z:sceneCtrl['缩放'].toFixed(6),
+                        },
+                        rotation:{
+                            x:sceneCtrl['旋转-x'].toFixed(6),
+                            y:sceneCtrl['旋转-y'].toFixed(6),
+                            z:sceneCtrl['旋转-z'].toFixed(6),
+                        },
+                        opacity:params.opacity.toFixed(6)
+                    };
+        
+                    var siteId = 133;
+        
+                    $.ajax({
+                        url:'/api/sites/sceneModelLoca/'+ siteId,
+                        type:'PUT',
+                        data:{
+                            "location":JSON.stringify(sceneLocation)
+                        },
+                        async:false,
+                        success: function(res){
+                            if(res[0] === 1){
+                                $.alert("成功更新场景模型位置信息！");
+                            } else{
+                                $.alert("场景模型位置信息更新失败！请重试");
+                            }
+                        },
+                        error: function(e){
+                            alert("更新位置失败！可能是数据库问题~"+e.message);
+                        }
+                    });
+                }
+
+            });
+            
 
         }
     };

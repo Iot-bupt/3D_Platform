@@ -102,9 +102,7 @@ module.exports = {
         try{
             var s = await sites.sceneModelLoca(ctx.params.id,ctx.request.body.location);
             if(s[0] === 1) {
-                ctx.rest({
-                    res:"update success!"
-                });
+                ctx.rest(s);
             } else{
                 ctx.rest({
                     res:"update failed!"
