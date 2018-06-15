@@ -64,7 +64,7 @@
 </div>
 <div id="searchBanner">
     <div class="input-group"  id="searchDeviceDiv">
-        <input type="text" class="form-control" placeholder="请输入设备名称..." id="searchDevice">
+        <input type="text" class="form-control" size="15" placeholder="请输入设备名称..." id="searchDevice">
         <span class="input-group-btn">
             <button class="btn btn-primary" type="button" id="btn" ng-click="searchDeviceInfo()" style="margin-bottom: 4px;"><i class="fa fa-search"></i></button>
         </span>
@@ -306,25 +306,37 @@
             </div>
         </div>
 
-        <!--上传模型（功能点待完善）-->
-        <div id="tabs-2" style="display: inline"><br/>
-            <label class="col-cm-3 control-label" style="text-align: left">
-                <span style="color: red;">*</span>X值:
-            </label>
-            <input type="text" required/>
-            <label class="col-cm-3 control-label" style="text-align: left">
-                <span style="color: red;">*</span>Y值:
-            </label>
-            <input type="text" required/>
-            <label class="col-cm-3 control-label" style="text-align: left">
-                <span style="color: red;">*</span>Z值:
-            </label>
-            <input type="text" required/>
+        <!--上传模型-->
+        <div id="tabs-2">
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>位置
+                </label><br/>
+                <span>X:</span><input type="text" id="xValue-s" required/>
+                <span>Y:</span><input type="text" id="yValue-s" required/>
+                <span>Z:</span><input type="text" id="zValue-s" required/><br/>
+            </div>
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>比例
+                </label><br/>
+                <span>X:</span><input type="text" id="xScaleValue-s" value ="0.02" placeholder="0.02" required/>
+                <span>Y:</span><input type="text" id="yScaleValue-s" value ="0.02" placeholder="0.02" required/>
+                <span>Z:</span><input type="text" id="zScaleValue-s" value ="0.02" placeholder="0.02" required/><br/>
+            </div>
+            <div class="fontColor">
+                <label class="col-cm-3 control-label">
+                    <span style="color: red;">*</span>旋转
+                </label><br/>
+                <span>X:</span><input type="text" id="xRotationValue-s" value =Math.PI/2 placeholder="Math.PI" required/>
+                <span>Y:</span><input type="text" id="yRotationValue-s" value =Math.PI/2 placeholder="Math.PI" required/>
+                <span>Z:</span><input type="text" id="zRotationValue-s" value ="0" placeholder="0" required/>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" ng-click="submit()">
+                <button type="button" class="btn btn-danger" ng-click="uploadModel()">
                     确认
                 </button>
-                <button type="button" class="btn btn-success" ng-click="reSet()">
+                <button type="button" class="btn btn-success" ng-click="uploadReSet()">
                     重置
                 </button>
             </div>
