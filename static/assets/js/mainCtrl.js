@@ -41,8 +41,10 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
 
 
 
-    jQuery("#searchBanner").animate({width:"11"},500);//初始隐藏搜索框
+    jQuery("#searchBanner").animate({width:"10px"},500);//初始隐藏搜索框
     jQuery("#iconSpan").css("display","none");
+    jQuery("#searchDeviceDiv").css("display","none");
+    //jQuery("#searchDeviceDiv").css({width:"0"});
     //jQuery("#searchDeviceDiv").css("opacity","0.2");
     //jQuery("#arrow").animate({width:'0'},400);
     jQuery("#arrow").animate({width:"0"},200);//初始隐藏导航栏
@@ -69,8 +71,8 @@ $scope.changeIcon = function(){
             jQuery(".active").css("display","block");
             jQuery("#arrow").animate({width:"180px"},200);
             jQuery("#iconSpan").css("display","none");
-            jQuery("#searchDeviceDiv").css("opacity","0");
-            jQuery("#searchBanner").animate({width:"11px"},500);
+            jQuery("#searchDeviceDiv").css({'display':'none',"opacity":"0"});
+            jQuery("#searchBanner").animate({width:"10px"},500);
             jQuery('#allDevice').css({'display':'none'});
             jQuery("#icon").attr("class","fa fa-angle-double-down");
     }
@@ -82,14 +84,14 @@ $scope.changeIcon = function(){
         jQuery("#arrow").animate({width:"0px"},200);
         jQuery(".active").css("display","none");
         jQuery("#iconSpan").css("display","block");
-        jQuery("#searchDeviceDiv").css("opacity","0.2");
+        jQuery("#searchDeviceDiv").css({'display':'block',"opacity":"0.2"});
         jQuery("#searchBanner").animate({width:"470px"},500);
     }
     $scope.showList = function(){
         jQuery("#arrow").animate({width:"0px"},200);
         jQuery(".active").css("display","none");
         jQuery("#iconSpan").css("display","block");
-        jQuery("#searchDeviceDiv").css("opacity","0.2");
+        jQuery("#searchDeviceDiv").css({'display':'block',"opacity":"0.2"});
         jQuery("#searchBanner").animate({width:"470px"},500);
         jQuery("#icon").attr("class","fa fa-angle-double-up");
         jQuery("#allDevice").slideDown();
