@@ -11,7 +11,6 @@ if (file) {
   $("#modelName").val(file.name); 
  }  
 }
-
 function uploadFile() { 
 var fd = new FormData();  
 fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]);  
