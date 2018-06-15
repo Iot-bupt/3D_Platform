@@ -108,10 +108,32 @@ body {
 #arrow{
     top: 75px;
     position: absolute;
-    width: 10px;
-    height: 5px;
-    margin-left: -10px;
+    width: 180px;
+    height: 440px;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+    z-index: 0;
+
 }
+#arrow .active {
+    display: block;
+    color: #000;
+    padding: 15px 20px;
+    text-decoration: none;
+    text-align: left;
+    border-bottom: 1px dashed #000000;
+    cursor: pointer;
+
+}
+#arrow .active:hover{
+    color: #5087c3;
+
+}
+.centerMove{
+    margin-left: 20px;
+}
+
 
 #icon{
     font-size: 20px;

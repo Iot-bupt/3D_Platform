@@ -28,8 +28,8 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
         jQuery("#arrow").css({"margin-left":"-60px"});
     })
     jQuery('#arrow').css({'display':'none'});
-    */
 
+*/
 
     //显示初始化
     jQuery('#showDeviceInfo').css({'display':'none'});
@@ -40,11 +40,13 @@ mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
 
 
 
-    jQuery("#searchBanner").animate({width:"470px"},500);//初始显示搜索框
-    jQuery("#iconSpan").css("display","block");
-    jQuery("#searchDeviceDiv").css("opacity","0.2");
 
-
+    jQuery("#searchBanner").animate({width:"11"},500);//初始隐藏搜索框
+    jQuery("#iconSpan").css("display","none");
+    //jQuery("#searchDeviceDiv").css("opacity","0.2");
+    //jQuery("#arrow").animate({width:'0'},400);
+    jQuery("#arrow").animate({width:"0"},200);//初始隐藏导航栏
+    jQuery(".active").css('display','none');
 
 //==================================
 $scope.changeIcon = function(){
@@ -62,6 +64,36 @@ $scope.changeIcon = function(){
 
     $scope.packSearchMenu = function(){
         jQuery("#menu").css("display","block");
+    }
+//动态显示导航栏
+    $scope.packSearchMenu = function(){
+            jQuery(".active").css("display","block");
+            jQuery("#arrow").animate({width:"180px"},200);
+            jQuery("#iconSpan").css("display","none");
+            jQuery("#searchDeviceDiv").css("opacity","0");
+            jQuery("#searchBanner").animate({width:"11px"},500);
+            jQuery('#allDevice').css({'display':'none'});
+            jQuery("#icon").attr("class","fa fa-angle-double-down");
+    }
+    $scope.shows = function(){
+        jQuery("#arrow").animate({width:"0px"},200);
+        jQuery(".active").css("display","none");
+    }
+    $scope.searchShows = function(){
+        jQuery("#arrow").animate({width:"0px"},200);
+        jQuery(".active").css("display","none");
+        jQuery("#iconSpan").css("display","block");
+        jQuery("#searchDeviceDiv").css("opacity","0.2");
+        jQuery("#searchBanner").animate({width:"470px"},500);
+    }
+    $scope.showList = function(){
+        jQuery("#arrow").animate({width:"0px"},200);
+        jQuery(".active").css("display","none");
+        jQuery("#iconSpan").css("display","block");
+        jQuery("#searchDeviceDiv").css("opacity","0.2");
+        jQuery("#searchBanner").animate({width:"470px"},500);
+        jQuery("#icon").attr("class","fa fa-angle-double-up");
+        jQuery("#allDevice").slideDown();
     }
 
 
@@ -82,7 +114,7 @@ $scope.packSearchMenu = function(){
         jQuery("#searchBanner").animate({width:"470px"},500);
         jQuery("#packUp").attr("class","fa fa-angle-double-left");
     }
-} */
+}*/
     // $scope.changeIcon = function(){
     //     if(jQuery("#icon").attr("class") == "fa fa-angle-double-down"){
     //         jQuery("#icon").attr("class","fa  fa-angle-double-up");
@@ -324,10 +356,7 @@ $scope.searchDeviceInfo = function(){
         jQuery('#addModel').css({'display':'none'});
     }
 
-    $scope.arrowHidden = function(){
-        jQuery('#arrow').css({'display':'none'});
-        jQuery('#allDevice').css({'display':''});
-    }
+
     $scope.closeUpdate = function(){
         jQuery('#updatePosition').css({'display':'none'});
     }
@@ -551,12 +580,12 @@ $scope.searchDeviceInfo = function(){
         jQuery('#xValue').val("");
         jQuery('#yValue').val("");
         jQuery('#zValue').val("");
-        jQuery('#xScaleValue').val("");
-        jQuery('#yScaleValue').val("");
-        jQuery('#zScaleValue').val("");
-        jQuery('#xRotationValue').val("");
-        jQuery('#yRotationValue').val("");
-        jQuery('#zRotationValue').val("");
+        //jQuery('#xScaleValue').val("");
+        //jQuery('#yScaleValue').val("");
+        //jQuery('#zScaleValue').val("");
+        //jQuery('#xRotationValue').val("");
+        //jQuery('#yRotationValue').val("");
+        //jQuery('#zRotationValue').val("");
     }
 
     /*删除模型*/
@@ -621,6 +650,9 @@ $scope.updateDeviceModel = function(){
         }
     });
 }
+
+/*导航栏的实现效果*/
+
 
 
 //初始化显示默认模型jQuery-ui

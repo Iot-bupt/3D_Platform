@@ -45,26 +45,64 @@
     <script src="static/assets/js/815_scene.js"></script>
     <script src="static/assets/js/mainCtrl.js"></script>
     <script src="static/assets/js/toastr.js"></script>
+
+<!--div id="packUpDiv">
+    <div id="packUpSpan"><i class="fa fa-reorder" id="packUp" ng-click="left()"></i>
+    <div class="tooltiptext">
+        菜单
+    </div>
+    </div>
+</div-->
 <div id="packUpDiv">
-    <div id="packUpSpan"><i class="fa fa-reorder" id="packUp"></i>
+    <div id="packUpSpan"><i class="fa fa-reorder" id="packUp" ng-click="packSearchMenu()"></i>
     <div class="tooltiptext">
         菜单
     </div>
     </div>
 </div>
 <div id="searchBanner">
-                
-                <div class="input-group"  id="searchDeviceDiv">
-                    <input type="text" class="form-control" placeholder="请输入设备名称..." id="searchDevice">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button" id="btn" ng-click="searchDeviceInfo()" style="margin-bottom: 4px;"><i class="fa fa-search"></i></button>
-                    </span>
-                </div>
-
-                <div ng-click="changeIcon()" id="iconSpan"><i class="fa fa-angle-double-down" id="icon" title="显示设备列表"></i>
-                </div>
-            
+    <div class="input-group"  id="searchDeviceDiv">
+        <input type="text" class="form-control" placeholder="请输入设备名称..." id="searchDevice">
+        <span class="input-group-btn">
+            <button class="btn btn-primary" type="button" id="btn" ng-click="searchDeviceInfo()" style="margin-bottom: 4px;"><i class="fa fa-search"></i></button>
+        </span>
+    </div>
+    <div ng-click="changeIcon()" id="iconSpan"><i class="fa fa-angle-double-down" id="icon" title="显示设备列表"></i>
+    </div>
 </div>
+
+<!--导航栏-->
+<div id="arrow" style="list-style-type: none">
+    <div class="active" ng-click="shows()">
+        <i class="fa fa-angle-double-left" style="margin-left: 120px;font-size: large"></i>
+    </div>
+    <div class="active">
+        <i class="fa fa-home" style="text-align: left;"></i>
+        <span class="centerMove">主页</span>
+    </div>
+    <div class="active" ng-click="searchShows()">
+        <i class="fa fa-search"></i>
+        <span class="centerMove">搜索</span>
+    </div>
+    <div class="active" ng-click="showList()">
+        <i class="fa fa-file-text"></i>
+        <span class="centerMove">设备列表</span>
+    </div>
+    <div class="active">
+        <i class="fa fa-th"></i>
+        <span class="centerMove">加载本地模型</span>
+    </div>
+    <div class="active">
+        <i class="fa fa-unlink"></i>
+        <span class="centerMove">扩展功能</span>
+    </div>
+    <div class="active">
+        <i class="fa fa-paperclip"></i>
+        <span class="centerMove">功能点</span>
+    </div>
+</div>
+
+<!--显示设备列表栏-->
 <div id ="allDevice">
     <table id="allDeviceTable" class="table table-hover">
         <thead>
@@ -72,9 +110,7 @@
                 <td style="font-weight: bold;">设备id</td>
                 <td style="font-weight: bold;">设备名称<span id="backList" ng-click="backList()" title="返回设备列表"><i class="fa fa-mail-reply"></i></span></td>
             </tr>
-            
-<!-- <div id="arrow" ng-click="arrowHidden()"><img src="../static/images/arrow.PNG"></div>
-<div id ="allDevice">
+<!--div id ="allDevice">
     <table id="allDeviceTable" class="table table-hover">
         <thead>
         <tr>
@@ -100,7 +136,6 @@
                     <button class="btn btn-primary" type="button" id="btnList" ng-click="closeDeviceList()"><i class="fa fa-close"></i></button>
                     <button class="btn btn-primary" type="button" id="btnFirst" ng-click="reShowList()" title="回到首页"><i class="fa fa-angle-down"></i></button>
             </span> -->
-
         </thead>
         <tbody id="showDevice">
         <tr ng-repeat="data in deviceList" ng-click="show(data)">
@@ -109,7 +144,6 @@
         </tr>
         </tbody>
     </table>
-    
     <button class="btn btn-default button" id="pre" ng-click="prePage()">上一页</button>
     <button class="btn btn-default button" id="next" ng-click="nextPage()">下一页</button>
 </div>
@@ -173,7 +207,7 @@
         </tbody>
     </table>
 </div>
-<!--添加模型弹出框-->
+<!--添加模型-->
 <!--div id ="addModel">
     <span style="display: inherit;text-align: right;position: relative;">
             <button class="btn btn-primary" type="button" id="b" ng-click="closeAddModel()"><i class="fa fa-close"></i></button>
@@ -326,50 +360,51 @@
             </div>
         </div>
     </div>
-</body>
 <!--更新位置-->
 <div id ="updatePosition">
     <span style="display: inherit;text-align: right;position: relative;">
             <button class="btn btn-primary" type="button" ng-click="closeUpdate()"><i class="fa fa-close"></i></button>
     </span>
-            <div class="fontColor">
-                <label class="col-cm-3 control-label">
-                    <span style="color: red;">*</span>位置
-                </label><br/>
-                <span>X:</span><input type="text" required/><br/>
-                <span>Y:</span><input type="text" required/><br/>
-                <span>Z:</span><input type="text" required/><br/>
-            </div>
-            <div class="fontColor">
-                <label class="col-cm-3 control-label">
-                    <span style="color: red;">*</span>比例
-                </label><br/>
-                <span>X:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
-                <span>Y:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
-                <span>Z:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
-            </div>
-            <div class="fontColor">
-                <label class="col-cm-3 control-label">
-                    <span style="color: red;">*</span>旋转
-                </label><br/>
-                <span>X:</span><input type="text" value =Math.PI/2 placeholder=Math.PI/2 required/><br/>
-                <span>Y:</span><input type="text" value =Math.PI/2 placeholder=Math.PI/2 required/><br/>
-                <span>Z:</span><input type="text" value ="0" placeholder="0" required/><br/><br/>
-            </div>
-            <div class="fontColor" style="text-align: right">
-                <button type="button" class="btn btn-danger" ng-click="_updatePosition()">
-                    确认
-                </button>
-                <button type="button" class="btn btn-info" ng-click="application()">
-                    应用
-                </button>
-                <button type="button" class="btn btn-success" ng-click="reSet()">
-                    重置
-                </button>
-            </div>
+    <div class="fontColors">
+        <label class="col-cm-3 control-label">
+            <span style="color: red;">*</span>位置
+        </label><br/>
+        <span>X:</span><input type="text" required/><br/>
+        <span>Y:</span><input type="text" required/><br/>
+        <span>Z:</span><input type="text" required/><br/>
+    </div>
+    <div class="fontColors">
+        <label class="col-cm-3 control-label">
+            <span style="color: red;">*</span>比例
+        </label><br/>
+        <span>X:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
+        <span>Y:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
+        <span>Z:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
+    </div>
+    <div class="fontColors">
+        <label class="col-cm-3 control-label">
+            <span style="color: red;">*</span>旋转
+        </label><br/>
+        <span>X:</span><input type="text" value =Math.PI/2 placeholder=Math.PI/2 required/><br/>
+        <span>Y:</span><input type="text" value =Math.PI/2 placeholder=Math.PI/2 required/><br/>
+        <span>Z:</span><input type="text" value ="0" placeholder="0" required/><br/><br/>
+    </div>
+    <div class="fontColors" style="text-align: right">
+        <button type="button" class="btn btn-danger" ng-click="submitModel()">
+            确认
+        </button>
+        <button type="button" class="btn btn-info" ng-click="application()">
+            应用
+        </button>
+        <button type="button" class="btn btn-success" ng-click="reSet()">
+            重置
+        </button>
+    </div>
 </div>
 
 
+
+</body>
 </html>
 
 {% endraw %}
