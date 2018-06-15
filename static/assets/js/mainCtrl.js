@@ -96,8 +96,6 @@ $scope.changeIcon = function(){
         jQuery("#icon").attr("class","fa fa-angle-double-up");
         jQuery("#allDevice").slideDown();
     }
-
-
     /*
 $scope.packSearchMenu = function(){
     if(jQuery("#packUp").attr("class") == "fa fa-angle-double-left"){
@@ -652,7 +650,7 @@ $scope.updateDeviceModel = function(){
     });
 }
 
-/*导航栏的实现效果*/
+/*上传模型*/
 
 
 
