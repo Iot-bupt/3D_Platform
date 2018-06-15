@@ -54,7 +54,6 @@ $.ajax({
                 }  
         });  
 }
-
 //上传进度 
 function uploadProgress(evt) {  
 if (evt.lengthComputable) {  
