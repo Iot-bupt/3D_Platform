@@ -61,7 +61,6 @@ $scope.changeIcon = function(){
     }
    
 }
-
     $scope.packSearchMenu = function(){
         jQuery("#menu").css("display","block");
     }
