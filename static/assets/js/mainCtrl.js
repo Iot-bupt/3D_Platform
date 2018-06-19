@@ -559,20 +559,6 @@ $scope.searchDeviceInfo = function(){
             }
         });
     }
-/*
-* var JSONBody = {
-            "deviceId": $scope.deviceInfo.id,
-            "location": 'x:'+x+',y:'+y+',z:'+z,
-            "name": $scope.deviceInfo.name,
-            "dModelUrl": ""
-        }
-        console.log(JSONBody);
-        var Body = JSON.stringify(JSONBody);
-        console.log(Body);
-
-        '{position:{x:'+ JSONBody.position.x+',y:'+JSONBody.position.y+',z:'+JSONBody.position.z+'}，'+
-                            'scale:{x:'+JSONBody.scale.x+',y:'+JSONBody.scale.y+',z:'+JSONBody.scale.z+'}，'+
-                            'rotation:{x:'+JSONBody.rotation.x+',y:'+JSONBody.rotation.y+',z:'+JSONBody.rotation.z+'}}',
 
 /*重置参数*/
     $scope.reSet = function(){
@@ -586,7 +572,11 @@ $scope.searchDeviceInfo = function(){
         //jQuery('#yRotationValue').val("");
         //jQuery('#zRotationValue').val("");
     }
-
+    $scope.uploadReSet = function(){
+        jQuery('#xValue-s').val("");
+        jQuery('#yValue-s').val("");
+        jQuery('#zValue-s').val("");
+    }
     /*删除模型*/
     $scope.delModel = function(){
         console.log($scope.deviceInfo);
@@ -719,6 +709,10 @@ $scope.uploadModel = function(){
     });
 
 }
+
+/*双击将左边展示在文本框*/
+
+
 
 
 //初始化显示默认模型jQuery-ui
