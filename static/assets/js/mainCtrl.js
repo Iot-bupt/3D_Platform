@@ -653,9 +653,32 @@ $scope.updateDeviceModel = function(){
 }
 
 /*上传模型*/
+var parameter;
+$scope.updateFile = function(){
+    console.log("sss");
+    var $input = $('#upFile');
+    var files = $input.prop('files');
+    console.log(files);
+    var data = new FormData();
+    data.append('upFile', files[0]);
+    $.ajax({
+        url: '/api/uploadDevice',
+        type: 'POST',
+        data: data,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success:(function(res){
+            parameter = res;
+            //console.log(parameter);
+        })
+    });
+}
 $scope.uploadModel = function(){
+    console.log(parameter);
+    console.log(parameter.url);
     console.log($scope.deviceInfo.id);
-    //console.log("ssss");
+    console.log("ssss");
     var JSONBody = {
         position:{
             x:Number(jQuery("#xValue-s").val()),
@@ -682,13 +705,13 @@ $scope.uploadModel = function(){
             "deviceId": $scope.deviceInfo.id,
             "location": JSON.stringify(JSONBody),
             "name": $scope.deviceInfo.name,
-            "dModelUrl": "sensor_center.stl"
+            "dModelUrl": parameter.url
         },
         success:function(res){
             //$("#addModel").modal("hide");
             location.reload();
-            //console.log(res);
-            alert("sucess1");
+            console.log(res);
+            //alert("sucess1");
         },
         error:function(){
             alert("创建失败！");
