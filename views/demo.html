@@ -382,28 +382,28 @@
         <label class="col-cm-3 control-label">
             <span style="color: red;">*</span>位置
         </label><br/>
-        <span>X:</span><input type="text" required/><br/>
-        <span>Y:</span><input type="text" required/><br/>
-        <span>Z:</span><input type="text" required/><br/>
+        <span>X:</span><input type="text" id="xUpdate" required/><br/>
+        <span>Y:</span><input type="text" id="yUpdate" required/><br/>
+        <span>Z:</span><input type="text" id="zUpdate" required/><br/>
     </div>
     <div class="fontColors">
         <label class="col-cm-3 control-label">
             <span style="color: red;">*</span>比例
         </label><br/>
-        <span>X:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
-        <span>Y:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
-        <span>Z:</span><input type="text" value ="0.02" placeholder="0.02" required/><br/>
+        <span>X:</span><input type="text" value ="0.02" id="xBili" placeholder="0.02" required/><br/>
+        <span>Y:</span><input type="text" value ="0.02" id="yBili" placeholder="0.02" required/><br/>
+        <span>Z:</span><input type="text" value ="0.02" id="zBili" placeholder="0.02" required/><br/>
     </div>
     <div class="fontColors">
         <label class="col-cm-3 control-label">
             <span style="color: red;">*</span>旋转
         </label><br/>
-        <span>X:</span><input type="text" value =Math.PI/2 placeholder=Math.PI/2 required/><br/>
-        <span>Y:</span><input type="text" value =Math.PI/2 placeholder=Math.PI/2 required/><br/>
-        <span>Z:</span><input type="text" value ="0" placeholder="0" required/><br/><br/>
+        <span>X:</span><input type="text" id="xXuan" value =Math.PI/2 placeholder=Math.PI/2 required/><br/>
+        <span>Y:</span><input type="text" id="yXuan" value =Math.PI/2 placeholder=Math.PI/2 required/><br/>
+        <span>Z:</span><input type="text" id="zXuan" value ="0" placeholder="0" required/><br/><br/>
     </div>
     <div class="fontColors" style="text-align: right">
-        <button type="button" class="btn btn-danger" ng-click="submitModel()">
+        <button type="button" class="btn btn-danger" ng-click="updateDeviceModel()">
             确认
         </button>
         <button type="button" class="btn btn-info" ng-click="application()">

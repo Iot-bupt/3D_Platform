@@ -466,7 +466,7 @@ $scope.searchDeviceInfo = function(){
         jQuery('#backList').css({'display':'none'});
     }
 
-    /*给当前租户，当前设备场景创建模型*/
+    /*给当前租户，当前设备场景创建默认模型*/
     $scope.submitModel = function(){
         //console.log($scope.deviceInfo.id);
         //console.log($scope.deviceInfo.name);//均能正常获得；
@@ -611,7 +611,6 @@ $scope.searchDeviceInfo = function(){
 /*更新设备模型*/
 $scope.updateDeviceModel = function(){
     //console.log($scope.deviceInfo.id);
-    var ids = $scope.deviceInfo.id;
     var JSONBody = {
         position:{
             x:Number(jQuery("#xUpdate").val()),
@@ -629,19 +628,22 @@ $scope.updateDeviceModel = function(){
             z:Number(jQuery("#zXuan").val())
         }
     }
-    console.log(JSONBody);
+    //console.log(JSONBody);
     console.log(JSON.stringify(JSONBody));
-
     jQuery.ajax({
-        url: '/api/dModel/dModelLocation/'+ids,
+        url: '/api/dModel/dModelLocation/'+$scope.deviceInfo.id,
         dataType: 'json',
         method: 'PUT',
         data: {
-            "location": JSON.stringify(JSONBody)
+            "deviceId": $scope.deviceInfo.id,
+            "location": JSON.stringify(JSONBody),
+            "name": $scope.deviceInfo.name,
+            "dModelUrl": "sensor_center.stl"
         },
         success:function(res){
             //$("#addModel").modal("hide");
-            //location.reload();
+            location.reload();
+            //alert("sss");
             console.log(res);
         },
         error:function(){
@@ -651,7 +653,49 @@ $scope.updateDeviceModel = function(){
 }
 
 /*上传模型*/
+$scope.uploadModel = function(){
+    console.log($scope.deviceInfo.id);
+    //console.log("ssss");
+    var JSONBody = {
+        position:{
+            x:Number(jQuery("#xValue-s").val()),
+            y:Number(jQuery("#yValue-s").val()),
+            z:Number(jQuery("#zValue-s").val())
+        },
+        scale:{
+            x:Number(jQuery("#xScaleValue-s").val()),
+            y:Number(jQuery("#yScaleValue-s").val()),
+            z:Number(jQuery("#zScaleValue-s").val())
+        },
+        rotation:{
+            x:Math.PI/2,
+            y:Math.PI/2,
+            z:Number(jQuery("#zRotationValue-s").val())
+        }
+    }
+    console.log(JSONBody);
+    jQuery.ajax({
+        url: '/api/dModel/createModel/2/133',
+        dataType: 'json',
+        method: 'POST',
+        data: {
+            "deviceId": $scope.deviceInfo.id,
+            "location": JSON.stringify(JSONBody),
+            "name": $scope.deviceInfo.name,
+            "dModelUrl": "sensor_center.stl"
+        },
+        success:function(res){
+            //$("#addModel").modal("hide");
+            location.reload();
+            //console.log(res);
+            alert("sucess1");
+        },
+        error:function(){
+            alert("创建失败！");
+        }
+    });
 
+}
 
 
 //初始化显示默认模型jQuery-ui
