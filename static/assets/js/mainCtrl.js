@@ -712,6 +712,11 @@ $scope.uploadModel = function(){
 
 /*双击将左边展示在文本框*/
 
+//=======================加载本地模型=======
+$scope.loadLocalModel = function(){
+    alert("n");
+}
+
 
 
 
