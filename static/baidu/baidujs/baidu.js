@@ -34,6 +34,12 @@ var date
 var marker
 var drawingManager
 var biaozhi;
+var idOffset;//用于查找下一页
+var textOffset;//用于查找下一页
+var hasNext;//判断是否存在下一页
+var preDeviceId = [];//用于查找上一页
+var preDeviceName = [];//用于查找上一页
+var pageNum = 1;//记录当前页面
     var map = new BMap.Map("allmap");    // 创建Map实例
     map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);  // 初始化地图,设置中心点坐标和地图级别
     //添加地图类型控件
@@ -195,9 +201,9 @@ function addContent(tenantId,id,name,longtitude,latitude,year,month,date)
                     '<td>'+year+'-'+month+'-'+date+'</td>'+
                     '</tr>'+
 
-                    '</table> '+'<input type="button" id="addModel" value="上传场景" onclick="addModel()" />'+'   '
-                    +'<input type="button" id="alterSite" value="修改站点" onclick="alterSite()"/>'+'   '
-                    +'<a href="/demo" target="_self">'+'进入场景'+'</a>' +
+                    '</table> '+'<input type="button" id="addModel" value="上传场景" onclick="addModel()" />'+'&nbsp;&nbsp;&nbsp;&nbsp;'
+                    +'<input type="button" id="alterSite" value="修改站点" onclick="alterSite()"/>'+'&nbsp;&nbsp;&nbsp;&nbsp;'
+                    +'<input type="button" value="进入场景" onclick="intoScence()">'+
                     '</div>'
 
                     return content;
@@ -563,6 +569,19 @@ function addModel()
     }
 }
 
+/////进入场景/////
+function intoScence()
+{
+    //console.log(e)
+    for (var i = 0; i < reqArray.length; i++) {
+        if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {        
+             location.href="/demo?id="+reqArray[i].id;
+            }
+    }
+   
+
+}
+
 //测量事件监听
 map.addEventListener("load",function(){
     myDis.open();  //开启鼠标测距
@@ -592,6 +611,7 @@ function draw() {
     }
 
 drawingManager.open()
+drawingManager.enableCalculate()
 //添加鼠标绘制工具监听事件，用于获取绘制结果
 drawingManager.addEventListener('overlaycomplete', overlaycomplete);
 
@@ -701,23 +721,167 @@ function clearAll() {
     overlays.length = 0
 }
 
-function deviceSearch()
+// function deviceSearch()
+// {
+//   var input = document.getElementById("searchDevice");
+//   var filter = input.value.toUpperCase();//转换为大写
+//   var table = document.getElementById("myTable2");
+//   var tr = table.getElementsByTagName("tr");
+//   // 循环表格每一行，查找匹配项
+//   for (i = 0; i < tr.length; i++) {
+//     td = tr[i].getElementsByTagName("td")[3];
+//     if (td) {
+//       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+//         tr[i].style.display = "";
+//       } else {
+//         tr[i].style.display = "none";
+//       }
+//     } 
+//   }
+// }
+
+////////设备搜索///////
+function deviceSearchBox()
 {
-  var input = document.getElementById("searchDevice");
-  var filter = input.value.toUpperCase();//转换为大写
-  var table = document.getElementById("myTable2");
-  var tr = table.getElementsByTagName("tr");
-  // 循环表格每一行，查找匹配项
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[3];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    } 
-  }
+    //$("#myTable3  tr:not(:first)").empty(""); 
+    $('#deviceSearch').modal('show'); 
+    document.getElementById( "deviceInfo1" ).style.display="none" ;
+}
+
+function showTable(req)
+{               
+                $("#myTable3  tr:not(:first)").empty(""); 
+                for (var i = 0; i < req.data.length; i++) {
+                    w=req.data[i].siteId
+                    console.log(w)
+                var table = document.getElementById("myTable3");
+                var row = table.insertRow(i+1);
+                row.id = (i + 1);
+                var cell0 = row.insertCell(0);
+                var cell1 = row.insertCell(1);
+                var cell2 = row.insertCell(2);
+                var cell3 = row.insertCell(3);
+                var cell4 = row.insertCell(4);
+                var cell5 = row.insertCell(5);
+                cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>'
+                cell1.innerHTML = req.data[i].tenantId;
+                cell2.innerHTML = req.data[i].customerId;
+                cell3.innerHTML = req.data[i].name;
+                cell4.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)] 
+                cell5.innerHTML = '<input type="button" class="btn btn-primary" value="进入站点" onclick="look(1)"/>'
+               }
+               document.getElementById( "deviceInfo1" ).style.display="" ;
+}
+
+function deviceSearch() {
+    if($("#searchDevice").val()!='')
+    {
+        jQuery.ajax({
+                url:"/api/3d815/search/"+tenantId+"?limit=2000&textSearch="+$("#searchDevice").val(),
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                type:"GET",
+                success:function(req) {
+                    console.log(req.res)
+                    showTable(req.res)
+                    if(req.res.nextPageLink!=null)
+                     {
+                        idOffset = req.res.nextPageLink.idOffset;
+                        textOffset = req.res.nextPageLink.textOffset;
+                        hasNext = req.res.hasNext;
+                        console.log(idOffset);
+                        console.log(textOffset);
+                        console.log(hasNext);
+                        preDeviceId.push(idOffset);
+                        preDeviceName.push(textOffset);
+                     }
+                }
+            });
+    }
+
+}
+
+function nextPage(){
+    console.log(hasNext);
+    if(hasNext){
+        jQuery.ajax({
+            url:"/api/3d815/search/"+tenantId+"?limit=2&textSearch="+$("#searchDevice").val()+"&idOffset="+idOffset+"&textOffset="+textOffset,
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(req) { 
+                console.log("/api/3d815/search/"+tenantId+"?limit=2&textSearch="+$("#searchDevice").val()+"&idOffset="+idOffset+"&textOffset="+textOffset)
+                console.log(req.res)
+                pageNum++;  
+                showTable(req.res)
+                if( req.res.hasNext == true){
+                    idOffset = req.res.nextPageLink.idOffset;
+                    textOffset = req.res.nextPageLink.textOffset;
+                    hasNext = req.res.hasNext;
+                    preDeviceId.push(idOffset);
+                    preDeviceName.push(textOffset);
+                    //console.log($scope.deviceList);
+                }else{
+                    hasNext = req.res.hasNext;
+                    
+                }
+            },
+            error:function(err){
+                alert("当前已是最后一页！");
+            }
+        });
+    }else{
+        alert("当前已是最后一页！");
+    }
+    
+   
+}
+
+//上一页
+function prePage(){
+    if(pageNum == 1){
+        alert("当前已是第一页！");
+    }
+    else if(pageNum == 2){
+        jQuery.ajax({
+            url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset=&textOffset=",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(req) {
+                pageNum--;
+                if(req.data.length != 0){
+
+                    showTable(req)
+                    idOffset = req.nextPageLink.idOffset;
+                    textOffset = req.nextPageLink.textOffset;
+                    hasNext = req.hasNext;
+                    preDeviceId.push(idOffset);
+                    preDeviceName.push(textOffset);
+                }
+            }
+        }); 
+    }else{
+        jQuery.ajax({
+            url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(req) { 
+                pageNum--;
+                showTable(req);
+                idOffset = req.nextPageLink.idOffset;
+                textOffset = req.nextPageLink.textOffset;
+                hasNext = req.hasNext;
+                //console.log(idOffset);
+                //console.log(textOffset);
+                //console.log(hasNext);
+                preDeviceId.push(idOffset);
+                preDeviceName.push(textOffset);
+                
+            }
+        });
+    }
 }
 
 function lookSiteList()
@@ -733,3 +897,45 @@ function measure(){
     }
 }
 
+function gotoSence(e)
+
+{
+    //location.href="/sitesList?id="+tenantId;
+    location.href="/demo?id="+e;
+}
+
+function look(e)
+{       
+    
+    switch(e)
+    {
+    case 1:
+      var tableObj = document.getElementById("myTable3");
+      break;
+    case 2:
+      var tableObj = document.getElementById("myTable2");
+      break;
+    default:
+
+    }
+       //获取表格中的所有行      
+        var rows = tableObj.getElementsByTagName("tr"); 
+        //给tr绑定click事件
+        for(var i in rows){
+          rows[i].onclick = rowClick;
+        }
+      function rowClick(e){ 
+        //alert(this.rowIndex); //显示所点击的行的索引
+        //console.log(this );
+        var td = this.getElementsByTagName("td");
+        if(td[4].innerHTML=="undefined")
+        {
+            alert('该设备没有分配站点')
+        }
+         else
+         {
+            location.href="/demo?id="+idArray[nameArray.indexOf(td[4].innerHTML)];
+         }
+         
+      }         
+}

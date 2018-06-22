@@ -111,6 +111,32 @@ progress
 {
     text-align: center;
 }
-
+/*站点模态框*/
+.siteModalClass{
+    margin: 30px 10px 0 10px;
+    cursor: pointer;
+    padding: 20px;
+    width: 150px;
+    height: 125px;
+    border: 2px solid #c0c0c0;
+    /*float: right;*/
+    border-radius: 10px;
+    background: white;
+}
+#siteModal
+{
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+/*列表首行*/
+.firstTr {
+    border: 1px solid #d6dfe6;
+    background: linear-gradient(to bottom, #f3f8fc, #ebf4f9, #e3f1fa, #e0f0fd, #d8e9fd);
+}
+.firstTr th {
+    border-right: 2px solid rgba(209, 218, 223, 0.4);
+}
 /*---------------------------------------自定义样式---------------------------------------------*/
 

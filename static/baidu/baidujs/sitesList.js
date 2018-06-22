@@ -58,14 +58,18 @@ jQuery.ajax({
         if(req.data.length != 0){
            showTable(req)
              console.log(req);
-            idOffset = req.nextPageLink.idOffset;
-            textOffset = req.nextPageLink.textOffset;
-            hasNext = req.hasNext;
-            // console.log(idOffset);
-            // console.log(textOffset);
-            // console.log(hasNext);
-            preDeviceId.push(idOffset);
-            preDeviceName.push(textOffset);
+             if(req.nextPageLink!=null)
+             {
+                idOffset = req.nextPageLink.idOffset;
+                textOffset = req.nextPageLink.textOffset;
+                hasNext = req.hasNext;
+                // console.log(idOffset);
+                // console.log(textOffset);
+                // console.log(hasNext);
+                preDeviceId.push(idOffset);
+                preDeviceName.push(textOffset);
+             }
+            
         }
     }
 });

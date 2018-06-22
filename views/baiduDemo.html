@@ -11,13 +11,14 @@
     <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular.js"></script>
     <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
     <!-- <script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script> -->
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
-    <link rel="stylesheet" href="../static/baidu/css/style.css"/>
+    <!-- <link rel="stylesheet" href="../static/baidu/css/style.css"/> -->
     <link rel="stylesheet" href="../static/baidu/css/style1.css"/>
     <link rel="stylesheet" href="../static/baidu/css/bootstrap.css"/>
     <link rel="stylesheet" href="../static/baidu/css/bootstrap-switch.css"/>
@@ -29,8 +30,10 @@
     
 	<title>地图展示</title>
 </head>
+<style>
 
-<body>
+</style>
+<body ng-app="myApp"  ng-controller="myCtrl">
 <section class="sec-menu" >
     <div class="container"  style="margin: 0;width:100%;">
         <div class="row" id="head-menu">
@@ -92,6 +95,7 @@
                 
                 <!-- <li><input type="button" class="anjian" value="关闭" id="searchOff" /></li> -->
                 <li><input type="button" class="anjian" value="框选搜索" id ="jiexi" onclick="draw()" /></li>
+                <li><input type="button" class="anjian" value="设备搜索" id ="deviceSearch1" onclick="deviceSearchBox()" /></li>
             </ul>
         </nav>
     </div>
@@ -263,7 +267,36 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="deviceList">
+<!-- 站点模态框 -->
+<!-- 模板引擎与angularjs冲突 -->
+{% raw %}
+    <div class="modal fade" tabindex="-1" role="dialog" id="deviceList"  >
+        <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
+        <div class="modal-dialog" role="document" style="width:900px" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" style="font-weight: bold;">站点列表</h4>
+                </div>
+                <input type="text" class="form-control"  id="site" disabled="true" 
+                style="font-size:15px; font-weight:800">
+     <div  class="modal-body" id="siteModal" style="height: 400px;overflow-y: scroll";>
+        <div ng-repeat="x in records"  class="siteModalClass" ng-mouseover="fadeSiblings()" ng-mouseout="reSiblings()" ng-click="showAll(x)" >                
+                <span style="font-size:20px"><i class="glyphicon glyphicon-hdd"></i></span>
+                <p class="stylePulgin">{{x.name}}</p>
+            
+        </div>
+        
+    </div>
+                <!-- <div class="modal-footer">
+                </div> -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endraw %}
+
+<!-- 设备列表 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="deviceList1" >
         <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
         <div class="modal-dialog" role="document" style="width:900px" >
             <div class="modal-content">
@@ -271,8 +304,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                     <h4 class="modal-title" style="font-weight: bold;">设备列表</h4>
                 </div>
-                <input type="text" class="form-control" placeholder="请输入设备名称..." id="searchDevice" onkeyup="deviceSearch()">
-                <div class="modal-body" id="deviceInfo" style="height: 500px;overflow-y: scroll";>
+                <input type="text" class="form-control"  id="device" disabled="true" 
+                style="font-size:15px; font-weight:800">
+
+            <div class="modal-body" id="deviceInfo" style="height: 500px;overflow-y: scroll";>
             <table id ="myTable2" class="table table-striped" cellpadding="0" cellspacing="0" style="width:100%" >
             <tr class="firstTr" id="tr1">
                 <th width="30%">设备ID</th>
@@ -285,12 +320,46 @@
         </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default"  id="modalClose" >上一页</button>
-                    <button type="button" class="btn btn-primary"  id="modalConfirm1" >下一页</button>
+                    <button type="button" class="btn btn-default"  id="modalClose" ng-click="prePage()" >上一页</button>
+                    <button type="button" class="btn btn-primary"  id="modalConfirm" ng-click="nextPage()">下一页</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+<!-- 设备搜索 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="deviceSearch">
+        <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
+        <div class="modal-dialog" role="document" style="width:900px" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" style="font-weight: bold;">设备搜索</h4>
+                </div>
+                <input type="text" class="form-control"  id="searchDevice" placeholder="请输入设备名称..." 
+                onkeyup="deviceSearch()">
+                <div class="modal-body" id="deviceInfo1" style="height: 500px;overflow-y: scroll";>
+            <table id ="myTable3" class="table table-striped" cellpadding="0" cellspacing="0" style="width:100%" >
+            <tr class="firstTr" id="tr1">
+                <th width="30%">设备ID</th>
+                <th width="10%">租户ID</th>
+                <th width="10%">用户ID</th>
+                <th width="20%">设备名称</th>
+                <th width="10%">所属站点</th>
+                <th width="20%">操作</th>
+            </tr>
+        </table>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-default"  id="modalClose1" onclick="nextPage()">上一页</button>
+                    <button type="button" class="btn btn-primary"  id="modalConfirm1"  >下一页</button>
+                </div> -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
 </body>
 
 <script type="text/javascript" src="../static/baidu/baidujs/baidu.js"></script>
@@ -300,11 +369,4 @@
 
 </html>
 <script type="text/javascript">
-// function a1()
-// {
-//     alert('1')
-// }
-// $(modalConfirm1).click(function(){
-//    alert('1')
-// });
 </script>

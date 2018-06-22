@@ -12,6 +12,7 @@
 /** 
  * @namespace BMap的所有library类均放在BMapLib命名空间下
  */
+
 var BMapLib = window.BMapLib = BMapLib || {};
 
 /**
@@ -1101,7 +1102,182 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
     /**
      * 绑定鼠标画矩形的事件
      */
+        var sitesID
+        var idArray=[];
+        var nameArray=[];
+        var siteIdArray=[];
+        var deviceArray=[];
+        var idOffset;//用于查找下一页
+        var textOffset;//用于查找下一页
+        var hasNext;//判断是否存在下一页
+        var preDeviceId = [];//用于查找上一页
+        var preDeviceName = [];//用于查找上一页
+        var pageNum = 1;//记录当前页面
+        function showTable(req)
+{
+                $("#myTable2  tr:not(:first)").empty(""); 
+                for (var i = 0; i < req.data.length; i++) {
+                var table = document.getElementById("myTable2");
+                var row = table.insertRow(i+1);
+                row.id = (i + 1); 
+                var cell0 = row.insertCell(0);
+                var cell1 = row.insertCell(1);
+                var cell2 = row.insertCell(2);
+                var cell3 = row.insertCell(3);
+                var cell4 = row.insertCell(4);
+                var cell5 = row.insertCell(5);
+                cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>'
+                cell1.innerHTML = req.data[i].tenantId;
+                cell2.innerHTML = req.data[i].customerId;
+                cell3.innerHTML = req.data[i].name;
+                cell4.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)] 
+                cell5.innerHTML = '<input type="button" class="btn btn-primary" value="进入站点" onclick="look(2)"/>'
+            }
+}
+
+var app = angular.module("myApp", []);
+app.controller("myCtrl", function($scope) {
+    $scope.getData = function () {
+        //$scope.records =[];
+     $('#deviceList').modal('show');
+            //return 'qubernet';
+         }
+    //console.log(idArray)
+    $scope.fadeSiblings = function () {
+        $(".siteModalClass").mouseover(function () {
+            $(this).siblings().stop().fadeTo(300, 0.3);
+        });
+    };
+    /*鼠标移出动画效果*/
+    $scope.reSiblings = function () {
+        $(".siteModalClass").mouseout(function () {
+            $(this).siblings().stop().fadeTo(300, 1);
+        });
+    };
+
+    $scope.showAll = function (item) {
+        $('#device').val('所属站点：'+item.name); 
+        sitesID=item.id
+        console.log(item.id)
+        $('#deviceList1').modal('show');
+        $.ajax({
+        url: 'api/3d815/siteDevicePaging/'+tenantId+'/'+item.id+'?limit=1000&idOffset=&textOffset=',
+        type: 'get',
+        async : false,
+        dataType: 'json',
+        contentType: 'application/json;',
+
+        error:function(){
+            alert('失败');
+        },
+        success: function(req) {
+            //console.log(req)
+            //showTable(req)
+            //if(req.data.length != 0){
+           showTable(req)
+             console.log(req);
+             if(req.nextPageLink!=null)
+             {
+                idOffset = req.nextPageLink.idOffset;
+                textOffset = req.nextPageLink.textOffset;
+                hasNext = req.hasNext;
+                // console.log(idOffset);
+                // console.log(textOffset);
+                // console.log(hasNext);
+                preDeviceId.push(idOffset);
+                preDeviceName.push(textOffset);
+             }
+            
+        //}
+           }
+       });
+    };
+
+    $scope.nextPage=function(){
+    console.log(hasNext);
+    if(hasNext){
+        jQuery.ajax({
+            url:'api/3d815/siteDevicePaging/'+tenantId+'/'+sitesID+'?limit=9&idOffset='+idOffset+'&textOffset='+textOffset,
+            contentType: "application/json; ",
+            async: false,
+            type:"GET",
+            success:function(req) { 
+                console.log("/api/3d815/paging/"+tenantId+"?limit=9&idOffset="+idOffset+"&textOffset="+textOffset);
+                pageNum++;  
+                showTable(req)
+                if( req.hasNext == true){
+                    idOffset = req.nextPageLink.idOffset;
+                    textOffset = req.nextPageLink.textOffset;
+                    hasNext = req.hasNext;
+                    preDeviceId.push(idOffset);
+                    preDeviceName.push(textOffset);
+                    //console.log($scope.deviceList);
+                }else{
+                    hasNext = req.hasNext;
+                    
+                }
+            },
+            error:function(err){
+                alert("当前已是最后一页！错误");
+            }
+        });
+    }else{
+        alert("当前已是最后一页！");
+    }
+    
+   
+}
+
+//上一页
+$scope.prePage=function() {
+    if(pageNum == 1){
+        alert("当前已是第一页！");
+    }
+    else if(pageNum == 2){
+        jQuery.ajax({
+            url:"/api/3d815/paging/"+tenantId+'/'+sitesID+"?limit=9&idOffset=&textOffset=",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(req) {
+                pageNum--;
+                if(req.data.length != 0){
+
+                    showTable(req)
+                    idOffset = req.nextPageLink.idOffset;
+                    textOffset = req.nextPageLink.textOffset;
+                    hasNext = req.hasNext;
+                    preDeviceId.push(idOffset);
+                    preDeviceName.push(textOffset);
+                }
+            }
+        }); 
+    }else{
+        jQuery.ajax({
+            url:"/api/3d815/paging/"+tenantId+'/'+sitesID+"?limit=9&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            type:"GET",
+            success:function(req) { 
+                pageNum--;
+                showTable(req);
+                idOffset = req.nextPageLink.idOffset;
+                textOffset = req.nextPageLink.textOffset;
+                hasNext = req.hasNext;
+                preDeviceId.push(idOffset);
+                preDeviceName.push(textOffset);
+                
+            }
+        });
+    }
+}
+
+  });
+
     DrawingManager.prototype._bindRectangle = function() {
+        idArray=[];
+
+        nameArray=[];
 
         var me           = this,
             map          = this._map,
@@ -1112,6 +1288,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
         /**
          * 开始绘制矩形
          */
+        
         var startAction = function (e) {
             baidu.stopBubble(e);
             baidu.preventDefault(e);
@@ -1137,17 +1314,16 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
         /**
          * 绘制矩形结束
          */
+
         var i
-        var idArray=[];
-        var nameArray=[];
-        var siteIdArray=[];
-        var deviceArray=[];
+        var biaozhi
         var idOffset;//用于查找下一页
         var textOffset;//用于查找下一页
         var hasNext;//判断是否存在下一页
         var preDeviceId = [];//用于查找上一页
         var preDeviceName = [];//用于查找上一页
         var pageNum = 1;//记录当前页面
+        var sitesIfoArr = [];
         var endAction = function (e) {
             var calculate = me._calculate(polygon, polygon.getPath()[2]);
             me._dispatchOverlayComplete(polygon, calculate);
@@ -1158,7 +1334,8 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
              for(var i=0;i<adds.length;i++)
             {
                 //alert(BMapLib.GeoUtils.isPointInPolygon(adds[i], polygon));
-                if((BMapLib.GeoUtils.isPointInPolygon(adds[i], polygon))==true){
+                if((BMapLib.GeoUtils.isPointInPolygon(adds[i], polygon))==true)
+                {
                     
                 for (var j = 0; j < reqArray.length; j++) 
                 {
@@ -1167,233 +1344,84 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                     //console.log(reqArray[j].id);
                     idArray.push(reqArray[j].id)
                     nameArray.push(reqArray[j].name)
-                //      var table = document.getElementById("myTable2");
-                // var row = table.insertRow(1);
-                // row.id = (j + 1);
-                // var cell0 = row.insertCell(0);
-                // // var cell1 = row.insertCell(1);
-                // // var cell2 = row.insertCell(2);
-                // // var cell3 = row.insertCell(3);
-                // // var cell4 = row.insertCell(4);
-                // // // cell5 = row.insertCell(5);
-                // // // cell6 = row.insertCell(6);
-                // // var cell5 = row.insertCell(5);
-
-                // cell0.innerHTML = '<td id=row.id>'+reqArray[j].id+'</td>' ;
-                // cell1.innerHTML = req.data[i].tenantId;
-                // cell2.innerHTML = req.data[i].customerId;
-                // cell3.innerHTML = req.data[i].name;
-                // cell4.innerHTML = req.data[i].parentDeviceId;
                     }
 
                 }
               }
             }
-        for(var k=0;k<idArray.length;k++)
-        {
-        var table = document.getElementById("myTable2");
+
+             for (var i = 0; i < idArray.length; i++) {
+             var sitesIfo = {};
+             for (var j = 0; j < nameArray.length; j++) {
+              if (i == j) {
+               sitesIfo.id = idArray[i];
+               sitesIfo.name = nameArray[j];
+               sitesIfoArr.push(sitesIfo);
+              }
+             }
+            }
+
+            // for (var i = 0; i < idArray.length; i++) {
+            //  console.log(i);
              
+            //  for (var j = 0; j < nameArray.length; j++) {
+            //   if (i == j) {
+            //    sitesIfo.name = idArray[i];
+            //    sitesIfo.value = nameArray[j];
+            //    sitesIfoArr.push(sitesIfo);
+            //   }
+            //  }
+            // }
+            //$('#deviceList').modal('show');
+
+       //  for(var k=0;k<idArray.length;k++)
+       //  {
+       //  var table = document.getElementById("myTable2");
        //  $.ajax({
-       //  url: '/api/3d815/paging/2?limit=50&idOffset=&textOffset=',
+       //  url: 'api/3d815/siteDevicePaging/'+tenantId+'/'+idArray[k]+'?limit=1000&idOffset=&textOffset=',
        //  type: 'get',
        //  async : false,
        //  dataType: 'json',
-       //  contentType: 'application/json;charset=UTF-8',
+       //  contentType: 'application/json;',
 
        //  error:function(){
        //      alert('失败');
        //  },
        //  success: function(req) {
-       //      console.log(req.data);
-       //      // for(var i=0;i<req.data.length;i++)
-       //      // {
-       //      //     console.log(req.data[i].siteId);
-       //      //     siteIdArray.push(req.data[i].siteId)
-       //      //     console.log(siteIdArray);
-       //      // }
-           
+
        //     }
        // });
-                
-
-        $.ajax({
-        url: 'api/3d815/siteDevicePaging/'+tenantId+'/'+idArray[k]+'?limit=1000&idOffset=&textOffset=',
-        type: 'get',
-        async : false,
-        dataType: 'json',
-        contentType: 'application/json;',
-
-        error:function(){
-            alert('失败');
-        },
-        success: function(req) {
-            //console.log(req);
-            //console.log(req.data);
-            //if(req.data.length != 0)
-            //{
-                for(i=0;i<req.data.length;i++)
-            {
-                var row = table.insertRow(i+1);
-                row.id = (i + 1); 
-                var cell0 = row.insertCell(0);
-                var cell1 = row.insertCell(1);
-                var cell2 = row.insertCell(2);
-                var cell3 = row.insertCell(3);
-                var cell4 = row.insertCell(4);
-                var cell5 = row.insertCell(5);
-                cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>'
-                cell1.innerHTML = req.data[i].tenantId;
-                cell2.innerHTML = req.data[i].customerId;
-                cell3.innerHTML = req.data[i].name;
-                cell4.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)] 
-                cell5.innerHTML = '<a href="/demo" >'+'进入场景'+'</a>'
-            }
-    //             idOffset = req.nextPageLink.idOffset;
-    //             textOffset = req.nextPageLink.textOffset;
-    //             hasNext = req.hasNext;
-    //             preDeviceId.push(idOffset);
-    //             preDeviceName.push(textOffset);
-    //         }
-    //         console.log(hasNext);
-    //         console.log(preDeviceId);
-    //         console.log(preDeviceName);
-    //         console.log(idOffset);
-    //         console.log(textOffset);
-
-    //         if(hasNext){
-    //             alert(hasNext)
-    //     jQuery.ajax({
-    //         url:'api/3d815/siteDevicePaging/2/'+idArray[k]+'?limit=1&idOffset='+idOffset+'&textOffset='+textOffset,
-    //         // contentType: "application/json ",
-    //         async: false,
-    //         dataType: 'json',
-    //         type:"GET",
-    //         success:function(req) { 
-    //             pageNum++;  
-    //             //showTable(req)
-    //             if( req.hasNext == true){
-    //                 idOffset = req.nextPageLink.idOffset;
-    //                 textOffset = req.nextPageLink.textOffset;
-    //                 hasNext = req.hasNext;
-    //                 preDeviceId.push(idOffset);
-    //                 preDeviceName.push(textOffset);
-    //                 if(req.data.length != 0)
-    //         {
-    //             for(i=0;i<req.data.length;i++)
-    //         {
-    //             var row = table.insertRow(i+1);
-    //             row.id = (i + 1); 
-    //             var cell0 = row.insertCell(0);
-    //             var cell1 = row.insertCell(1);
-    //             var cell2 = row.insertCell(2);
-    //             var cell3 = row.insertCell(3);
-    //             var cell4 = row.insertCell(4);
-    //             var cell5 = row.insertCell(5);
-    //             cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>'
-    //             cell1.innerHTML = req.data[i].tenantId;
-    //             cell2.innerHTML = req.data[i].customerId;
-    //             cell3.innerHTML = req.data[i].name;
-    //             cell4.innerHTML = req.data[i].siteId; 
-    //             cell5.innerHTML = '<a href="/demo" >'+'进入场景'+'</a>'
-    //         }
-            
-    //         }
-    //                 //console.log($scope.deviceList);
-    //             }else{
-    //                 hasNext = req.hasNext;
-                    
-    //             }
-    //         },
-    //         error:function(err){
-    //             alert("当前已是最后一页！");
-    //         }
-    //     });
-    // }
-    //else{}
-            
-            //请求成功时处理
-           }
-       });
-
-//         jQuery.ajax({
-//     url:"/api/3d815/paging/2?limit=12&idOffset=&textOffset=",
-//     contentType: "application/json; charset=utf-8",
-//     async: false,
-//     type:"GET",
-//     success:function(req) {
-//         if(req.data.length != 0){
-//            showTable(req)
-//              console.log(req);
-//             idOffset = req.nextPageLink.idOffset;
-//             textOffset = req.nextPageLink.textOffset;
-//             hasNext = req.hasNext;
-//             // console.log(idOffset);
-//             // console.log(textOffset);
-//             // console.log(hasNext);
-//             preDeviceId.push(idOffset);
-//             preDeviceName.push(textOffset);
-//         }
-//     }
-// });
-
-// // 下一页
-// function nextPage(){
-//     console.log(hasNext);
-//     if(hasNext){
-//         jQuery.ajax({
-//             url:"/api/3d815/paging/2?limit=12&idOffset="+idOffset+"&textOffset="+textOffset,
-//             contentType: "application/json; charset=utf-8",
-//             async: false,
-//             type:"GET",
-//             success:function(req) { 
-//                 console.log("/api/3d815/paging/2?limit=12&idOffset="+idOffset+"&textOffset="+textOffset);
-//                 pageNum++;  
-//                 showTable(req)
-//                 if( req.hasNext == true){
-//                     idOffset = req.nextPageLink.idOffset;
-//                     textOffset = req.nextPageLink.textOffset;
-//                     hasNext = req.hasNext;
-//                     preDeviceId.push(idOffset);
-//                     preDeviceName.push(textOffset);
-//                     //console.log($scope.deviceList);
-//                 }else{
-//                     hasNext = req.hasNext;
-                    
-//                 }
-//             },
-//             error:function(err){
-//                 alert("当前已是最后一页！");
-//             }
-//         });
-//     }else{
-//         alert("当前已是最后一页！");
-//     }
-// }
-
-                
-                }
-                $('#deviceList').modal('show');
-                clearAll(); 
-                // drawingManager.close();
+       //          }
+       console.log(sitesIfoArr);
+       clearAll();
+       $('#site').val(result.data+'包含站点'+(idArray.length)+'个'); 
+            var appElement = document.querySelector('[ng-controller=myCtrl]');
+             //获取$scope变量
+             var $scope = angular.element(appElement).scope();
+             //调用msg变量，并改变msg的值
+              $scope.records= sitesIfoArr
+             //上一行改变了msg的值，如果想同步到Angular控制器中，则需要调用$apply()方法即可
+             $scope.$apply();
+             //调用控制器中的getData()方法
+             $scope.getData();
         }
 
-        
-
-       
         mask.addEventListener('mousedown', startAction);
 
     }
+
 
     /**
      * 添加显示所绘制图形的面积或者长度
      * @param {overlay} 覆盖物
      * @param {point} 显示的位置
      */
-    DrawingManager.prototype._calculate = function (overlay, point) {
-        var result = {
+    var result = {
             data  : 0,    //计算出来的长度或面积
             label : null  //显示长度或面积的label对象
         };
+    DrawingManager.prototype._calculate = function (overlay, point) {
+        
         if (this._enableCalculate && BMapLib.GeoUtils) {
             var type = overlay.toString();
             //不同覆盖物调用不同的计算方法
@@ -1414,9 +1442,19 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                 result.data = 0;
             } else {
                 //保留2位小数位
-                result.data = '总面积为：'+result.data.toFixed(2)+'平方米';
+                result.data = '总面积为：'+result.data.toFixed(2)+'平方米；';
             }
-            result.label = this._addLabel(point, result.data);
+            //console.log(drawingManager._drawingType)
+            if(drawingManager._drawingType=="rectangle")
+            {
+               $('#site').val("您所选区域"+result.data); 
+            }
+            
+            if(drawingManager._drawingType=="polygon")
+            {
+               result.label = this._addLabel(point, result.data); 
+            }
+            
         }
         return result;
     }
