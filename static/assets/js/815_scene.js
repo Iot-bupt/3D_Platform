@@ -510,7 +510,9 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             document.getElementById('coords').style.display = '';
             console.log(intersects.length); 
             //在mainCtrl.js中绑定前端input
-            if(jQuery('#addModel').css({'display':''})){
+            if($("#addModel").css("display")=="none") {
+                console.log("ssss");
+            }else{
                 jQuery('#xValue').val(selected.point.x.toFixed(6));
                 jQuery('#yValue').val(selected.point.y.toFixed(6));
                 jQuery('#zValue').val(selected.point.z.toFixed(6));
@@ -518,11 +520,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                 jQuery('#yValue-s').val(selected.point.y.toFixed(6));
                 jQuery('#zValue-s').val(selected.point.z.toFixed(6));
             }
-
         }
-        
-        
-    
+
     }
 
     function onDocumentMouseDown(event) {
