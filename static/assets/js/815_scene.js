@@ -19,6 +19,28 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     var transformcontrol;
     var boxmesh2;
     var temp, isdb;
+    var vertex = new THREE.Vector3();
+    var color = new THREE.Color();
+    var floorMaterial;
+    var pointerLock;
+    var raycaster;
+
+    //==========pointerLock============变量
+    var controlsEnabled = false;
+
+    var moveForward = false;
+    var moveBackward = false;
+    var moveLeft = false;
+    var moveRight = false;
+    var canJump = false;
+
+    var prevTime = performance.now();
+    var velocity = new THREE.Vector3();
+    var direction = new THREE.Vector3();
+    var vertex = new THREE.Vector3();
+    var color = new THREE.Color();
+    //========================================end
+    
     
     var bulbLuminousPowers = {
         "110000 lm (1000W)": 110000,
@@ -55,7 +77,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         fogColor: Object.keys(fogColor)[0],
         "雾浓度": 0.02,
         shadows: false,
-        exposure: 0.68,
+        exposure: 1.00,
         opacity:0.7,
         bulbPower: Object.keys(bulbLuminousPowers)[2],
         hemiIrradiance: Object.keys(hemiLuminousIrradiances)[3]
@@ -187,7 +209,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         },
         "行走漫游": function(){   //未搞定
-            var pointerLock = new THREE.PointerLockControls( camera );
+                pointerLock = new THREE.PointerLockControls( camera );
                 scene.add( pointerLock.getObject() );
                 var onKeyDown = function ( event ) {
 
@@ -250,7 +272,9 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 				};
 
 				document.addEventListener( 'keydown', onKeyDown, false );
-				document.addEventListener( 'keyup', onKeyUp, false );
+                document.addEventListener( 'keyup', onKeyUp, false );
+                raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+
         },
     };
     function setPosAndShade(obj) {
@@ -308,6 +332,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         camera.position.y = 8;
         scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0xffffff, 0);
+        //scene.background = new THREE.Color( 0xffffff );
         //半光
         hemiLight = new THREE.HemisphereLight(0x363636, 0x363636, 0.5);
         scene.add(hemiLight);
@@ -319,18 +344,59 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         scene.add(axes);
         
         //地板
-        floorMat = new THREE.MeshStandardMaterial({
-            roughness: 0.8,
-            color: 0xffffff,
-            metalness: 0.2,
-            bumpScale: 0.0005,
-        });
-        //点光源设置
-        var floorGeometry = new THREE.PlaneBufferGeometry(60, 60);
-        var floorMesh = new THREE.Mesh(floorGeometry, floorMat);
-        floorMesh.receiveShadow = true;
-        floorMesh.rotation.x = -Math.PI / 2.0;
-        scene.add(floorMesh);
+        // floorMat = new THREE.MeshStandardMaterial({
+        //     roughness: 0.8,
+        //     color: 0xffffff,
+        //     metalness: 0.2,
+        //     bumpScale: 0.0005,
+        // });
+        // var floorGeometry = new THREE.PlaneBufferGeometry(60, 60);
+        // var floorMesh = new THREE.Mesh(floorGeometry, floorMat);
+        // floorMesh.receiveShadow = true;
+        // floorMesh.rotation.x = -Math.PI / 2.0;
+        // scene.add(floorMesh);
+
+        //==============新地板测试======================
+        var floorGeometry = new THREE.PlaneBufferGeometry( 2000, 2000, 100, 100 );
+				floorGeometry.rotateX( - Math.PI / 2 );
+
+				// vertex displacement
+
+				var position = floorGeometry.attributes.position;
+
+				for ( var i = 0; i < position.count; i ++ ) {
+
+					vertex.fromBufferAttribute( position, i );
+
+					vertex.x += Math.random() * 20 - 10;
+					vertex.y += Math.random() * 2;
+					vertex.z += Math.random() * 20 - 10;
+
+					position.setXYZ( i, vertex.x, vertex.y, vertex.z );
+
+				}
+
+				floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
+
+				count = floorGeometry.attributes.position.count;
+				var colors = [];
+
+				for ( var i = 0; i < count; i ++ ) {
+
+					color.setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+					colors.push( color.r, color.g, color.b );
+
+				}
+
+				floorGeometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+
+				floorMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+
+				var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+				scene.add( floor );
+        //===========================endtest=======================
+
+         //点光源设置
         var bulbGeometry = new THREE.SphereGeometry(0.02, 16, 8);
         var bulbLight = new THREE.PointLight(0xffee88, 999, 100, 2);
         var bulbMat = new THREE.MeshStandardMaterial({
@@ -368,7 +434,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         scene.add(bulbLight3);
 
         //渲染器设置
-        renderer = new THREE.WebGLRenderer();
+        renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.physicallyCorrectLights = true;
         renderer.gammaInput = true;
         renderer.gammaOutput = true;
@@ -382,6 +448,10 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         //轨道控件
         transfctrl["轨道控件"]();
+
+        //漫游
+        transfctrl["行走漫游"]();
+
         // orbitctr = new THREE.OrbitControls(camera, renderer.domElement);
         // orbitctr.maxPolarAngle = 2*Math.PI;
         // // controls.target.set(0, 2, 0);
@@ -689,9 +759,55 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         //bulbLight.castShadow = params.shadows;
         if (params.shadows !== previousShadowMap) {
 
-            floorMat.needsUpdate = true;
+            floorMaterial.needsUpdate = true;
             //previousShadowMap = params.shadows;
         }
+        var foo = function(){
+            raycaster.ray.origin.copy( pointerLock.getObject().position );
+					raycaster.ray.origin.y -= 10;
+
+					var intersections = raycaster.intersectObjects( objects );
+
+					var onObject = intersections.length > 0;
+
+					var time = performance.now();
+					var delta = ( time - prevTime ) / 1000;
+
+					velocity.x -= velocity.x * 10.0 * delta;
+					velocity.z -= velocity.z * 10.0 * delta;
+
+					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+
+					direction.z = Number( moveForward ) - Number( moveBackward );
+					direction.x = Number( moveLeft ) - Number( moveRight );
+					direction.normalize(); // this ensures consistent movements in all directions
+
+					if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
+					if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
+
+					if ( onObject === true ) {
+
+						velocity.y = Math.max( 0, velocity.y );
+						canJump = true;
+
+					}
+
+					pointerLock.getObject().translateX( velocity.x * delta );
+					pointerLock.getObject().translateY( velocity.y * delta );
+					pointerLock.getObject().translateZ( velocity.z * delta );
+
+					if ( pointerLock.getObject().position.y < 10 ) {
+
+						velocity.y = 0;
+						pointerLock.getObject().position.y = 10;
+
+						canJump = true;
+
+					}
+
+					prevTime = time;
+        }
+        foo();
         //if (params.fogColor !== previousFogColor) {
         /*if (temp > 35) { scene.fog = new THREE.FogExp2(fogColor[params.fogColor], params["雾浓度"]); } else scene.fog.density = 0;
          */
