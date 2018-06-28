@@ -406,7 +406,7 @@ function look()
         }
          else
          {
-            location.href="/baidu?id="+tenantId+"#listID*"+idArray[nameArray.indexOf(td[5].innerHTML)]
+            location.href="/baidu?id="+tenantId+"&listID="+idArray[nameArray.indexOf(td[5].innerHTML)]
          }
          //alert(location.href);
          //console.log(location.href );

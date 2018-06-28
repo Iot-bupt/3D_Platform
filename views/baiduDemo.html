@@ -5,11 +5,12 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/area.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script>
+	<!-- <script type="text/javascript" src="../static/baidu/baidujs/area.js"></script> -->
+	<!-- <script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script> -->
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/CityList/1.4/src/CityList_min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular.js"></script>
     <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
@@ -33,7 +34,7 @@
 <style>
 
 </style>
-<body ng-app="myApp"  ng-controller="myCtrl">
+<body >
 <section class="sec-menu" >
     <div class="container"  style="margin: 0;width:100%;">
         <div class="row" id="head-menu">
@@ -50,7 +51,6 @@
             </div>
             <div class="col-md-1 col-sm-12">
                 <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id={{tenantId}}'"/>
-                <!-- <a href="/"><input type="button" class="btn btn-danger" value="退出登录" id="quit" ng-click="logout()"/></a> -->
             </div>
         </div>
         <!-- <div class="row">
@@ -66,7 +66,7 @@
              <a href="#" title="close"> <i class="fa fa-close fa-2x menu-close-icon b-clr"></i></a>
             </li>
             <li class="side-menu-icon">
-                <a href ="" title="首页" onclick="">
+                <a href ="javascript:void(0);" title="首页" onclick="lookMap()">
                     <i class="fa fa-home fontStyle"></i>
                     <span class="textStyle">地图展示</span>
                 </a>
@@ -102,15 +102,15 @@
 
     <div class="right">
         <fieldset class="demo_content">
-        <div>
-            省份：
+        <div id="container">
+            <!-- 省份：
             <select name="province">
             </select>
             城市：<select name="city">
             </select>
             县区：<select name="county">
             </select>
-            <span class="tips" style="color: green">请选择地区</span>   
+            <span class="tips" style="color: green">请选择地区</span>   --> 
             <input type="text" id="address" placeholder="请输入站点名称"> 
             <input type="button" id="btn" value="定位"/>  
         </div>
@@ -270,7 +270,7 @@
 <!-- 站点模态框 -->
 <!-- 模板引擎与angularjs冲突 -->
 {% raw %}
-    <div class="modal fade" tabindex="-1" role="dialog" id="deviceList"  >
+    <div class="modal fade" tabindex="-1" role="dialog" id="deviceList" ng-app="myApp"  ng-controller="myCtrl" >
         <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
         <div class="modal-dialog" role="document" style="width:900px" >
             <div class="modal-content">
@@ -358,6 +358,39 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+{% raw %}
+<div class="modal fade" tabindex="-1" role="dialog" id="addressList">
+    <div class="modal-dialog" role="document"  style="width:900px" ng-app="myApp1" ng-controller="myCtrl1" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" style="font-weight: bold;">地址解析</h4>
+                </div>
+                <input type="text" class="form-control" id='address1' disabled="true" >
+                <div class="modal-body"  style="height: 500px;overflow-y: scroll";>
+        <table class="table table-striped"  id="myTable4" cellpadding="0" cellspacing="0" style="width:100%" >
+        <tr class="firstTr" id="tr1">
+                <th width="30%">周围建筑</th>
+                <th width="30%">所处类型</th>
+                <th width="20%">所处位置</th>
+                <th width="20%">操作</th>   
+        </tr>
+        <tr ng-repeat="x in names" >
+            <td>{{ x.title }}</td>
+            <td>{{ x.Si }}</td>
+            <td>({{ x.point.lng }},{{ x.point.lat }})</td>
+            <td ><input type="button" class="btn btn-primary" value="查看详情" ng-click="a1($index)" /></td>
+        </tr>
+</table>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-default"  id="modalClose1" onclick="nextPage()">上一页</button>
+                    <button type="button" class="btn btn-primary"  id="modalConfirm1"  >下一页</button>
+                </div> -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endraw %}
 
 
 </body>
@@ -369,4 +402,8 @@
 
 </html>
 <script type="text/javascript">
+angular.bootstrap(document.querySelector('[ng-app="myApp1"]'), ['myApp1']);
+function a1(e){map.centerAndZoom(e, 22);
+
+            }
 </script>

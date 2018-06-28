@@ -35,7 +35,7 @@ $.ajax({
                     $.ajax({
                             url: '/api/siteUrl/'+$('#siteId') .val(),
                             data:
-                                {name:evt.url},
+                                {url:evt.url},
                             type: 'put',//提交方式
                             dataType: 'JSON',//返回字符串，T大写
                             // contentType: 'application/json;',

@@ -1,8 +1,8 @@
 var loc = location.href;
 var tenantId
-if((loc.indexOf("?id=")!=-1)&&(loc.indexOf("#listID*")!=-1))
+if((loc.indexOf("?id=")!=-1)&&(loc.indexOf("&listID=")!=-1))
 {
-    tenantId=loc.substring(loc.indexOf('=')+1,loc.indexOf('#'));
+    tenantId=loc.substring(loc.indexOf('=')+1,loc.indexOf('&'));
 }
 
 
@@ -20,12 +20,12 @@ var idArray=new Array;
 var logArray=new Array;
 var lohArray=new Array;
 var nameArray=new Array;
-var openIfoID;
-var content;
-var siteID;
 var adds=[];
 var markers=[];
 var overlays=[];
+var openIfoID;
+var content;
+var siteID;
 var a;
 var date1 
 var year
@@ -40,31 +40,35 @@ var hasNext;//判断是否存在下一页
 var preDeviceId = [];//用于查找上一页
 var preDeviceName = [];//用于查找上一页
 var pageNum = 1;//记录当前页面
-    var map = new BMap.Map("allmap");    // 创建Map实例
-    map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);  // 初始化地图,设置中心点坐标和地图级别
-    //添加地图类型控件
-    map.addControl(new BMap.MapTypeControl({
-        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
-        mapTypes:[
-            BMAP_NORMAL_MAP,
-            BMAP_HYBRID_MAP,
-            BMAP_SATELLITE_MAP,
-        ]}));
 
-    //添加比例尺等控件
-    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
-    var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
-    //var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); //右上角，仅包含平移和缩放按钮
-    map.addControl(top_left_control);
-    map.addControl(top_left_navigation);
-    //map.addControl(top_right_navigation);
+var map = new BMap.Map("allmap");    // 创建Map实例
+map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);  // 初始化地图,设置中心点坐标和地图级别
+//添加地图类型控件
+map.addControl(new BMap.MapTypeControl({
+    anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+    mapTypes:[
+        BMAP_NORMAL_MAP,
+        BMAP_HYBRID_MAP,
+        BMAP_SATELLITE_MAP,
+    ]}));
+var cityList = new BMapLib.CityList({
+    container: 'container',
+    map: map
+});
+//添加比例尺等控件
+var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+//var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); //右上角，仅包含平移和缩放按钮
+map.addControl(top_left_control);
+map.addControl(top_left_navigation);
+//map.addControl(top_right_navigation);
 
-    var myDis = new BMapLib.DistanceTool(map);
-    //var myMark = new BMapLib.MarkerTool(map);
-    map.centerAndZoom("北京");         // 设置地图显示的城市 此项是必须设置的
-    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-    var point=new BMap.Point(116.404, 39.915);
-    map.centerAndZoom(point, 12);
+var myDis = new BMapLib.DistanceTool(map);
+//var myMark = new BMapLib.MarkerTool(map);
+map.centerAndZoom("北京");         // 设置地图显示的城市 此项是必须设置的
+map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+var point=new BMap.Point(116.404, 39.915);
+map.centerAndZoom(point, 12);
 
     //覆盖物
 var overlaycomplete=function(e){
@@ -91,7 +95,11 @@ drawingManager = new BMapLib.DrawingManager(map, {
     polygonOptions: styleOptions, //多边形的样式
     rectangleOptions: styleOptions //矩形的样式
 });
-
+//测量事件监听
+map.addEventListener("load",function(){
+    myDis.open();  //开启鼠标测距
+    //myDis.close();  //关闭鼠标测距大
+});
 //百度地图API功能
 function addClickHandler(content,marker){
 
@@ -115,53 +123,53 @@ function openInfo(content,e){
 }
 
 //////////////////////////////删除站点//////////////////////////////
-                function removeMarker(e,ee,marker){
-                    var mymessage=confirm("确认删除站点？");
-                    if(mymessage==true)
+function removeMarker(e,ee,marker){
+    var mymessage=confirm("确认删除站点？");
+    if(mymessage==true)
+    {
+        console.log(marker.point);
+        for(var i=0;i<reqArray.length;i++)
+        {
+            if((marker.point.lat==reqArray[i].latitude)&& (marker.point.lng==reqArray[i].longtitude))
+            {
+                map.removeOverlay(marker);
+                //alert(reqArray[i].id);
+                $.ajax({
+                    url:'/api/sites/'+reqArray[i].id,
+                    type:'DELETE',//提交方式
+                    dataType:'JSON',//返回字符串，T大写
+                    success: function(req)
                     {
-                        console.log(marker.point);
-                        for(var i=0;i<reqArray.length;i++)
+                        if(req!='')
                         {
-                            if((marker.point.lat==reqArray[i].latitude)&& (marker.point.lng==reqArray[i].longtitude))
-                            {
-                                map.removeOverlay(marker);
-                                //alert(reqArray[i].id);
-                                $.ajax({
-                                    url:'/api/sites/'+reqArray[i].id,
-                                    type:'DELETE',//提交方式
-                                    dataType:'JSON',//返回字符串，T大写
-                                    success: function(req)
-                                    {
-                                        if(req!='')
-                                        {
-                                            alert('删除成功');
-                                        }
-                                        else
-                                        {
-                                            alert('删除失败');
-                                        }
-
-                                    },
-                                    error:function(error)
-                                    {
-                                        alert(error.message);
-                                    },
-                                    complete:function()
-                                    {
-                                        getSites();
-                                    }
-                                });
-                            }
+                            alert('删除成功');
+                        }
+                        else
+                        {
+                            alert('删除失败');
                         }
 
-                    }
-                    else if(mymessage==false)
+                    },
+                    error:function(error)
                     {
-                       
+                        alert(error.message);
+                    },
+                    complete:function()
+                    {
+                        getSites();
                     }
-                }
+                });
+            }
+        }
+
+    }
+    else if(mymessage==false)
+    {
+       
+    }
+}
 var opts = {
-    width : 250,     // 信息窗口宽度
+    width : 300,     // 信息窗口宽度
     height: 150,     // 信息窗口高度
     //title : "海底捞王府井店" , // 信息窗口标题
     enableAutoPan:true,
@@ -203,8 +211,9 @@ function addContent(tenantId,id,name,longtitude,latitude,year,month,date)
 
                     '</table> '+'<input type="button" id="addModel" value="上传场景" onclick="addModel()" />'+'&nbsp;&nbsp;&nbsp;&nbsp;'
                     +'<input type="button" id="alterSite" value="修改站点" onclick="alterSite()"/>'+'&nbsp;&nbsp;&nbsp;&nbsp;'
-                    +'<input type="button" value="进入场景" onclick="intoScence()">'+
-                    '</div>'
+                    +'<input type="button" value="逆解析" onclick="bdGEO()">'+'&nbsp;&nbsp;&nbsp;&nbsp;'
+                    +'<input type="button" value="进入场景" onclick="intoScence()">'
+                    +'</div>'
 
                     return content;
 }
@@ -297,10 +306,10 @@ function (){
             alert('连接完成');
             ///////////////////////////列表跳转///////////////////////////////////////
             
-            if(loc.indexOf("#listID*")!=-1)
+            if(loc.indexOf("&listID=")!=-1)
             {
-              var id = loc.substr(loc.indexOf("*")+1)//从=号后面的内容
-              //alert(id.charAt(7));
+              var id = loc.substr(loc.indexOf("&")+8)//从=号后面的内容
+              //alert(id);
                var a=idArray.indexOf(parseInt(id));
                 if(a!=-1)
                 {
@@ -541,20 +550,7 @@ function loadPlace(longitude, latitude, level) {
                 }
             }
 
-function bdGEO(){
-    var pt = adds[index];
-    geocodeSearch(pt);
-    index++;
-}
-function geocodeSearch(pt){
-    if(index < adds.length-1){
-        setTimeout(window.bdGEO,400);
-    }
-    myGeo.getLocation(pt, function(rs){
-        var addComp = rs.addressComponents;
-        document.getElementById("result").innerHTML += index + ". " +adds[index-1].lng + "," + adds[index-1].lat + "："  + "商圈(" + rs.business + ")  结构化数据(" + addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber + ")<br/><br/>";
-    });
-}
+
 
 //添加模型
 function addModel()
@@ -578,15 +574,7 @@ function intoScence()
              location.href="/demo?id="+reqArray[i].id;
             }
     }
-   
-
 }
-
-//测量事件监听
-map.addEventListener("load",function(){
-    myDis.open();  //开启鼠标测距
-    //myDis.close();  //关闭鼠标测距大
-});
 
 //关闭窗口
 function closeWin()
@@ -801,92 +789,96 @@ function deviceSearch() {
 
 }
 
-function nextPage(){
-    console.log(hasNext);
-    if(hasNext){
-        jQuery.ajax({
-            url:"/api/3d815/search/"+tenantId+"?limit=2&textSearch="+$("#searchDevice").val()+"&idOffset="+idOffset+"&textOffset="+textOffset,
-            contentType: "application/json; charset=utf-8",
-            async: false,
-            type:"GET",
-            success:function(req) { 
-                console.log("/api/3d815/search/"+tenantId+"?limit=2&textSearch="+$("#searchDevice").val()+"&idOffset="+idOffset+"&textOffset="+textOffset)
-                console.log(req.res)
-                pageNum++;  
-                showTable(req.res)
-                if( req.res.hasNext == true){
-                    idOffset = req.res.nextPageLink.idOffset;
-                    textOffset = req.res.nextPageLink.textOffset;
-                    hasNext = req.res.hasNext;
-                    preDeviceId.push(idOffset);
-                    preDeviceName.push(textOffset);
-                    //console.log($scope.deviceList);
-                }else{
-                    hasNext = req.res.hasNext;
+// function nextPage(){
+//     console.log(hasNext);
+//     if(hasNext){
+//         jQuery.ajax({
+//             url:"/api/3d815/search/"+tenantId+"?limit=2&textSearch="+$("#searchDevice").val()+"&idOffset="+idOffset+"&textOffset="+textOffset,
+//             contentType: "application/json; charset=utf-8",
+//             async: false,
+//             type:"GET",
+//             success:function(req) { 
+//                 console.log("/api/3d815/search/"+tenantId+"?limit=2&textSearch="+$("#searchDevice").val()+"&idOffset="+idOffset+"&textOffset="+textOffset)
+//                 console.log(req.res)
+//                 pageNum++;  
+//                 showTable(req.res)
+//                 if( req.res.hasNext == true){
+//                     idOffset = req.res.nextPageLink.idOffset;
+//                     textOffset = req.res.nextPageLink.textOffset;
+//                     hasNext = req.res.hasNext;
+//                     preDeviceId.push(idOffset);
+//                     preDeviceName.push(textOffset);
+//                     //console.log($scope.deviceList);
+//                 }else{
+//                     hasNext = req.res.hasNext;
                     
-                }
-            },
-            error:function(err){
-                alert("当前已是最后一页！");
-            }
-        });
-    }else{
-        alert("当前已是最后一页！");
-    }
+//                 }
+//             },
+//             error:function(err){
+//                 alert("当前已是最后一页！");
+//             }
+//         });
+//     }else{
+//         alert("当前已是最后一页！");
+//     }
     
    
-}
+// }
 
-//上一页
-function prePage(){
-    if(pageNum == 1){
-        alert("当前已是第一页！");
-    }
-    else if(pageNum == 2){
-        jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset=&textOffset=",
-            contentType: "application/json; charset=utf-8",
-            async: false,
-            type:"GET",
-            success:function(req) {
-                pageNum--;
-                if(req.data.length != 0){
+// //上一页
+// function prePage(){
+//     if(pageNum == 1){
+//         alert("当前已是第一页！");
+//     }
+//     else if(pageNum == 2){
+//         jQuery.ajax({
+//             url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset=&textOffset=",
+//             contentType: "application/json; charset=utf-8",
+//             async: false,
+//             type:"GET",
+//             success:function(req) {
+//                 pageNum--;
+//                 if(req.data.length != 0){
 
-                    showTable(req)
-                    idOffset = req.nextPageLink.idOffset;
-                    textOffset = req.nextPageLink.textOffset;
-                    hasNext = req.hasNext;
-                    preDeviceId.push(idOffset);
-                    preDeviceName.push(textOffset);
-                }
-            }
-        }); 
-    }else{
-        jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
-            contentType: "application/json; charset=utf-8",
-            async: false,
-            type:"GET",
-            success:function(req) { 
-                pageNum--;
-                showTable(req);
-                idOffset = req.nextPageLink.idOffset;
-                textOffset = req.nextPageLink.textOffset;
-                hasNext = req.hasNext;
-                //console.log(idOffset);
-                //console.log(textOffset);
-                //console.log(hasNext);
-                preDeviceId.push(idOffset);
-                preDeviceName.push(textOffset);
+//                     showTable(req)
+//                     idOffset = req.nextPageLink.idOffset;
+//                     textOffset = req.nextPageLink.textOffset;
+//                     hasNext = req.hasNext;
+//                     preDeviceId.push(idOffset);
+//                     preDeviceName.push(textOffset);
+//                 }
+//             }
+//         }); 
+//     }else{
+//         jQuery.ajax({
+//             url:"/api/3d815/paging/"+tenantId+"?limit=9&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+//             contentType: "application/json; charset=utf-8",
+//             async: false,
+//             type:"GET",
+//             success:function(req) { 
+//                 pageNum--;
+//                 showTable(req);
+//                 idOffset = req.nextPageLink.idOffset;
+//                 textOffset = req.nextPageLink.textOffset;
+//                 hasNext = req.hasNext;
+//                 //console.log(idOffset);
+//                 //console.log(textOffset);
+//                 //console.log(hasNext);
+//                 preDeviceId.push(idOffset);
+//                 preDeviceName.push(textOffset);
                 
-            }
-        });
-    }
-}
+//             }
+//         });
+//     }
+// }
 
 function lookSiteList()
 {
     location.href="/sitesList?id="+tenantId;
+}
+function lookMap()
+{
+    location.href="/baidu?id="+tenantId;
 }
 
 function measure(){
@@ -897,12 +889,6 @@ function measure(){
     }
 }
 
-function gotoSence(e)
-
-{
-    //location.href="/sitesList?id="+tenantId;
-    location.href="/demo?id="+e;
-}
 
 function look(e)
 {       
@@ -932,10 +918,52 @@ function look(e)
         {
             alert('该设备没有分配站点')
         }
-         else
-         {
-            location.href="/demo?id="+idArray[nameArray.indexOf(td[4].innerHTML)];
-         }
+        else
+        {
+            location.href="/demo?id="+idArray[nameArray.indexOf(td[4].innerHTML)]+"&deviceId="+td[0].innerHTML;
+        }
          
       }         
+}
+
+var app = angular.module("myApp1", []);
+app.controller("myCtrl1", function($scope) {
+    $scope.show = function () {
+     $('#addressList').modal('show');
+    };
+    $scope.a1 = function ($index) {
+        //console.log($index)
+        var ePoint=$("#myTable4").find("tr").eq($index+1).find("td").eq(0).prevObject[2].innerHTML;
+        //console.log(ePoint.substring(1, ePoint.indexOf(',')))
+        //console.log(ePoint.substring(ePoint.indexOf(',')+1, ePoint.length-1))
+        map.centerAndZoom(new BMap.Point(ePoint.substring(1, ePoint.indexOf(',')),ePoint.substring(ePoint.indexOf(',')+1, ePoint.length-1)), 22);
+        $('#addressList').modal('hide');
+    };
+});
+
+function bdGEO(){
+    for (var i = 0; i < reqArray.length; i++) {
+        if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {        
+            //siteId.value=reqArray[i].id;
+            var pt = openIfoID.point;
+            }
+    }
+    geocodeSearch(pt);
+    
+}
+function geocodeSearch(pt){
+    myGeo.getLocation(pt, function(rs){
+        //console.log(rs)
+        var addComp = rs.addressComponents;
+        $("#address1").val(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber)
+        var appElement = document.querySelector('[ng-controller=myCtrl1]');
+        //获取$scope变量
+        var $scope = angular.element(appElement).scope();
+        //调用msg变量，并改变msg的值
+        $scope.names= rs.surroundingPois
+        //新建names，如果想同步到Angular控制器中，则需要调用$apply()方法即可
+        $scope.$apply();
+        //调用控制器中的show()方法
+        $scope.show();     
+    });
 }

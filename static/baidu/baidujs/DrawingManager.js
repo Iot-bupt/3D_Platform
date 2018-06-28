@@ -1175,7 +1175,6 @@ app.controller("myCtrl", function($scope) {
             //showTable(req)
             //if(req.data.length != 0){
            showTable(req)
-             console.log(req);
              if(req.nextPageLink!=null)
              {
                 idOffset = req.nextPageLink.idOffset;
@@ -1392,7 +1391,7 @@ $scope.prePage=function() {
        //     }
        // });
        //          }
-       console.log(sitesIfoArr);
+       //console.log(sitesIfoArr);
        clearAll();
        $('#site').val(result.data+'包含站点'+(idArray.length)+'个'); 
             var appElement = document.querySelector('[ng-controller=myCtrl]');
