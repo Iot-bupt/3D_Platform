@@ -14,7 +14,6 @@ else if(loc.indexOf("?id=")!=-1)
 console.log(tenantId)
 document.write("<script language=javascript src='../static/baidu/baidujs/upLoadFile.js'><\/script>");
 var index = 0;
-var myGeo = new BMap.Geocoder();
 var reqArray=new Array;
 var idArray=new Array;
 var logArray=new Array;
@@ -343,7 +342,7 @@ function (){
             type:'POST',//提交方式
             dataType: 'json',
             success: function(req){
-                 getSites();
+                getSites();
                 if(req!='')//data.trim 去空格,防止出错
                  { getSites();
                 // var date1=new Date(req.createdAt);
@@ -363,7 +362,7 @@ function (){
             },
 			error:function(error)
 			{
-				alert(error.message);
+				alert('错误');
 			},
             complete:function()
             {
@@ -952,6 +951,7 @@ function bdGEO(){
     
 }
 function geocodeSearch(pt){
+    var myGeo = new BMap.Geocoder();
     myGeo.getLocation(pt, function(rs){
         //console.log(rs)
         var addComp = rs.addressComponents;

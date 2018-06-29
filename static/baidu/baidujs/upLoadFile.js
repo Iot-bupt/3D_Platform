@@ -1,20 +1,29 @@
 ////////////////////上传文件/////////////////////
-
+var sign;
 function fileSelected() {  
 var file = document.getElementById('fileToUpload').files[0];  
 if (file) {  
-  var fileSize = 0;
+  //var fileSize = 0;
   if(file.size>1024*1024*200)
   {
     alert('请上传小于200M文件')
   } 
-  $("#modelName").val(file.name); 
+  else
+  {
+    $("#modelName").val(file.name);
+    sign=true
+  }
+   
  }  
 }
 function uploadFile() { 
-var fd = new FormData();  
-fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]);  
-$.ajax({  
+  if(sign)
+  {
+    sign=false;
+    var fd = new FormData();  
+    fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]); 
+    console.log(fd) 
+    $.ajax({  
                 url: "/api/uploadScene",  
                 type: "POST",  
                 data: fd,  
@@ -52,7 +61,12 @@ $.ajax({
                 error: function () {  
                     alert("上传失败！","提示","确定");  
                 }  
-        });  
+        }); 
+        } 
+  else
+  {
+    alert('请上传小于200M文件')
+  }
 }
 //上传进度 
 function uploadProgress(evt) {  
