@@ -41,5 +41,8 @@ module.exports = db.defineModel('sites', {
         type: db.INTEGER,
         defaultValue: 0
     },
-    sceneModelLoca: db.STRING(300)
+    sceneModelLoca: {
+        type:db.STRING(300),
+        allowNull : true
+    }
 });
