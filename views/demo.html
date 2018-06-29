@@ -5,7 +5,10 @@
     <title>815-monitoring scene</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!-- <link rel="import" href="static/assets/html/deviceDetail.html" id="deviceDetail"/> -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.1/css/bootstrap.css" rel="stylesheet" type='text/css'/>
+    <link href="static/assets/css/_bootstrap.css" rel="stylesheet" type='text/css'/>
     <link href="static/assets/css/font-awesome.css" rel="stylesheet" type='text/css'/>
     <link href='static/assets/css/font-Lobster.css' rel='stylesheet' type='text/css' />
     <link href="static/assets/css/style.css" rel="stylesheet" type="text/css"/>
@@ -36,13 +39,16 @@
 </head>
 
 <body ng-controller="mainCtrl">
-<div id="container"></div>
-<div id="coords"></div>
-<div id="info">
-    Labroom_815_monitoring<br>
-    "Q" 平移 | "W" 旋转 | "E" 缩放 | "+","-" 增大缩小size | "ESC" 退出变换<br />
-</div>
-<div id="Loading"></div>
+    <div id="deviceDetail" class="deviceDetailStyle">
+        <iframe id="detail" class="modal-content myDetail" src="static/assets/html/deviceDetail.html" frameborder=0></iframe>
+    </div>
+    <div id="container"></div>
+    <div id="coords"></div>
+    <div id="info">
+        Labroom_815_monitoring<br>
+        "Q" 平移 | "W" 旋转 | "E" 缩放 | "+","-" 增大缩小size | "ESC" 退出变换<br />
+    </div>
+    <div id="Loading"></div>
     <script src="static/assets/js/addDeviceModel.js"></script>
     <script src="static/assets/js/815_scene.js"></script>
     <script src="static/assets/js/mainCtrl.js"></script>

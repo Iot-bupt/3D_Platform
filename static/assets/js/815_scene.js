@@ -23,7 +23,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     var color = new THREE.Color();
     var floorMaterial;
     var pointerLock;
-    var raycaster;
+    //var raycaster;
 
     //==========pointerLock============变量
     var controlsEnabled = false;
@@ -273,7 +273,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
 				document.addEventListener( 'keydown', onKeyDown, false );
                 document.addEventListener( 'keyup', onKeyUp, false );
-                raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+                //raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
         },
     };
@@ -328,8 +328,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         // container.appendChild(stats.dom);
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.x = 0;
-        camera.position.z = 15;
-        camera.position.y = 8;
+        camera.position.z = 10;
+        camera.position.y = 0;
         scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0xffffff, 0);
         //scene.background = new THREE.Color( 0xffffff );
@@ -613,6 +613,11 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                 var nameUid =  name_uid.split("_");
                 downIntersected = intersections[0].object;
                 console.log('名字:'+nameUid[0]);
+                //==================点击设备显示控制面板=========
+
+                $("#detail").css({'display':''});
+                //=============================================
+    
                 if (event.button === 2){
                     window.addEventListener('keydown', changeMode);
                     event.preventDefault();
@@ -762,12 +767,13 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             //previousShadowMap = params.shadows;
         }
         var foo = function(){
-            raycaster.ray.origin.copy( pointerLock.getObject().position );
-					raycaster.ray.origin.y -= 10;
+                    // raycaster.ray.origin.copy( pointerLock.getObject().position );
+					// raycaster.ray.origin.y -= 10;
 
-					var intersections = raycaster.intersectObjects( objects );
+					// var intersections = raycaster.intersectObjects( objects );
 
-					var onObject = intersections.length > 0;
+                    // var onObject = intersections.length > 0;
+                    var onObject = false;
 
 					var time = performance.now();
 					var delta = ( time - prevTime ) / 1000;
