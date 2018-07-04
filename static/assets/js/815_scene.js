@@ -77,7 +77,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         fogColor: Object.keys(fogColor)[0],
         "雾浓度": 0.02,
         shadows: false,
-        exposure: 1.00,
+        exposure: 0.8,
         opacity:0.7,
         bulbPower: Object.keys(bulbLuminousPowers)[2],
         hemiIrradiance: Object.keys(hemiLuminousIrradiances)[3]
@@ -209,6 +209,68 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         },
         "行走漫游": function(){   //未搞定
+                //==================18.7.4test======================
+                var blocker = document.getElementById( 'blocker' );
+                var instructions = document.getElementById( 'instructions' );
+
+                var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+                if ( havePointerLock ) {
+
+                    var element = document.body;
+    
+                    var pointerlockchange = function ( event ) {
+    
+                        if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+    
+                            controlsEnabled = true;
+                            pointerLock.enabled = true;
+    
+                            blocker.style.display = 'none';
+    
+                        } else {
+    
+                            pointerLock.enabled = false;
+    
+                            blocker.style.display = 'inline-block';
+    
+                            instructions.style.display = '';
+    
+                        }
+    
+                    };
+    
+                    var pointerlockerror = function ( event ) {
+    
+                        instructions.style.display = '';
+    
+                    };
+    
+                    // Hook pointer lock state change events
+                    document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+                    document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+                    document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+    
+                    document.addEventListener( 'pointerlockerror', pointerlockerror, false );
+                    document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
+                    document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+    
+                    instructions.addEventListener( 'click', function ( event ) {
+    
+                        instructions.style.display = 'none';
+    
+                        // Ask the browser to lock the pointer
+                        element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+                        element.requestPointerLock();
+    
+                    }, false );
+    
+                } else {
+    
+                    instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+    
+                }
+                //==================endtest=========================
+
                 pointerLock = new THREE.PointerLockControls( camera );
                 scene.add( pointerLock.getObject() );
                 var onKeyDown = function ( event ) {
@@ -328,8 +390,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         // container.appendChild(stats.dom);
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.x = 0;
-        camera.position.z = 10;
-        camera.position.y = 0;
+        camera.position.z = 15;
+        camera.position.y = 8;
         scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0xffffff, 0);
         //scene.background = new THREE.Color( 0xffffff );
@@ -344,56 +406,56 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         scene.add(axes);
         
         //地板
-        // floorMat = new THREE.MeshStandardMaterial({
-        //     roughness: 0.8,
-        //     color: 0xffffff,
-        //     metalness: 0.2,
-        //     bumpScale: 0.0005,
-        // });
-        // var floorGeometry = new THREE.PlaneBufferGeometry(60, 60);
-        // var floorMesh = new THREE.Mesh(floorGeometry, floorMat);
-        // floorMesh.receiveShadow = true;
-        // floorMesh.rotation.x = -Math.PI / 2.0;
-        // scene.add(floorMesh);
+        floorMat = new THREE.MeshStandardMaterial({
+            roughness: 0.8,
+            color: 0xffffff,
+            metalness: 0.2,
+            bumpScale: 0.0005,
+        });
+        var floorGeometry = new THREE.PlaneBufferGeometry(60, 60);
+        var floorMesh = new THREE.Mesh(floorGeometry, floorMat);
+        floorMesh.receiveShadow = true;
+        floorMesh.rotation.x = -Math.PI / 2.0;
+        scene.add(floorMesh);
 
         //==============新地板测试======================
-        var floorGeometry = new THREE.PlaneBufferGeometry( 2000, 2000, 100, 100 );
-				floorGeometry.rotateX( - Math.PI / 2 );
+            // var floorGeometry = new THREE.PlaneBufferGeometry( 2000, 2000, 100, 100 );
+            //         floorGeometry.rotateX( - Math.PI / 2 );
 
-				// vertex displacement
+            //         // vertex displacement
 
-				var position = floorGeometry.attributes.position;
+            //         var position = floorGeometry.attributes.position;
 
-				for ( var i = 0; i < position.count; i ++ ) {
+            //         for ( var i = 0; i < position.count; i ++ ) {
 
-					vertex.fromBufferAttribute( position, i );
+            //             vertex.fromBufferAttribute( position, i );
 
-					vertex.x += Math.random() * 20 - 10;
-					vertex.y += Math.random() * 2;
-					vertex.z += Math.random() * 20 - 10;
+            //             vertex.x += Math.random() * 20 - 10;
+            //             vertex.y += Math.random() * 2;
+            //             vertex.z += Math.random() * 20 - 10;
 
-					position.setXYZ( i, vertex.x, vertex.y, vertex.z );
+            //             position.setXYZ( i, vertex.x, vertex.y, vertex.z );
 
-				}
+            //         }
 
-				floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
+            //         floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
 
-				count = floorGeometry.attributes.position.count;
-				var colors = [];
+            //         count = floorGeometry.attributes.position.count;
+            //         var colors = [];
 
-				for ( var i = 0; i < count; i ++ ) {
+            //         for ( var i = 0; i < count; i ++ ) {
 
-					color.setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-					colors.push( color.r, color.g, color.b );
+            //             color.setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+            //             colors.push( color.r, color.g, color.b );
 
-				}
+            //         }
 
-				floorGeometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+            //         floorGeometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
 
-				floorMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+            //         floorMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
 
-				var floor = new THREE.Mesh( floorGeometry, floorMaterial );
-				scene.add( floor );
+            //         var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+            //         scene.add( floor );
         //===========================endtest=======================
 
          //点光源设置
@@ -447,7 +509,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         renderer.setClearColor(0x363636);  /*设置环境的背景色 */
 
         //轨道控件
-        transfctrl["轨道控件"]();
+        //transfctrl["轨道控件"]();
 
         //漫游
         transfctrl["行走漫游"]();
@@ -760,23 +822,18 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             firstScene.scale.z = _scale;
         }
 
-        //bulbLight.castShadow = params.shadows;
-        if (params.shadows !== previousShadowMap) {
+            //新地板材质
+            // if (params.shadows !== previousShadowMap) {
 
-            floorMaterial.needsUpdate = true;
-            //previousShadowMap = params.shadows;
-        }
+            //     floorMaterial.needsUpdate = true;
+            //     //previousShadowMap = params.shadows;
+            // }
         var foo = function(){
-                    // raycaster.ray.origin.copy( pointerLock.getObject().position );
-					// raycaster.ray.origin.y -= 10;
-
-					// var intersections = raycaster.intersectObjects( objects );
-
-                    // var onObject = intersections.length > 0;
+                    
                     var onObject = false;
 
 					var time = performance.now();
-					var delta = ( time - prevTime ) / 1000;
+					var delta = ( time - prevTime ) / 3000;     //可以控制移动速度
 
 					velocity.x -= velocity.x * 10.0 * delta;
 					velocity.z -= velocity.z * 10.0 * delta;
@@ -801,10 +858,10 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 					pointerLock.getObject().translateY( velocity.y * delta );
 					pointerLock.getObject().translateZ( velocity.z * delta );
 
-					if ( pointerLock.getObject().position.y < 10 ) {
+					if ( pointerLock.getObject().position.y < 100 ) {
 
 						velocity.y = 0;
-						pointerLock.getObject().position.y = 10;
+						pointerLock.getObject().position.y = -2;   //相机Y轴位置
 
 						canJump = true;
 
@@ -812,35 +869,14 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
 					prevTime = time;
         }
-        foo();
-        //if (params.fogColor !== previousFogColor) {
-        /*if (temp > 35) { scene.fog = new THREE.FogExp2(fogColor[params.fogColor], params["雾浓度"]); } else scene.fog.density = 0;
-         */
-        //scene.fog = new THREE.FogExp2(fogColor[params.fogColor], params["雾浓度"]);
-        /*for (var i = 1; i < intersects.length; i++) {
-         console.log(intersects[i].object);
-         intersects[i].object.addEventListener("click", function(event) {
-         alert(i);
-         })
-         //intersects[i].object.material.color.set(0xff0000);
-         }*/
-        //scene.fog = new THREE.Fog(fogColor[params.fogColor], params.near, params.far);
-        //} else scene.fog.density = params["雾浓度"];
-        //scene.fog.color = "#ff0"; //fogColor[params.fogColor];
-        //bulbLight.power = bulbLuminousPowers[params.bulbPower];
-        //bulbMat.emissiveIntensity = bulbLight.intensity / Math.pow(0.02, 2.0); // convert from intensity to irradiance at bulb surface
-        //hemiLight.intensity = hemiLuminousIrradiances[params.hemiIrradiance];
-        //hemiLight.intensity = 0.5;
+        foo();   //漫游动画函数
+       
         var time = Date.now() * 0.0005;
         var delta = clock.getDelta();
         renderer.render(scene, camera);
         // stats.update();
     }
-    function randomvalue() {
-        if (temp == undefined) {
-            return 15.5;
-        } else return Math.ceil(Math.random() * 10) + 15.5;
-    }
+    
     var fog = {
         scenefog: null,
         twinkleWarning: function(scene) {
