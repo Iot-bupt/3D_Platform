@@ -717,6 +717,13 @@ $scope.loadLocalModel = function(){
     alert("n");
 }
 
+//=============deviceDetail=============
+$scope.closeDetail = function(){
+    alert('e');
+    $("#deviceDetail").css({'display':'none'});
+    
+}
+
 
 
 
@@ -728,3 +735,5 @@ $scope.loadLocalModel = function(){
     jQuery("#showDeviceInfo").draggable();
 
 }]);
+
+
