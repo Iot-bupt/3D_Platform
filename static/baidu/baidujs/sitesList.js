@@ -233,7 +233,7 @@ function showTable(req)
                 var cell5 = row.insertCell(5);
                 var cell6 = row.insertCell(6);
 
-                cell0.innerHTML = '<td style="font-size:20px; ">'+req.data[i].id+'</td>' ;
+                cell0.innerHTML = '<td >'+req.data[i].id+'</td>' ;
                 cell1.innerHTML = req.data[i].tenantId;
                 cell2.innerHTML = req.data[i].customerId;
                 cell3.innerHTML = req.data[i].name;

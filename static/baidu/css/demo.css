@@ -14,17 +14,17 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
             display:none;            /* 默认对话框隐藏 */
             margin:auto;
         }
-
+/*
 .right1{
-            display:none;            /* 默认对话框隐藏 */
+            display:none;             默认对话框隐藏 
             margin:auto;
-        }
+        }*/
 .providerAdd.show{display:block;}
 
 #div1{width: 350px;height: 250px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
 #div2{width: 350px; height: 170px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
 #nav {width: 350px;height: 220px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
-#right1{width: 800px;height: 500px; border-radius: 8px solid #ffffff; background-color:white; position:fixed;left:20%;top:10%;margin-left:width/2;margin-top:height/2;}
+
 .nav li{   
  padding: 8px 15px;    
  float: right;   
@@ -138,5 +138,6 @@ progress
 .firstTr th {
     border-right: 2px solid rgba(209, 218, 223, 0.4);
 }
+
 /*---------------------------------------自定义样式---------------------------------------------*/
 

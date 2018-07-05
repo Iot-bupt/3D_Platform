@@ -6,18 +6,7 @@
 
 	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- <script type="text/javascript" src="../static/baidu/baidujs/area.js"></script> -->
-    <!-- <script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script> -->
-    <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script> -->
-    <!-- <script src="../static/js/jquery.min.js"></script> -->
-    <!-- <script type="text/javascript" src="../static/baidu/baidujs/MarkerTool.js"></script> -->
-    <!-- <script type="text/javascript" src="../static/baidu/baidujs/DistanceTool.js"></script> -->
-    <!-- <script type="text/javascript" src="../static/baidu/baidujs/SearchInfoWindow.js"></script> -->
-    <!-- <script type="text/javascript" src="../static/baidu/baidujs/searchInRectangle.js"></script> -->
-    <!-- <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script> -->
-    <!-- <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script> -->
-    <!-- <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script> -->
-    <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
     <!-- <link rel="stylesheet" href="../static/baidu/css/style.css"/> -->
@@ -45,7 +34,7 @@
                 <span id="time" style=" font-family:'黑体'; font-size:20px;">2015年1月1日 11:11  星期一</span>
             </div>
             <div class="col-md-1 col-sm-12">
-                <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id={{tenantId}}'"/>
+                <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id='+tenantId"/>
                 <!-- <a href="/"><input type="button" class="btn btn-danger" value="退出登录" id="quit" ng-click="logout()"/></a> -->
             </div>
         </div>
@@ -79,18 +68,22 @@
 
 <!--主体内容-->
 <section class="publicMian">
-    <div class="left">
-        <h2 class="leftH2"><span ></span>设备列表 <span></span></h2>
+    <!-- <div class="left">
+        <h2 class="leftH2"><span ></span>设备列表<span></span></h2>
     </div>
-<div class="right" >
+ --><div class="right1" >
+        <div class="location">
+                <span>设备列表</span>
+            </div>
+
         <div class="search">
             <span>站点ID：</span>
             <input type="text" id="searchValue"  onkeyup="deviceSearch1()" placeholder="请输入设备名称"/>
-            <input type="button" id='keyup' value="查询" style="text-align: middle;" onclick="deviceSearch()" />
-            </div>
-        <div id="deviceList" style="height: 100%;overflow-y: scroll ">
+            <input type="button" id='keyup' value="查询" " onclick="deviceSearch()" />
+        </div>
+        <div id="deviceList" style="height: 80%; overflow-y: scroll ">
 
-        <table id ="myTable1" class="table table-striped" cellpadding="0" cellspacing="0" style="height: 85%">
+        <table id ="myTable1" class="table table-striped" style=" font-size:15px;">
             <tr class="firstTr" >
                 <th width="25%" style=" font-size:20px;">设备ID</th>
                 <th width="10%" style=" font-size:20px;">租户名称</th>
@@ -105,12 +98,6 @@
             <button class="btn btn-primary" style="margin-right: 30px" id="pre" onclick="prePage()">上一页</button>
             <button class="btn btn-primary" style="margin-left: 30px" id="next" onclick="nextPage()">下一页</button>
         </div>
-<!--         <span id="spanFirst">第一页</span>   
-        <span id="spanPre">上一页</span>   
-        <span id="spanNext">下一页</span>   
-        <span id="spanLast">最后一页</span>   
-        第<span id="spanPageNum"></span>页/共<span id="spanTotalPage"></span>页 --> 
-
     </div>
 
     <!-- <div id="right1" class="right1">

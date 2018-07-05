@@ -1,25 +1,38 @@
 ////////////////////上传文件/////////////////////
-var sign;
+var file
 function fileSelected() {  
-var file = document.getElementById('fileToUpload').files[0];  
+ file= document.getElementById('fileToUpload').files[0];  
 if (file) {  
   //var fileSize = 0;
-  if(file.size>1024*1024*200)
-  {
-    alert('请上传小于200M文件')
-  } 
-  else
-  {
+  // if(file.size>1024*1024*200)
+  // {
+    // alert('请上传小于200M文件')
+  // } 
+  // else
+  // {
     $("#modelName").val(file.name);
-    sign=true
-  }
+    // sign=true
+  // }
    
  }  
 }
+
 function uploadFile() { 
-  if(sign)
+  // console.log(file)
+  // console.log($("#fileToUpload").val())
+  var index = file.name.lastIndexOf(".");
+  var fileType = file.name.substring(index + 1, file.name.length);
+  console.log("文件类型："+fileType);
+  if(file.size>1024*1024*200)
   {
-    sign=false;
+    alert('请上传小于200M文件')
+  }
+  if(fileType != "drc" ) 
+  {
+      alert("请上传.drc文件")
+  }
+  else
+  {
     var fd = new FormData();  
     fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]); 
     console.log(fd) 
@@ -63,10 +76,7 @@ function uploadFile() {
                 }  
         }); 
         } 
-  else
-  {
-    alert('请上传小于200M文件')
-  }
+
 }
 //上传进度 
 function uploadProgress(evt) {  

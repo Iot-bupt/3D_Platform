@@ -1131,7 +1131,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                 cell2.innerHTML = req.data[i].customerId;
                 cell3.innerHTML = req.data[i].name;
                 cell4.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)] 
-                cell5.innerHTML = '<input type="button" class="btn btn-primary" value="进入站点" onclick="look(2)"/>'
+                cell5.innerHTML = '<input type="button" class="btn btn-primary" value="进入站点" onclick="lookDevice(2)"/>'
             }
 }
 

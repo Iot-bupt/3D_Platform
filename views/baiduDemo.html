@@ -4,18 +4,20 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-	<!-- <script type="text/javascript" src="../static/baidu/baidujs/area.js"></script> -->
+	<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../static/baidu/baidujs/area.js"></script>
 	<!-- <script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script> -->
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/CityList/1.4/src/CityList_min.js"></script>
-    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular.js"></script>
+    <script src="http://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+    <script src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <!-- <script type="text/javascript" src="http://api.map.baidu.com/library/CityList/1.4/src/CityList_min.js"></script> -->
+    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/angular.js/1.6.9/angular.js"></script>
     <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
-    <!-- <script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script> -->
+    <script type="text/javascript" src="../static/baidu/baidujs/MarkerClusterer_min.js"></script>
+    <script type="text/javascript" src="../static/baidu/baidujs/CityList_min.js"></script>
+    
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
@@ -50,7 +52,7 @@
                 <span id="time" style=" font-family:'黑体'; font-size:20px;">2015年1月1日 11:11  星期一</span>
             </div>
             <div class="col-md-1 col-sm-12">
-                <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id={{tenantId}}'"/>
+                <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id='+tenantId"/>
             </div>
         </div>
         <!-- <div class="row">
@@ -81,9 +83,9 @@
         </ul>  
 </div>
 <!--主体内容-->
-<section class="publicMian">
+<section class="publicMian" ">
     <div class="left">
-        <h2 class="leftH2"><span ></span>功能列表 <span></span></h2>
+        <h2 class="leftH2"><span ></span>功能列表<span></span></h2>
         <nav>
             <ul class="list">
                 <li><input type="button" class="anjian" data-toggle="modal" value="距离测距" onclick="measure()"  /></li>
@@ -112,7 +114,7 @@
             </select>
             <span class="tips" style="color: green">请选择地区</span>   --> 
             <input type="text" id="address" placeholder="请输入站点名称"> 
-            <input type="button" id="btn" value="定位"/>  
+            <input type="button" id="btn" class="btn btn-info" value="定位"/>  
         </div>
         <div id="allmap" class="allmap"></div>
         </fieldset>

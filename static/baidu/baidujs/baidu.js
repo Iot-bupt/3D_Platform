@@ -14,18 +14,18 @@ else if(loc.indexOf("?id=")!=-1)
 console.log(tenantId)
 document.write("<script language=javascript src='../static/baidu/baidujs/upLoadFile.js'><\/script>");
 var index = 0;
-var reqArray=new Array;
-var idArray=new Array;
-var logArray=new Array;
-var lohArray=new Array;
-var nameArray=new Array;
+var reqArray=[];
+var idArray=[];
+var logArray=[];
+var lohArray=[];
+var nameArray=[];
 var adds=[];
 var markers=[];
 var overlays=[];
+var a;
 var openIfoID;
 var content;
 var siteID;
-var a;
 var date1 
 var year
 var month
@@ -41,6 +41,37 @@ var preDeviceName = [];//用于查找上一页
 var pageNum = 1;//记录当前页面
 
 var map = new BMap.Map("allmap");    // 创建Map实例
+var styleJson =[                     //个性化地图
+          {
+                    "featureType": "building",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#eeeeeeff"
+                    }
+          },
+          {
+                    "featureType": "land",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#cfe2f3ff"
+                    }
+          },
+          {
+                    "featureType": "manmade",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#ccccccff"
+                    }
+          },
+          {
+                    "featureType": "arterial",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#ffe599ff"
+                    }
+          }
+]
+map.setMapStyle({styleJson:styleJson});
 map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);  // 初始化地图,设置中心点坐标和地图级别
 //添加地图类型控件
 map.addControl(new BMap.MapTypeControl({
@@ -54,16 +85,14 @@ var cityList = new BMapLib.CityList({
     container: 'container',
     map: map
 });
+
 //添加比例尺等控件
 var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
 var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
 //var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); //右上角，仅包含平移和缩放按钮
 map.addControl(top_left_control);
 map.addControl(top_left_navigation);
-//map.addControl(top_right_navigation);
-
 var myDis = new BMapLib.DistanceTool(map);
-//var myMark = new BMapLib.MarkerTool(map);
 map.centerAndZoom("北京");         // 设置地图显示的城市 此项是必须设置的
 map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 var point=new BMap.Point(116.404, 39.915);
@@ -207,7 +236,6 @@ function addContent(tenantId,id,name,longtitude,latitude,year,month,date)
                     '<td>'+'创建时间:'+'</td>'+
                     '<td>'+year+'-'+month+'-'+date+'</td>'+
                     '</tr>'+
-
                     '</table> '+'<input type="button" id="addModel" value="上传场景" onclick="addModel()" />'+'&nbsp;&nbsp;&nbsp;&nbsp;'
                     +'<input type="button" id="alterSite" value="修改站点" onclick="alterSite()"/>'+'&nbsp;&nbsp;&nbsp;&nbsp;'
                     +'<input type="button" value="逆解析" onclick="bdGEO()">'+'&nbsp;&nbsp;&nbsp;&nbsp;'
@@ -262,6 +290,7 @@ function getSites()
         }
     });
 }
+
 /////////////////////////////初始化//////////////////
 window.onload=
 function (){
@@ -292,15 +321,13 @@ function (){
                  var year=date1.getFullYear();
                  var month=date1.getMonth()+1;
                  var date=date1.getDate();
-                var content =addContent(tenantId,req.sites[i].id,req.sites[i].name,req.sites[i].longtitude,req.sites[i].latitude,year,month,date)
+                 var content =addContent(tenantId,req.sites[i].id,req.sites[i].name,req.sites[i].longtitude,req.sites[i].latitude,year,month,date)
                  var marker =addMarkers(req.sites[i].id,req.sites[i].longtitude,req.sites[i].latitude)
                  //console.log(addContent())
                  addClickHandler(content,marker);
 
             }
         }, complete: function() {
-            // console.log(markers)
-            // var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
             //请求完成的处理
             alert('连接完成');
             ///////////////////////////列表跳转///////////////////////////////////////
@@ -321,14 +348,16 @@ function (){
                 }
             }
         }
-
     });
+    //聚合点
+    var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 }
+
 //////////////////////////添加站点///////////////////
 	function markfinish(){
         if($.inArray($('#name1').val(), nameArray)==-1)
         {
-        if(name1.value!=""&&tenantId1.value!=""&&longitude.value!=""&&latitude.value!="")
+        if(name1.value!=""&&longitude.value!=""&&latitude.value!="")
         {
         map.removeEventListener("click");
         map.removeEventListener("click",getPoint);
@@ -345,11 +374,6 @@ function (){
                 getSites();
                 if(req!='')//data.trim 去空格,防止出错
                  { getSites();
-                // var date1=new Date(req.createdAt);
-                //  //var time=date.getFullYear()+date.getMonth()+date.getDate();
-                //  var year=date1.getFullYear();
-                //  var month=date1.getMonth();
-                //  var date=date1.getDate()+1;
                  var content =addContent(tenantId,req.id,req.name,req.longtitude,req.latitude,year,month,date)
                  var marker =addMarkers(req.id,req.longtitude,req.latitude)
                  //addMarkers(req.id,req.longtitude,req.latitude)
@@ -370,11 +394,18 @@ function (){
             }
         });
         }
+        else
+        {
+            alert('输入不能为空！')
+        }
     }
     else
     {
         alert('该站点名已存在')
     }
+    $('#name1').val("");  
+    $('#longitude').val("");  
+    $('#latitude').val("");  
 }
 
 //标注
@@ -390,7 +421,6 @@ function mark1()
     	drawingManager.close();
     }
     $('#tenantId1').val(tenantId);
-    //document.getElementById('nav').style.display='block';
     $('#addSites').modal('show');  
 }
 
@@ -399,10 +429,7 @@ function getPoint(e)
    $('#tenantId1').val(tenantId);
    $('#longitude').val(e.point.lng);
    $('#latitude').val(e.point.lat);
-    $('#addSites').modal('show');
-    //document.getElementById('nav').style.display='block';
-   // longitude.value=e.point.lng;
-    //latitude.value=e.point.lat;
+   $('#addSites').modal('show');
 }
 
 function mark2()
@@ -421,7 +448,6 @@ function mark2()
  }
 
 ///////////////////////修改站点//////////////////////////
-
 function alterSite()
 {
     //getSites();
@@ -430,12 +456,6 @@ function alterSite()
         if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {
             a=i;
             marker=openIfoID;
-            // date1=new Date(reqArray[i].createdAt);
-            // var year=date1.getFullYear();
-            //      var month=date1.getMonth()+1;
-            //      var date=date1.getDate();
-            // console.log(openIfoID);
-            // console.log(openIfoID.point.lat);
             siteId=reqArray[i].id;
             $('#siteOldID').val(reqArray[i].id);
             $('#siteOldName').val(reqArray[i].name);
@@ -449,48 +469,49 @@ function renameSite() {
     if($.inArray($('#siteNewName').val(), nameArray)==-1)
     {
        if($('#siteNewName').val()!="")
-    {
-    $.ajax({
-        url: '/api/sitename/' + siteId,
-        data:
-            {name:$('#siteNewName').val()},
-        type: 'put',//提交方式
-        dataType: 'JSON',//返回字符串，T大写
-        success: function (req) {
-            console.log(req)
-            //document.getElementById('div2').style.display='none';
-            $('#renameSite').modal('hide')
-            if (req != '') {
-                alert('修改完成');
-                getSites();
-            }
-            else {
-                alert('修改失败');
-            }
-
-        },
-        error: function (error) {
-            alert(error.message);
-        },
-        complete:function()
         {
-            map.removeOverlay(marker);
-            var content =addContent(tenantId,reqArray[a].id,reqArray[a].name,reqArray[a].longtitude,reqArray[a].latitude,year,month,date);
-            map.addOverlay(marker);
-            marker.disableDragging();           // 不可拖拽
-            addClickHandler(content,marker);
-            var label = new BMap.Label(siteId,{offset:new BMap.Size(20,-10)});
-            marker.setLabel(label);
-        }
-    });
-}
-else{} 
+        $.ajax({
+            url: '/api/sitename/' + siteId,
+            data:
+                {name:$('#siteNewName').val()},
+            type: 'put',//提交方式
+            dataType: 'JSON',//返回字符串，T大写
+            success: function (req) {
+                //console.log(req)
+                $('#renameSite').modal('hide')
+                if (req != '') {
+                    alert('修改完成');
+                    getSites();
+                }
+                else {
+                    alert('修改失败');
+                }
+            },
+            error: function (error) {
+                alert(error.message);
+            },
+            complete:function()
+            {
+                map.removeOverlay(marker);
+                var content =addContent(tenantId,reqArray[a].id,reqArray[a].name,reqArray[a].longtitude,reqArray[a].latitude,year,month,date);
+                map.addOverlay(marker);
+                marker.disableDragging();           // 不可拖拽
+                addClickHandler(content,marker);
+                var label = new BMap.Label(siteId,{offset:new BMap.Size(20,-10)});
+                marker.setLabel(label);
+            }
+        });
     }
-else{
-    alert('该站点名已存在');
-}
-
-    
+        else
+        {
+            alert('输入不能为空！')
+        } 
+    }
+        else
+        {
+            alert('该站点名已存在');
+        }
+    $('#siteNewName').val("");    
 }
 
 ///////////////////////查找站点//////////////////
@@ -549,8 +570,6 @@ function loadPlace(longitude, latitude, level) {
                 }
             }
 
-
-
 //添加模型
 function addModel()
 {
@@ -567,10 +586,9 @@ function addModel()
 /////进入场景/////
 function intoScence()
 {
-    //console.log(e)
     for (var i = 0; i < reqArray.length; i++) {
         if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {        
-             location.href="/demo?id="+reqArray[i].id;
+             location.href="/demo?siteId="+reqArray[i].id;
             }
     }
 }
@@ -596,13 +614,11 @@ function draw() {
         $("#myTable2  tr:not(:first)").empty("");
         biaozhi=0;
     }
-
-drawingManager.open()
-drawingManager.enableCalculate()
-//添加鼠标绘制工具监听事件，用于获取绘制结果
-drawingManager.addEventListener('overlaycomplete', overlaycomplete);
-
-drawingManager.setDrawingMode(BMAP_DRAWING_RECTANGLE);
+    drawingManager.open()
+    drawingManager.enableCalculate()
+    //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+    drawingManager.setDrawingMode(BMAP_DRAWING_RECTANGLE);
 }
 
 /////////面积测量////////
@@ -614,10 +630,9 @@ function areaMeasure()
     }
     drawingManager.open()
     drawingManager.enableCalculate()
-//添加鼠标绘制工具监听事件，用于获取绘制结果
-drawingManager.addEventListener('overlaycomplete', overlaycomplete);
-
-drawingManager.setDrawingMode(BMAP_DRAWING_POLYGON);
+    //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+    drawingManager.setDrawingMode(BMAP_DRAWING_POLYGON);
 }
 
 /////////////地点搜索//////
@@ -639,7 +654,6 @@ function G(id) {
       // 创建一个DOM元素
       var p = document.createElement("p");
       p.innerHTML = '<p id="r-result"><input type="text" id="suggestId" class="form-control" placeholder="请输入地点" size="20"  style="width:200px; font-size:15px;" /></p><p id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></p>';
- 
       // 添加DOM元素到地图中
       map.getContainer().appendChild(p);
       // 将DOM元素返回
@@ -650,8 +664,6 @@ function G(id) {
     var myZoomCtrl = new ZoomControl();
     // 添加到地图当中
     map.addControl(myZoomCtrl);
- 
- 
     var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
         {"input" : "suggestId"
         ,"location" : map
@@ -665,7 +677,6 @@ function G(id) {
             value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
         }
         str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
- 
         value = "";
         if (e.toitem.index > -1) {
             _value = e.toitem.value;
@@ -698,8 +709,6 @@ function G(id) {
     }
 
 function clearAll() {
-    //$("#myTable2  tr:not(:first)").empty("");
-    //var drawingManager = new BMapLib.DrawingManager(map);
     biaozhi=1;
     drawingManager.close();
     for(var i = 0; i < overlays.length; i++){
@@ -739,8 +748,6 @@ function showTable(req)
 {               
                 $("#myTable3  tr:not(:first)").empty(""); 
                 for (var i = 0; i < req.data.length; i++) {
-                    w=req.data[i].siteId
-                    console.log(w)
                 var table = document.getElementById("myTable3");
                 var row = table.insertRow(i+1);
                 row.id = (i + 1);
@@ -755,7 +762,7 @@ function showTable(req)
                 cell2.innerHTML = req.data[i].customerId;
                 cell3.innerHTML = req.data[i].name;
                 cell4.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)] 
-                cell5.innerHTML = '<input type="button" class="btn btn-primary" value="进入站点" onclick="look(1)"/>'
+                cell5.innerHTML = '<input type="button" class="btn btn-primary" value="进入站点" onclick="lookDevice(1)"/>'
                }
                document.getElementById( "deviceInfo1" ).style.display="" ;
 }
@@ -888,8 +895,7 @@ function measure(){
     }
 }
 
-
-function look(e)
+function lookDevice(e)
 {       
     
     switch(e)
@@ -919,7 +925,7 @@ function look(e)
         }
         else
         {
-            location.href="/demo?id="+idArray[nameArray.indexOf(td[4].innerHTML)]+"&deviceId="+td[0].innerHTML;
+            location.href="/demo?siteId="+idArray[nameArray.indexOf(td[4].innerHTML)]+"&deviceId="+td[0].innerHTML;
         }
          
       }         

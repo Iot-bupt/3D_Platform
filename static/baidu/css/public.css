@@ -171,17 +171,23 @@ li{
 /*右边*/
 .right{
     width: 85%;
-     height: 85%;
+    height: 85%;
+}
+.right1{
+    width: 95%;
+    height: 90%;
+    margin-left:auto;
+    margin-right:auto;
 }
 /*右边所在位置栏*/
 .location{
-    height: 30px;
+    height: 40px;
     line-height: 30px;
     border: 1px solid #e6eaf6;
     border-radius: 8px;
     background: linear-gradient(to bottom, #fefefe,#ffffff,#f6fafd);
     color: #4a4a4a;
-    padding-left: 30px;
+    padding-left: 20px;
 }
 .location strong{
     background: url("../img/home.png") 0 center no-repeat;
@@ -189,16 +195,19 @@ li{
     padding-left: 30px;
 }
 .location span{
+    font-size:25px;
     color: #2179a9;
     font-weight:  bold;
 }
 /*搜索信息栏*/
 .search{
-    height:50px;
-    line-height:50px;
+    height:45px;
+    /*line-height:50px;*/
     background: #f6fafd;
     padding-left: 24px;
     color: #000;
+    padding-top:0.5%;
+    
 }
 .search input[type='text']{
     width: 200px;
@@ -207,17 +216,18 @@ li{
     padding-left: 10px;
     border: 1px solid #8ab2d5;
     border-radius: 4px;
+    /*vertical-align:text-top;*/
 }
 .search input[type='button']{
     margin-left: 20px;
     width: 100px;
     padding: 0 20px;
-    height: 40px;
+    height: 30px;
     border: 1px solid #7ba92c;
     border-radius: 4px;
     color: #fff;
     font-weight: bold;
-    text-align: middle;
+    /*text-align: middle;*/
     background:#87c212 url("../img/search.png") 10px center no-repeat;
 }
 .search input[type='button']:focus{
@@ -253,9 +263,9 @@ li{
     outline: none;
 }
 
-.right1{
+/*.right1{
     width: 85%;
-}
+}*/
 /*右边所在位置栏*/
 
 
