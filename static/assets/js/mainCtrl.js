@@ -644,25 +644,73 @@ $scope.updateDeviceModel = function(){
 
 /*上传模型*/
 var parameter;
+var file
+$scope.fileSelected =function () {  
+ file= document.getElementById("fileToUpload").files[0];
+ $("#file1").val(file.name) ; 
+}
+
 $scope.updateFile = function(){
-    console.log("sss");
-    var $input = $('#upFile');
-    var files = $input.prop('files');
-    console.log(files);
-    var data = new FormData();
-    data.append('upFile', files[0]);
-    $.ajax({
-        url: '/api/uploadDevice',
-        type: 'POST',
-        data: data,
-        cache: false,
-        processData: false,
-        contentType: false,
-        success:(function(res){
-            parameter = res;
-            //console.log(parameter);
-        })
-    });
+    function uploadProgress(evt) {  
+            if (evt.lengthComputable) {  
+              var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+              var pg=document.getElementById('progressNumber');  
+              //console.log(percentComplete);
+              //document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%'; 
+                  if(pg.value!=100) pg.value=percentComplete.toString();//进度条
+                  else pg.value=0; 
+            }  
+            else {  
+                alert('无法上传');
+            }  
+    }
+    
+      var index = file.name.lastIndexOf(".");
+      var fileType = file.name.substring(index + 1, file.name.length);
+      console.log("文件类型："+fileType);
+      if(file.size>1024*1024*100)
+      {
+           alert('请上传小于100M文件')
+      }
+      if(fileType != "drc"&&fileType !="obj"&&fileType !="max"&&fileType !="glft" ) 
+      {
+           alert("请上传正确格式文件")
+      }
+      else
+      {
+           // var $input = $('#upFile');
+            // var files = $input.prop('files');
+            // console.log(files);
+            var data = new FormData();
+            data.append('fileToUpload', document.getElementById('fileToUpload').files[0]);
+            console.log(data);
+            $.ajax({
+                url: '/api/uploadDevice',
+                type: 'POST',
+                data: data,
+                cache: false,
+                processData: false,
+                contentType: false,
+                xhr: function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数    
+                            myXhr = $.ajaxSettings.xhr();    
+                        if(myXhr.upload){ //检查upload属性是否存在    
+                            //绑定progress事件的回调函数    
+                            myXhr.upload.addEventListener('progress',uploadProgress, false);     
+                        }    
+                        return myXhr; //xhr对象返回给jQuery使用    
+                        },
+                success:function(res){
+                    parameter = res;
+                    console.log(parameter);
+                    alert('上传成功')
+                },
+                error:function(res)
+                {
+                    console.log(res)
+                    alert('上传失败')
+                }
+            });
+      }
 }
 $scope.uploadModel = function(){
     console.log(parameter);

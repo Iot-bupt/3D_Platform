@@ -335,15 +335,15 @@
         <!--上传模型-->
         <div id="tabs-2">
             <p style="color: #5087c3;text-align: left"><span style="color: red;">*</span>选择文件:</p>
-            <span class="btn btn-mini btn-info fileInput">
+            <div class="fontColor">
+                <span class="btn btn-mini btn-info fileInput">
                 <span>选择文件</span>
-                <input type="file" name="upFile" multiple>
-            </span>
-            <button ng-click="updateFile()" class="btn btn-mini btn-success">上传</button>
-            <!--span class="fileinput-button">
-                <input type="file" id="upFile" size="15" name="upFile" multiple/>
-                <span id="uploadBtn" type="submit"  value="开始上传"></span>
-            </span-->
+                <input type="file"  id="fileToUpload" onchange="angular.element(this).scope().fileSelected()"  multiple >
+                </span>
+            <button ng-click="updateFile()" class="btn btn-mini btn-success">上传</button><br/>
+            <span >文件名：</span> <input type="text" id="file1" style="width:120px"/><br/>
+            <span>进度：</span><progress max="100" value="0" id="progressNumber"></progress>
+            </div>
             <div class="fontColor">
                 <label class="col-cm-3 control-label">
                     <span style="color: red;">*</span>位置

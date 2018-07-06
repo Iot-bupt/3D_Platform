@@ -41,6 +41,7 @@ var preDeviceName = [];//用于查找上一页
 var pageNum = 1;//记录当前页面
 
 var map = new BMap.Map("allmap");    // 创建Map实例
+var markerClusterer 
 var styleJson =[                     //个性化地图
           {
                     "featureType": "building",
@@ -71,6 +72,16 @@ var styleJson =[                     //个性化地图
                     }
           }
 ]
+      // var MAX = 1000;
+
+      //  var pt = null;
+      //  var i = 0;
+      //  for (; i < MAX; i++) {
+      //      pt = new BMap.Point(Math.random() * 40 + 85, Math.random() * 30 + 21);
+      //      markers.push(new BMap.Marker(pt));
+
+      //      map.addOverlay(new BMap.Marker(pt));
+      //  }
 map.setMapStyle({styleJson:styleJson});
 map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);  // 初始化地图,设置中心点坐标和地图级别
 //添加地图类型控件
@@ -161,6 +172,7 @@ function removeMarker(e,ee,marker){
             if((marker.point.lat==reqArray[i].latitude)&& (marker.point.lng==reqArray[i].longtitude))
             {
                 map.removeOverlay(marker);
+                markerClusterer.removeMarker(marker); //删除标记从聚合点中删除
                 //alert(reqArray[i].id);
                 $.ajax({
                     url:'/api/sites/'+reqArray[i].id,
@@ -176,7 +188,6 @@ function removeMarker(e,ee,marker){
                         {
                             alert('删除失败');
                         }
-
                     },
                     error:function(error)
                     {
@@ -199,7 +210,6 @@ function removeMarker(e,ee,marker){
 var opts = {
     width : 300,     // 信息窗口宽度
     height: 150,     // 信息窗口高度
-    //title : "海底捞王府井店" , // 信息窗口标题
     enableAutoPan:true,
     enableMessage:true//设置允许信息窗发送短息
 
@@ -244,15 +254,18 @@ function addContent(tenantId,id,name,longtitude,latitude,year,month,date)
 
                     return content;
 }
-function addMarkers(id,longtitude,latitude)
+function addMarkers(id,longtitude,latitude,sign)
 {
                 var point=new BMap.Point(longtitude,latitude);
                 adds.push(point);
                 var marker = new BMap.Marker(point);// 创建标注
                 markers.push(marker);
-                map.addOverlay(marker);
+                if(sign)
+                {
+                    map.addOverlay(marker);
+                    markerClusterer.addMarker(marker); //新建标记放入聚合点
+                }                
                 marker.disableDragging();           // 不可拖拽
-                //addClickHandler(content,marker);
                 var label = new BMap.Label(id,{offset:new BMap.Size(20,-10)});
                 marker.setLabel(label);
                 return marker;
@@ -350,7 +363,7 @@ function (){
         }
     });
     //聚合点
-    var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
+    markerClusterer = new BMapLib.MarkerClusterer(map, {markers:markers});
 }
 
 //////////////////////////添加站点///////////////////
@@ -375,7 +388,7 @@ function (){
                 if(req!='')//data.trim 去空格,防止出错
                  { getSites();
                  var content =addContent(tenantId,req.id,req.name,req.longtitude,req.latitude,year,month,date)
-                 var marker =addMarkers(req.id,req.longtitude,req.latitude)
+                 var marker =addMarkers(req.id,req.longtitude,req.latitude,true)
                  //addMarkers(req.id,req.longtitude,req.latitude)
                  //console.log(addContent())
                  addClickHandler(content,marker);
