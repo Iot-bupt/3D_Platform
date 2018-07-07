@@ -509,7 +509,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         renderer.setClearColor(0x363636);  /*设置环境的背景色 */
 
         //轨道控件
-        //transfctrl["轨道控件"]();
+        //transfctrl["轨道控件"]();     //两种控制方式同时使用
 
         //漫游
         transfctrl["行走漫游"]();
@@ -597,7 +597,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         //控制方式
         var transctrl = gui.addFolder("场景控制方式");
         transctrl.add(transfctrl,"轨道控件");
-        transctrl.add(transfctrl,'轨迹球控件');
+        //transctrl.add(transfctrl,'轨迹球控件');  未完成
         transctrl.add(transfctrl,'行走漫游');
         
 

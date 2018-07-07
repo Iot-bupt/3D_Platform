@@ -1,4 +1,10 @@
 
+$("#_deviceDetail").load("static/assets/html/deviceDetail.html");
+
+$('#deviceDetail').modal({
+    keyboard: false
+    });
+
 var mainApp = angular.module("mainApp",["ngResource"]);
 
 

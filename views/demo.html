@@ -39,8 +39,8 @@
 </head>
 
 <body ng-controller="mainCtrl">
-    <div id="deviceDetail" class="deviceDetailStyle">
-        <iframe id="detail" class="modal-content myDetail" src="static/assets/html/deviceDetail.html" frameborder=0></iframe>
+    <div id="_deviceDetail" class="deviceDetailStyle">
+        <!-- <iframe id="detail" class="modal-content myDetail" src="static/assets/html/deviceDetail.html" frameborder=0></iframe> -->
     </div>
     <div id="container"></div>
     <div id="coords"></div>
@@ -56,6 +56,7 @@
             </div>
     
         </div>
+        
     </div>
     <!-- <div id="blocker">
 
@@ -71,6 +72,7 @@
     <script src="static/assets/js/815_scene.js"></script>
     <script src="static/assets/js/mainCtrl.js"></script>
     <script src="static/assets/js/toastr.js"></script>
+    <button class="btn btn-primary btn-lg" style="position: absolute;top: 5px;left: 190px;" data-toggle="modal" data-target="#deviceDetail"></button>
 
 <!--div id="packUpDiv">
     <div id="packUpSpan"><i class="fa fa-reorder" id="packUp" ng-click="left()"></i>
