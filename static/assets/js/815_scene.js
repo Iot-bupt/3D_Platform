@@ -601,7 +601,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         
 
         gui.add(newcontrols, '清除物体');
-        gui.add(newcontrols, '上传设备模型');
+        // gui.add(newcontrols, '上传设备模型');
         gui.add(newcontrols,'☆返回首页');
         gui.add(newcontrols,'✔保存场景设置');
         gui.open();
