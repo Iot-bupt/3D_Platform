@@ -3,7 +3,7 @@ class AddModel{
     constructor(){
     }
 
-    addaModel (url,position,scale,rotation,name_uid){
+    addaModel (url,position,scale,rotation,name,deviceId,label){
         var loader = new THREE.STLLoader();
         loader.load("static/gis_815/models/somedevices/" + url, function(geometry) {
             var material = new THREE.MeshPhongMaterial({
@@ -19,7 +19,11 @@ class AddModel{
 
             mesh.castShadow = true;
             mesh.receiveShadow = true;
-            mesh.tooltip = name_uid;
+
+            mesh.deviceName = name;
+            mesh.deviceId = deviceId;    //真实设备Id
+            mesh.label = label;
+
             scene.add(mesh);
             objects.push(mesh);
             //console.log(objects)
@@ -41,14 +45,15 @@ class AddModel{
         });
 
         allModel.forEach(element => {
-            //var name_uid = element.label;      //暂时使用默认
-            var name_uid = "默认设备_uid1_on";
+            var name = element.name;
+            var label = element.label;
+            var deviceId = element.deviceId;
             var location = JSON.parse(element.location);
             var position = location.position;
             var scale = location.scale;
             var rotation = location.rotation;
             
-            this.addaModel(element.deviceModelUrl,position,scale,rotation,name_uid);
+            this.addaModel(element.deviceModelUrl,position,scale,rotation,name,deviceId,label);
             
         });
     }

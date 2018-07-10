@@ -40,10 +40,11 @@
 
 <body ng-controller="mainCtrl">
     <div id="_deviceDetail" class="deviceDetailStyle">
-        <!-- <iframe id="detail" class="modal-content myDetail" src="static/assets/html/deviceDetail.html" frameborder=0></iframe> -->
+        
     </div>
     <div id="container"></div>
     <div id="coords"></div>
+    <div id="tip" ng-click="moveShowDetail()"></div>
     <div id="info">
         Labroom_815_monitoring<br>
         变换设备模型: "Q" 平移 | "W" 旋转 | "E" 缩放 | "+","-" 增大缩小size | "ESC" 退出变换<br />
@@ -72,7 +73,6 @@
     <script src="static/assets/js/815_scene.js"></script>
     <script src="static/assets/js/mainCtrl.js"></script>
     <script src="static/assets/js/toastr.js"></script>
-    <button class="btn btn-primary btn-lg" style="position: absolute;top: 5px;left: 190px;" data-toggle="modal" data-target="#deviceDetail"></button>
 
 <!--div id="packUpDiv">
     <div id="packUpSpan"><i class="fa fa-reorder" id="packUp" ng-click="left()"></i>

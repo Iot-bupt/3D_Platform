@@ -1,12 +1,7 @@
 
 $("#_deviceDetail").load("static/assets/html/deviceDetail.html");
 
-$('#deviceDetail').modal({
-    keyboard: false
-    });
-
 var mainApp = angular.module("mainApp",["ngResource"]);
-
 
 mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
 
@@ -155,9 +150,7 @@ $scope.packSearchMenu = function(){
                     idOffset = msg.nextPageLink.idOffset;//用于查找下一页
                     textOffset = msg.nextPageLink.textOffset;//用于查找下一页
                     hasNext = msg.hasNext;//判断是否存在下一页
-                    //console.log(idOffset);
-                    //console.log(textOffset);
-                    //console.log(hasNext);
+
                     preDeviceId.push(idOffset);
                     preDeviceName.push(textOffset);
                 }
@@ -186,7 +179,7 @@ $scope.packSearchMenu = function(){
                         hasNext = msg.hasNext;
                         preDeviceId.push(idOffset);
                         preDeviceName.push(textOffset);
-                        console.log($scope.deviceList);
+                        // console.log($scope.deviceList);
                     }else{
                         hasNext = msg.hasNext;
                     }
@@ -369,6 +362,7 @@ $scope.searchDeviceInfo = function(){
         jQuery('#showDeviceInfo').css({'display':''});
     }
 
+
 //选中设备信息展示
     $scope.show = function(data){
         $scope.deviceInfo = data;
@@ -382,6 +376,35 @@ $scope.searchDeviceInfo = function(){
         $scope.deviceType = data.deviceType;
         $scope.model = data.model;
         jQuery('#showDeviceInfo').css({'display':''});
+    }
+
+//移动鼠标点击tip显示右侧设备详情
+    $scope.moveShowDetail = function(){
+        var deviceAttrInfo = undefined;
+        var deviceId = intersected.deviceId;
+        $.ajax({
+            url:'/api/3d815/getDeviceInfo/'+deviceId,
+            type:'GET',
+            async:false,
+            success: function(res){
+                deviceAttrInfo = res;
+            },
+            error: function(e){
+                console.log(e.message);
+            }
+        });
+        $scope.deviceInfo = deviceAttrInfo;
+        $scope.id = deviceAttrInfo.id;
+        $scope.name = deviceAttrInfo.name;
+        $scope.manufacture = deviceAttrInfo.manufacture;
+        $scope.parentDeviceId = deviceAttrInfo.parentDeviceId;
+        $scope.status = deviceAttrInfo.status;
+        $scope.location = deviceAttrInfo.location;
+        $scope.deviceType = deviceAttrInfo.deviceType;
+        $scope.model = deviceAttrInfo.model;
+
+        $('#tip').css({'display':'none'});
+        $('#showDeviceInfo').css({'display':''});
     }
 
 //点击添加模型显示框

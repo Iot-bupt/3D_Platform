@@ -358,19 +358,18 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     //tips and show tips
     var ToolTip = {
         init: function() {
-            var tempDiv = document.createElement("div");
-            document.body.insertBefore(tempDiv, document.body.childNodes[0]);
-            tempDiv.id = "tip";
+            var tempDiv = document.getElementById("tip");
+            
             tempDiv.style.display = "none";
             tempDiv.style.position = "absolute";
             tempDiv.style.color = "#fff";
             tempDiv.style.borderRadius = 2 + "px";
             tempDiv.style.padding = 2 + "px";
-            tempDiv.style.backgroundColor = "rgba(0,0,0,0.4)";
+            tempDiv.style.backgroundColor = "rgba(0,0,0,0.4)";          
         },
         showtip: function(mouse, cont) {
             jqq("tip").innerHTML = "<p>" + cont + "</p>";
-            jqq("tip").style.left = mouse.clientX + 10 + "px";
+            jqq("tip").style.left = mouse.clientX + 5 + "px";
             jqq("tip").style.top = mouse.clientY - 10 + "px";
             jqq("tip").style.zIndex = "10";
             jqq("tip").style.display = "block";
@@ -509,7 +508,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         renderer.setClearColor(0x363636);  /*设置环境的背景色 */
 
         //轨道控件
-        //transfctrl["轨道控件"]();     //两种控制方式同时使用
+        transfctrl["轨道控件"]();     //两种控制方式同时使用
 
         //漫游
         transfctrl["行走漫游"]();
@@ -643,7 +642,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             console.log(intersects.length); 
             //在mainCtrl.js中绑定前端input
             if($("#addModel").css("display")=="none") {
-                console.log("ssss");
+                
             }else{
                 jQuery('#xValue').val(selected.point.x.toFixed(6));
                 jQuery('#yValue').val(selected.point.y.toFixed(6));
@@ -671,14 +670,10 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         
         //console.log("dijichangdu :"+intersections.length)
         if (intersections.length > 0) {
-                var name_uid =  intersections[0].object.tooltip;
-                var nameUid =  name_uid.split("_");
+                var deviceName =  intersections[0].object.deviceName;
+                var deviceId = intersections[0].object.deviceId;
+                var label = intersections[0].object.label;
                 downIntersected = intersections[0].object;
-                console.log('名字:'+nameUid[0]);
-                //==================点击设备显示控制面板=========
-
-                $("#detail").css({'display':''});
-                //=============================================
     
                 if (event.button === 2){
                     window.addEventListener('keydown', changeMode);
@@ -686,31 +681,36 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                     transformcontrol.attach(downIntersected);
 
                 }else{
-                if(nameUid[0].indexOf("窗帘")!=-1){
-                    getAjax("/api/3d815/controlCurtain/"+nameUid[1]+'?turn='+nameUid[2], function(response) {
+                     //==================点击设备显示控制面板=========
+                    $('#deviceDetail').modal('show');
+
+                    //=============================================
+
+                // if(nameUid[0].indexOf("窗帘")!=-1){
+                //     getAjax("/api/3d815/controlCurtain/"+nameUid[1]+'?turn='+nameUid[2], function(response) {
                         
-                        console.log('窗帘结果:'+response);
-                        if (response.indexOf("on")!=-1){
-                            params.exposure = 0.81;
-                        }else if (response.indexOf("off")!=-1){
-                            params.exposure = 0.68
-                        }else {
-                            alert("控制失败！"+response);
-                        }
-                    });
-                }else if (nameUid[0].indexOf("开关")!=-1){
-                    getAjax("/api/3d815/controlSwitch/"+nameUid[1]+'?turn='+nameUid[2], function(response) {
+                //         console.log('窗帘结果:'+response);
+                //         if (response.indexOf("on")!=-1){
+                //             params.exposure = 0.81;
+                //         }else if (response.indexOf("off")!=-1){
+                //             params.exposure = 0.68
+                //         }else {
+                //             alert("控制失败！"+response);
+                //         }
+                //     });
+                // }else if (nameUid[0].indexOf("开关")!=-1){
+                //     getAjax("/api/3d815/controlSwitch/"+nameUid[1]+'?turn='+nameUid[2], function(response) {
                         
-                        console.log('开关结果:'+response);
-                        if (response.indexOf("on")!=-1){
-                            params.exposure = 0.81;
-                        }else if (response.indexOf("off")!=-1){
-                            params.exposure = 0.68
-                        }else {
-                            alert("控制失败！"+response);
-                        }
-                        });
-                }
+                //         console.log('开关结果:'+response);
+                //         if (response.indexOf("on")!=-1){
+                //             params.exposure = 0.81;
+                //         }else if (response.indexOf("off")!=-1){
+                //             params.exposure = 0.68
+                //         }else {
+                //             alert("控制失败！"+response);
+                //         }
+                //         });
+                // }
                 }                                                                                             
                 }                                                
     }
@@ -729,33 +729,36 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         if (intersections.length > 0) {
             if (intersected != intersections[0].object) {
                 if (intersected) intersected.material.color.setHex(baseColor);
-                /*console.log(event.clientX); console.log(event.clientY);
-                 */
+                
                 intersected = intersections[0].object;
                 intersected.material.color.setHex(intersectColor);
 
-                var name_uid =  intersected.tooltip;
-                var nameUid =  name_uid.split("_");
+                var deviceName =  intersected.deviceName;
+                var deviceId = intersected.deviceId;
+                var label = intersected.label;
               
-               if(nameUid[0].indexOf("开关")!=-1){
-                   ToolTip.showtip(event, nameUid[0]+":");
-               }else if(nameUid[0].indexOf("窗帘")!=-1){
-                   ToolTip.showtip(event, nameUid[0]+":");
-               }
-                else if(nameUid[0].indexOf("温湿")!=-1){
-                   getAjax("/api/3d815/getdata/"+nameUid[1], function(response) {
-                       var data = JSON.parse(response);
-                       var temp = (parseFloat((data.res[1].value))/100).toFixed(2);
-                       var humidity = parseFloat(data.res[0].value).toFixed(2);
-                       console.log(temp);
-                       ToolTip.showtip(event, nameUid[0]+"<br>temp:"+temp+"℃<br>humitity:"+humidity);
-                   });
-               }else {
-                ToolTip.showtip(event, nameUid[0]+":");
-               }
-
+            //    if(nameUid[0].indexOf("开关")!=-1){
+            //        ToolTip.showtip(event, nameUid[0]+":");
+            //    }else if(nameUid[0].indexOf("窗帘")!=-1){
+            //        ToolTip.showtip(event, nameUid[0]+":");
+            //    }
+            //     else if(nameUid[0].indexOf("温湿")!=-1){
+            //        getAjax("/api/3d815/getdata/"+nameUid[1], function(response) {
+            //            var data = JSON.parse(response);
+            //            var temp = (parseFloat((data.res[1].value))/100).toFixed(2);
+            //            var humidity = parseFloat(data.res[0].value).toFixed(2);
+            //            console.log(temp);
+            //            ToolTip.showtip(event, nameUid[0]+"<br>temp:"+temp+"℃<br>humitity:"+humidity);
+            //        });
+            //    }else {
+            //     ToolTip.showtip(event, "设备名称:"+deviceName+"<br>设备ID:"+deviceId+"<br>标签:"+label);
+            //     // $('#showDeviceInfo').css({'display':''});
+                
+            //    }
+               ToolTip.showtip(event, "设备名称:"+deviceName+"<br>设备ID:"+deviceId+"<br>标签:"+label);
 
             }
+
             document.body.style.cursor = 'pointer';
         } else if (intersected) {
             intersected.material.color.setHex(baseColor);
@@ -764,6 +767,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             //transformcontrol.detach();
             //window.removeEventListener("keydown", changeMode)
             ToolTip.hidetip();
+            // $('#showDeviceInfo').css({'display':'none'});
         }
     }
     function alt() {
