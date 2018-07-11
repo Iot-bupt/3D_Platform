@@ -12,7 +12,7 @@ module.exports = {
         var authorization = "Basic " + base64;
 
         try{
-            var res =  await request.post('http://39.104.165.155:8081/api/v1/auth/login?grant_type=password')
+            var res =  await request.post('http://39.104.189.84:30080/api/v1/account/login?grant_type=password')
             .type('form')
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .set('Authorization', authorization)

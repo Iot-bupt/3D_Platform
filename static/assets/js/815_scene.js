@@ -682,8 +682,28 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
                 }else{
                      //==================点击设备显示控制面板=========
-                    $('#deviceDetail').modal('show');
+                     //外部js代码调用angular内部$scope的变量和函数
 
+                    var appElement = $('[ng-controller=deviceCtrPanel]');
+                    var $scope = angular.element(appElement).scope();
+
+                    $.ajax({
+                        url:'/api/3d815/getDeviceInfo/'+ deviceId,
+                        type:'GET',
+                        async:false,
+                        success: function(res){
+                            $scope.deviceInfo = res;
+                        },
+                        error: function(e){
+                            console.log(e.message);
+                        }
+                    });
+
+                    $('#deviceDetail').modal('show');     //控制面板触发仅此一行代码
+                    $scope.showDetail();
+                    
+
+                    
                     //=============================================
 
                 // if(nameUid[0].indexOf("窗帘")!=-1){

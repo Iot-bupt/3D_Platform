@@ -39,8 +39,8 @@
 </head>
 
 <body ng-controller="mainCtrl">
-    <div id="_deviceDetail" class="deviceDetailStyle">
-        
+    <div id="_deviceDetail" class="deviceDetailStyle" ng-controller="deviceCtrPanel">
+        <!--加载deviceDetail.html中的html标签-->
     </div>
     <div id="container"></div>
     <div id="coords"></div>
@@ -72,6 +72,7 @@
     <script src="static/assets/js/addDeviceModel.js"></script>
     <script src="static/assets/js/815_scene.js"></script>
     <script src="static/assets/js/mainCtrl.js"></script>
+    <script src="static/assets/js/deviceCtrPanel.js"></script>
     <script src="static/assets/js/toastr.js"></script>
 
 <!--div id="packUpDiv">

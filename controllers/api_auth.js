@@ -5,7 +5,7 @@ const APIError = require('../rest').APIError;
 
 module.exports = {
 
-    'POST /api/login': async (ctx, next) => {     //创建场景
+    'POST /api/login': async (ctx, next) => {     
         
         var res = await auth.login(ctx.request.body.username, ctx.request.body.password);
         
