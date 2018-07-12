@@ -22,6 +22,7 @@ var nameArray=[];
 var adds=[];
 var markers=[];
 var overlays=[];
+var label=[];
 var a;
 var openIfoID;
 var content;
@@ -33,13 +34,13 @@ var date
 var marker
 var drawingManager
 var biaozhi;
+var sign
 var idOffset;//用于查找下一页
 var textOffset;//用于查找下一页
 var hasNext;//判断是否存在下一页
 var preDeviceId = [];//用于查找上一页
 var preDeviceName = [];//用于查找上一页
 var pageNum = 1;//记录当前页面
-
 var map = new BMap.Map("allmap");    // 创建Map实例
 var markerClusterer 
 var styleJson =[                     //个性化地图
@@ -112,6 +113,7 @@ map.centerAndZoom(point, 12);
     //覆盖物
 var overlaycomplete=function(e){
     overlays.push(e.overlay);
+    label.push(e.label);
     //console.log(e);
 };
 var styleOptions = {
@@ -139,6 +141,75 @@ map.addEventListener("load",function(){
     myDis.open();  //开启鼠标测距
     //myDis.close();  //关闭鼠标测距大
 });
+
+/////////////地点搜索//////
+function G(id) {
+        return document.getElementById(id);
+    }
+    // 定义一个控件类,即function
+    function ZoomControl() {
+        this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+        this.defaultOffset = new BMap.Size(10, 10);
+    }
+    // 通过JavaScript的prototype属性继承于BMap.Control
+    ZoomControl.prototype = new BMap.Control();
+    // 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+    // 在本方法中创建个p元素作为控件的容器,并将其添加到地图容器中
+    ZoomControl.prototype.initialize = function(map){
+      // 创建一个DOM元素
+      var p = document.createElement("p");
+      p.innerHTML = '<p id="r-result"><input type="text" id="suggestId" class="form-control" placeholder="请输入地点" size="20"  style="width:200px; font-size:15px;" /></p><p id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></p>';
+      // 添加DOM元素到地图中
+      map.getContainer().appendChild(p);
+      // 将DOM元素返回
+      return p;
+    }
+    // 创建控件
+    var myZoomCtrl = new ZoomControl();
+    // 添加到地图当中
+    map.addControl(myZoomCtrl);
+    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+        {"input" : "suggestId"
+        ,"location" : map
+    });
+    ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+    var str = "";
+        var _value = e.fromitem.value;
+        var value = "";
+        if (e.fromitem.index > -1) {
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }
+        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+        value = "";
+        if (e.toitem.index > -1) {
+            _value = e.toitem.value;
+            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        }
+        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+        G("searchResultPanel").innerHTML = str;
+    });
+    var myValue;
+    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+    var _value = e.item.value;
+        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+ 
+        setPlace();
+    });
+ 
+    function setPlace(){
+        //map.clearOverlays();    //清除地图上所有覆盖物
+        function myFun(){
+            var placeLocal = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+            map.centerAndZoom(placeLocal, 22);
+            //map.addOverlay(new BMap.Marker(placeLocal));    //添加标注
+        }
+        var local = new BMap.LocalSearch(map, { //智能搜索
+          onSearchComplete: myFun
+        });
+        local.search(myValue);
+    }
+
 //百度地图API功能
 function addClickHandler(content,marker){
 
@@ -375,8 +446,7 @@ function (){
         map.removeEventListener("click");
         map.removeEventListener("click",getPoint);
         map.setDefaultCursor("url(http://api0.map.bdimg.com/images/openhand.cur) 8 8,default");
-		//document.getElementById('nav').style.display='none';
-        $('#addSites').modal('hide');
+        //$('#addSites').modal('hide');
         $.ajax({
             url:'/api/sites',
             data:
@@ -389,8 +459,8 @@ function (){
                  { getSites();
                  var content =addContent(tenantId,req.id,req.name,req.longtitude,req.latitude,year,month,date)
                  var marker =addMarkers(req.id,req.longtitude,req.latitude,true)
+                 map.centerAndZoom(new BMap.Point(req.longtitude, req.latitude), 12);
                  //addMarkers(req.id,req.longtitude,req.latitude)
-                 //console.log(addContent())
                  addClickHandler(content,marker);
                  //addMarkers(tenantId,req.id,req.name,req.longtitude,req.latitude,year,month,date)        
                     alert ("添加成功 ");}
@@ -434,7 +504,7 @@ function mark1()
     	drawingManager.close();
     }
     $('#tenantId1').val(tenantId);
-    $('#addSites').modal('show');  
+    //$('#addSites').modal('show');  
 }
 
 function getPoint(e)
@@ -491,7 +561,7 @@ function renameSite() {
             dataType: 'JSON',//返回字符串，T大写
             success: function (req) {
                 //console.log(req)
-                $('#renameSite').modal('hide')
+                //$('#renameSite').modal('hide')
                 if (req != '') {
                     alert('修改完成');
                     getSites();
@@ -631,6 +701,18 @@ function draw() {
     drawingManager.enableCalculate()
     //添加鼠标绘制工具监听事件，用于获取绘制结果
     drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+    drawingManager.setDrawingMode(BMAP_DRAWING_RECTANGLE1);
+}
+function rectangleAreaMeasure()
+{
+    if(myDis.open())
+    {
+        myDis.close();  //关闭鼠标测距大
+    }
+    drawingManager.open()
+    drawingManager.enableCalculate()
+    //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
     drawingManager.setDrawingMode(BMAP_DRAWING_RECTANGLE);
 }
 
@@ -648,86 +730,30 @@ function areaMeasure()
     drawingManager.setDrawingMode(BMAP_DRAWING_POLYGON);
 }
 
-/////////////地点搜索//////
-function G(id) {
-        return document.getElementById(id);
+function circleAreaMeasure()
+{
+    if(myDis.open())
+    {
+        myDis.close();  //关闭鼠标测距大
     }
-    // 定义一个控件类,即function
-    function ZoomControl() {
-        this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
-        this.defaultOffset = new BMap.Size(10, 10);
-    }
- 
-    // 通过JavaScript的prototype属性继承于BMap.Control
-    ZoomControl.prototype = new BMap.Control();
- 
-    // 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
-    // 在本方法中创建个p元素作为控件的容器,并将其添加到地图容器中
-    ZoomControl.prototype.initialize = function(map){
-      // 创建一个DOM元素
-      var p = document.createElement("p");
-      p.innerHTML = '<p id="r-result"><input type="text" id="suggestId" class="form-control" placeholder="请输入地点" size="20"  style="width:200px; font-size:15px;" /></p><p id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></p>';
-      // 添加DOM元素到地图中
-      map.getContainer().appendChild(p);
-      // 将DOM元素返回
-      return p;
-    }
- 
-    // 创建控件
-    var myZoomCtrl = new ZoomControl();
-    // 添加到地图当中
-    map.addControl(myZoomCtrl);
-    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
-        {"input" : "suggestId"
-        ,"location" : map
-    });
- 
-    ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
-    var str = "";
-        var _value = e.fromitem.value;
-        var value = "";
-        if (e.fromitem.index > -1) {
-            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-        }
-        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
-        value = "";
-        if (e.toitem.index > -1) {
-            _value = e.toitem.value;
-            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-        }
-        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
-        G("searchResultPanel").innerHTML = str;
-    });
- 
-    var myValue;
-    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
-    var _value = e.item.value;
-        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-        G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
- 
-        setPlace();
-    });
- 
-    function setPlace(){
-        //map.clearOverlays();    //清除地图上所有覆盖物
-        function myFun(){
-            var placeLocal = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
-            map.centerAndZoom(placeLocal, 22);
-            //map.addOverlay(new BMap.Marker(placeLocal));    //添加标注
-        }
-        var local = new BMap.LocalSearch(map, { //智能搜索
-          onSearchComplete: myFun
-        });
-        local.search(myValue);
-    }
+    drawingManager.open()
+    drawingManager.enableCalculate()
+    //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+    drawingManager.setDrawingMode(BMAP_DRAWING_CIRCLE);
+}
+
+
 
 function clearAll() {
     biaozhi=1;
     drawingManager.close();
     for(var i = 0; i < overlays.length; i++){
         map.removeOverlay(overlays[i]);
+        map.removeOverlay(label[i]);  
     }
     overlays.length = 0
+    label.length=0;
 }
 
 // function deviceSearch()
@@ -753,7 +779,7 @@ function clearAll() {
 function deviceSearchBox()
 {
     //$("#myTable3  tr:not(:first)").empty(""); 
-    $('#deviceSearch').modal('show'); 
+    //$('#deviceSearch').modal('show'); 
     document.getElementById( "deviceInfo1" ).style.display="none" ;
 }
 

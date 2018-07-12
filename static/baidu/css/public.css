@@ -4,7 +4,7 @@
 }
 body{
     font-size: 12px;
-    background: #4287c2;
+    /*background: #4287c2;*/
 }
 .clear:after{
     content: '';
@@ -91,7 +91,7 @@ li{
     border-top: 1px solid #c2ccd5;
     display: flex;  /*变为弹性盒模型*/
     display: -webkit-flex;
-    background: #fff;
+    background: #F5F5F5 ;
     height:100%;
 }
 /*左边*/
@@ -137,6 +137,11 @@ li{
     line-height: 40px;
     border-bottom: 1px solid rgba(212,212,212,0.5) ;
 }
+.btn-group-vertical{
+    margin-left: 10px;
+}
+
+
 /*.list li:nth-child(1){
     background: url("../img/zd.png") 0  center no-repeat;
 }

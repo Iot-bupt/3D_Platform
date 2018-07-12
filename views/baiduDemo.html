@@ -30,8 +30,7 @@
     <!-- <link rel="stylesheet" href="../static/baidu/css/font-Lobster.css"/> -->
     <!-- <link rel="stylesheet" href="../static/baidu/css/pagination.css"/> -->
     <!-- <link rel="stylesheet" href="../static/baidu/css/toastr.css"/> -->
-    <!-- <link rel="stylesheet" href="../static/baidu/css/ui-grid.css"/> -->
-    
+    <!-- <link rel="stylesheet" href="../static/baidu/css/ui-grid.css"/> -->    
 	<title>地图展示</title>
 </head>
 <style>
@@ -73,7 +72,6 @@
                     <i class="fa fa-home fontStyle"></i>
                     <span class="textStyle">地图展示</span>
                 </a>
-
             </li>
             <li class="side-menu-icon">
              <a href="javascript:void(0);" title="设备列表" onclick="lookSiteList()">
@@ -84,21 +82,34 @@
         </ul>  
 </div>
 <!--主体内容-->
-<section class="publicMian" ">
+<section class="publicMian" >
     <div class="left">
         <h2 class="leftH2"><span ></span>功能列表<span></span></h2>
         <nav>
             <ul class="list">
                 <li><input type="button" class="anjian" data-toggle="modal" value="距离测距" onclick="measure()"  /></li>
-                <li><input type="button" class="anjian" value="面积测量" onclick="areaMeasure()"/></li>
-                <li><input type="button" class="anjian" data-toggle="modal" value="输入经纬度标注" onclick="mark1()" /></li>
+            
+                <li><div >
+                    <button type="button" class="anjian" data-toggle="collapse" href="#collapseOne">面积测量
+                        <span class="caret"></span>
+                    </button>
+                </div></li>
+                <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="btn-group-vertical">
+                    <input type="button" class="btn btn-small btn-info" value="矩形测量" onclick="rectangleAreaMeasure()"/>
+                    <input type="button" class="btn btn-small btn-info" value="圆形测量" onclick="circleAreaMeasure()"/>
+                    <input type="button" class="btn btn-small btn-info" value="多边形测量" onclick="areaMeasure()"/>
+                    <input type="button" class="btn btn-small btn-info" value="清除覆盖物" onclick="clearAll()"/>   
+                    </div>
+                    <!-- <p class="s123"><input type="button" class="btn btn-small btn-primary" value="多边形测量" onclick="areaMeasure()"/></p>
+                    <p class="s123"><input type="button" class="btn btn-small btn-primary" value="圆形测量" onclick="circleAreaMeasure()"/></p>
+                    <p class="s123"><input type="button" class="btn btn-small btn-primary" data-toggle="modal" value="清除覆盖物" onclick="clearAll()"/></p> -->
+                </div>
+
+                <li><input type="button" class="anjian" data-toggle="modal" data-target="#addSites" value="输入经纬度标注"           onclick="mark1()" /></li>
                 <li><input type="button" class="anjian" data-toggle="modal" value="点击添加标注"  onclick="mark2();" /></li>
-                <!-- <li><input type="button" class="anjian" data-toggle="modal" value="绘制覆盖物个数" onclick="alert(overlays.length)"/></li>
-                <li><input type="button" class="anjian" data-toggle="modal" value="清除所有覆盖物" onclick="clearAll1()"/></li>  -->
-                
-                <!-- <li><input type="button" class="anjian" value="关闭" id="searchOff" /></li> -->
                 <li><input type="button" class="anjian" value="框选搜索" id ="jiexi" onclick="draw()" /></li>
-                <li><input type="button" class="anjian" value="设备搜索" id ="deviceSearch1" onclick="deviceSearchBox()" /></li>
+                <li><input type="button" class="anjian" value="设备搜索" id ="deviceSearch1"  data-toggle="modal"           data-target="#deviceSearch" onclick="deviceSearchBox()" /></li>
             </ul>
         </nav>
     </div>
@@ -121,7 +132,6 @@
         </fieldset>
     </div>
 </section>
-
 
 <div class="modal fade" tabindex="-1" role="dialog" id="addSites">
         <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
@@ -216,8 +226,7 @@
                                 <progress max="100" value="0" id="progressNumber"></progress> 
                                 <!-- </div> -->
                             </td>
-                        </tr>
-                    
+                        </tr>                    
                         </tbody>
                     </table>
                 </div>
@@ -286,10 +295,8 @@
      <div  class="modal-body" id="siteModal" style="height: 400px;overflow-y: scroll";>
         <div ng-repeat="x in records"  class="siteModalClass" ng-mouseover="fadeSiblings()" ng-mouseout="reSiblings()" ng-click="showAll(x)" >                
                 <span style="font-size:20px"><i class="glyphicon glyphicon-hdd"></i></span>
-                <p class="stylePulgin">{{x.name}}</p>
-            
-        </div>
-        
+                <p class="stylePulgin">{{x.name}}</p>            
+        </div>        
     </div>
                 <!-- <div class="modal-footer">
                 </div> -->

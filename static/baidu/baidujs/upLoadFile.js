@@ -3,17 +3,7 @@ var file
 function fileSelected() {  
  file= document.getElementById('fileToUpload').files[0];  
 if (file) {  
-  //var fileSize = 0;
-  // if(file.size>1024*1024*200)
-  // {
-    // alert('请上传小于200M文件')
-  // } 
-  // else
-  // {
-    $("#modelName").val(file.name);
-    // sign=true
-  // }
-   
+    $("#modelName").val(file.name);  
  }  
 }
 
@@ -27,9 +17,9 @@ function uploadFile() {
   {
     alert('请上传小于200M文件')
   }
-  if(fileType != "drc" ) 
+  if(fileType != "drc"&&fileType !="obj"&&fileType !="max"&&fileType !="glft") 
   {
-      alert("请上传.drc文件")
+      alert("请上传drc、obj、max或gltf文件")
   }
   else
   {
