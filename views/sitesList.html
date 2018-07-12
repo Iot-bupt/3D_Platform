@@ -55,13 +55,12 @@
                     <i class="fa fa-home fontStyle"></i>
                     <span class="textStyle">地图展示</span>
                 </a>
-
             </li>
             <li class="side-menu-icon">
-             <a href="" title="设备列表" onclick="">
-                 <i class="fa fa-file-text-o fontStyle"></i>
-                 <span class="textStyle">设备列表</span>
-             </a>
+                <a href="" title="设备列表" onclick="">
+                    <i class="fa fa-file-text-o fontStyle"></i>
+                    <span class="textStyle">设备列表</span>
+                </a>
             </li>
         </ul>  
 </div>
@@ -74,10 +73,10 @@
  --><div class="right1" >
         <div class="location">
                 <span>设备列表</span>
-            </div>
+        </div>
 
         <div class="search">
-            <span>站点ID：</span>
+            <span>设备名称：</span>
             <input type="text" id="searchValue"  onkeyup="deviceSearch1()" placeholder="请输入设备名称"/>
             <input type="button" id='keyup' value="查询" " onclick="deviceSearch()" />
         </div>
@@ -99,55 +98,6 @@
             <button class="btn btn-primary" style="margin-left: 30px" id="next" onclick="nextPage()">下一页</button>
         </div>
     </div>
-
-    <!-- <div id="right1" class="right1">
-        <div class="search">
-            <span>站点ID：</span>
-            <input type="text" id="searchValue1"  onkeyup="siteSearch1()" placeholder="请输入站点ID"/>
-            <input type="button" id='keyup' value="查询" onclick="deviceSearch()" /><span>X</span>
-        </div>
-        供应商操作表格
-        <table id ="myTable1" class="providerTable" cellpadding="0" cellspacing="0">
-            <tr class="firstTr">
-                <th width="30%">设备ID</th>
-                <th width="10%">租户名称</th>
-                <th width="10%">用户ID</th>
-                <th width="20%">设备名称</th>
-                <th width="10%">设备组ID</th>
-                <th width="20%">操作</th>
-            </tr>
-        </table>
-
-    </div> -->
-
-<div class="modal fade" tabindex="-1" role="dialog" id="addDevice">
-        <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
-        <div class="modal-dialog" role="document" style="width:1000px">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                    <h4 class="modal-title" style="font-weight: bold;">分配站点</h4>
-                </div>
-                <div class="modal-body" id="deviceInfo">
-                    <table id ="myTable2" class="table table-striped" cellpadding="0" cellspacing="0" >
-            <tr class="firstTr">
-                <th width="30%">设备ID</th>
-                <th width="10%">租户名称</th>
-                <th width="10%">用户ID</th>
-                <th width="20%">设备名称</th>
-                <th width="10%">设备组ID</th>
-                <th width="20%">操作</th>
-            </tr>
-        </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="modalClose" onclick="
-                    closeWin()">关闭</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="modalConfirm" onclick="markfinish()">确定</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
 <div class="modal fade" tabindex="-1" role="dialog" name="addSites" id="addSites">
         <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
@@ -176,7 +126,7 @@
                         <tr>
                             <td class="attName">站点名称:</td>
                             <td>
-                                 <select  name="siteId2" id="siteId2" ng-change="getCreateManufacture()" ng-model="myManufacturer"  style="width:170px">
+                                <select  name="siteId2" id="siteId2" style="width:170px">
                                 </select>
                     </td>
                         </tr>

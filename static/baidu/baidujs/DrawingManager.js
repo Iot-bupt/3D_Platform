@@ -23,6 +23,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
     BMAP_DRAWING_POLYLINE  = "polyline",   // 鼠标画线模式
     BMAP_DRAWING_CIRCLE    = "circle",     // 鼠标画圆模式
     BMAP_DRAWING_RECTANGLE = "rectangle",  // 鼠标画矩形模式
+    BMAP_DRAWING_RECTANGLE1 = "rectangle1",  // 鼠标画矩形模式
     BMAP_DRAWING_POLYGON   = "polygon";    // 鼠标画多边形模式
 
 (function() {
@@ -848,6 +849,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
         this.polylineOptions  = opts.polylineOptions  || {};
         this.polygonOptions   = opts.polygonOptions   || {};
         this.rectangleOptions = opts.rectangleOptions || {};
+        this.rectangleOptions1 = opts.rectangleOptions || {};
         this.controlButton =  opts.controlButton == "right" ? "right" : "left";
 
     },
@@ -898,7 +900,13 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                     break;
                 case BMAP_DRAWING_RECTANGLE:
                     this._bindRectangle();
-                    break;
+                    break; 
+                case BMAP_DRAWING_RECTANGLE1:
+                    this._bindRectangle_1();
+                    break; 
+                    
+                    
+                   
             }
         }
 
@@ -1272,8 +1280,54 @@ $scope.prePage=function() {
 }
 
   });
-
     DrawingManager.prototype._bindRectangle = function() {
+
+        var me           = this,
+            map          = this._map,
+            mask         = this._mask,
+            polygon      = null,
+            startPoint   = null;
+
+        /**
+         * 开始绘制矩形
+         */
+        var startAction = function (e) {
+            baidu.stopBubble(e);
+            baidu.preventDefault(e);
+            if(me.controlButton == "right" && (e.button == 1 || e.button==0)){
+                return ;
+            }
+            startPoint = e.point;
+            var endPoint = startPoint;
+            polygon = new BMap.Polygon(me._getRectanglePoint(startPoint, endPoint), me.rectangleOptions1);
+            map.addOverlay(polygon);
+            mask.enableEdgeMove();
+            mask.addEventListener('mousemove', moveAction);
+            baidu.on(document, 'mouseup', endAction);
+        }
+
+        /**
+         * 绘制矩形过程中，鼠标移动过程的事件
+         */
+        var moveAction = function(e) {
+            polygon.setPath(me._getRectanglePoint(startPoint, e.point));
+        }
+
+        /**
+         * 绘制矩形结束
+         */
+        var endAction = function (e) {
+            var calculate = me._calculate(polygon, polygon.getPath()[2]);
+            me._dispatchOverlayComplete(polygon, calculate);
+            startPoint = null;
+            mask.disableEdgeMove();
+            mask.removeEventListener('mousemove', moveAction);
+            baidu.un(document, 'mouseup', endAction);
+        }
+
+        mask.addEventListener('mousedown', startAction);
+    }
+    DrawingManager.prototype._bindRectangle_1 = function() {
         idArray=[];
 
         nameArray=[];
@@ -1315,7 +1369,6 @@ $scope.prePage=function() {
          */
 
         var i
-        var biaozhi
         var idOffset;//用于查找下一页
         var textOffset;//用于查找下一页
         var hasNext;//判断是否存在下一页
@@ -1344,7 +1397,6 @@ $scope.prePage=function() {
                     idArray.push(reqArray[j].id)
                     nameArray.push(reqArray[j].name)
                     }
-
                 }
               }
             }
@@ -1403,8 +1455,9 @@ $scope.prePage=function() {
              $scope.$apply();
              //调用控制器中的getData()方法
              $scope.getData();
-        }
 
+         }
+     
         mask.addEventListener('mousedown', startAction);
 
     }
@@ -1444,12 +1497,19 @@ $scope.prePage=function() {
                 result.data = '总面积为：'+result.data.toFixed(2)+'平方米；';
             }
             //console.log(drawingManager._drawingType)
-            if(drawingManager._drawingType=="rectangle")
+            if(drawingManager._drawingType=="rectangle1")
             {
                $('#site').val("您所选区域"+result.data); 
             }
-            
+            if(drawingManager._drawingType=="rectangle")
+            {
+               result.label = this._addLabel(point, result.data); 
+            }
             if(drawingManager._drawingType=="polygon")
+            {
+               result.label = this._addLabel(point, result.data); 
+            }
+             if(drawingManager._drawingType=="circle")
             {
                result.label = this._addLabel(point, result.data); 
             }
@@ -1747,7 +1807,8 @@ $scope.prePage=function() {
             BMAP_DRAWING_CIRCLE,
             BMAP_DRAWING_POLYLINE,
             BMAP_DRAWING_POLYGON,
-            BMAP_DRAWING_RECTANGLE
+            BMAP_DRAWING_RECTANGLE,
+            BMAP_DRAWING_RECTANGLE1
         ];
         //工具栏可显示的绘制模式
         if (drawingToolOptions.drawingModes) {
@@ -1802,6 +1863,7 @@ $scope.prePage=function() {
         tips[BMAP_DRAWING_POLYLINE]  = "画折线";
         tips[BMAP_DRAWING_POLYGON]   = "画多边形";
         tips[BMAP_DRAWING_RECTANGLE] = "画矩形";
+        tips[BMAP_DRAWING_RECTANGLE1] = "画矩形";
 
         var getItem = function(className, drawingType) {
             return '<a class="' + className + '" drawingType="' + drawingType + '" href="javascript:void(0)" title="' + tips[drawingType] + '" onfocus="this.blur()"></a>';
