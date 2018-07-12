@@ -2,7 +2,7 @@ const axios = require('axios');
 const request = require('superagent');
 
 var instance = axios.create({
-    baseURL: 'http://39.104.84.131:8100/api/v1',
+    baseURL: 'http://39.104.189.84:30080/api/v1/deviceaccess',
     timeout: 2000,
   });
 
@@ -61,7 +61,7 @@ module.exports = {
             var uid = uid_data.data[21].value;
             requestId--;
             
-            var res = await request.post('http://39.104.84.131:8100/api/v1/rpc/'+deviceId+'/'+requestId)
+            var res = await request.post('http://39.104.189.84:30080/api/v1/deviceaccess/rpc/'+deviceId+'/'+requestId)
                 .set('Content-Type', 'application/json')
                 .send({"serviceName":"control switch"})
                 .send({"methodName":"setstate"})
@@ -100,7 +100,7 @@ module.exports = {
             var uid = uid_data.data[21].value;
             requestId--;
             
-            var res = await request.post('http://39.104.84.131:8100/api/v1/rpc/'+deviceId+'/'+requestId)
+            var res = await request.post('http://39.104.189.84:30080/api/v1/deviceaccess/rpc/'+deviceId+'/'+requestId)
                 .set('Content-Type', 'application/json')
                 .send({"serviceName":"control curtain"})
                 .send({"methodName":"setstate"})
@@ -185,7 +185,7 @@ module.exports = {
 
     assignDevicetoSite: async(id,tenantId,name,siteId) =>{
         try{
-            var res = await request.post('http://39.104.84.131:8100/api/v1/assign/site')
+            var res = await request.post('http://39.104.189.84:30080/api/v1/deviceaccess/assign/site')
                 .set('Content-Type', 'application/json')
                 .send({"id":id})
                 .send({"tenantId":tenantId})

@@ -13,7 +13,10 @@ module.exports = db.defineModel('devicesmodel', {
         
     // },
     tenantId: db.INTEGER,
-    deviceId: db.STRING(50),
+    deviceId: {
+        type: db.STRING(50),
+        unique: true
+    },
     name: db.STRING(50),
     siteId:db.INTEGER,   //外键
     deviceModelUrl: db.STRING(100),

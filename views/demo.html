@@ -16,6 +16,9 @@
     <link href="static/assets/css/jquery-confirm.min.css" rel="stylesheet" type="text/css"/>
     <link href="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
 
+    <link href="static/assets/css/pager.css" rel="stylesheet" type="text/css"/>
+    <link href="static/assets/css/pagination.css" rel="stylesheet" type="text/css"/>
+
     <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular.js"></script>
     <script src="https://cdn.bootcss.com/angular.js/1.6.9/angular-resource.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -35,12 +38,21 @@
     <script src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="static/assets/js/jquery-confirm.min.js"></script>
 
+    <script src="static/assets/js/pager.js"></script>
+    <script src="static/assets/js/pagination.js"></script>
+
+    <!-- echarts  历史数据-->
+    <script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts.js"></script>
+
     
 </head>
 
 <body ng-controller="mainCtrl">
     <div id="_deviceDetail" class="deviceDetailStyle" ng-controller="deviceCtrPanel">
         <!--加载deviceDetail.html中的html标签-->
+        <script>
+            $("#_deviceDetail").load("static/assets/html/deviceDetail.html");
+        </script>
     </div>
     <div id="container"></div>
     <div id="coords"></div>

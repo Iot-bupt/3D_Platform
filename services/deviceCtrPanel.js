@@ -10,9 +10,9 @@ global.requestId = 100000;
 
 module.exports = {  
 
-    getAllDeviceAttr: async (id) => {     //获取设备所有属性信息
+    getAllDeviceAttr: async (deviceId) => {     //获取设备所有属性信息
         try{
-            var data = await instance.get('/deviceaccess/allattributes/'+id);
+            var data = await instance.get('/deviceaccess/allattributes/'+deviceId);
             var info = data.data;
 
             return info;
@@ -21,25 +21,25 @@ module.exports = {
         }
     },
 
- //以下还没写
-    controlSwitch: async (id,turn)=>{
-        var deviceId = getDeviceId(id);
-        var status = false;
-        if (turn === 'on'){
-            status = true;
-        }
-        
+    getCtrPanel: async (manufacturerName,deviceTypeName,modelName) => {     //获取设备所有属性信息
         try{
-            var uid_data = await instance.get('/allattributes/'+deviceId);
-            var uid = uid_data.data[21].value;
+            var data = await instance.get('/servicemanagement/ability/'+manufacturerName+'/'+deviceTypeName+'/'+modelName);
+            var info = data.data;
+
+            return info;
+        }catch(e){
+            throw e;
+        }
+    },
+
+    sendControl: async (deviceId,body)=>{
+
+        try{
             requestId--;
             
-            var res = await request.post('http://39.104.84.131:8100/api/v1/rpc/'+deviceId+'/'+requestId)
-                .set('Content-Type', 'application/json')
-                .send({"serviceName":"control switch"})
-                .send({"methodName":"setstate"})
-                .send({"uid":uid})
-                .send({"status":status})
+            var res = await request.post('http://39.104.189.84:30080/api/v1/deviceaccess/rpc/'+deviceId+'/'+requestId)
+                .set('Content-Type', 'application/json; charset=utf-8')
+                .send(body)
                 .timeout({
                     response: 3000,
                     deadline: 5000,
@@ -48,45 +48,38 @@ module.exports = {
             console.log(res.text);
             if (res.text.indexOf("de")!=-1){
                 //调用失败
-                return res.text;
-            }else if (status === true){
-                    return "on"+res.text;
-            }else if(status === false){
-                return "off"+res.text;
-            }else{
-                throw new Error('server error!');
+                return "device is offline" + res.text;
             }
+
+            return res.text;
             
         } catch(e){
-            return e.message;
+            throw e;
         }
     },
-    
-   
 
-    assignDevicetoSite: async(id,tenantId,name,siteId) =>{
+    //历史数据展示使用
+    getAllKeys: async (deviceId) => {     //获取设备主键
         try{
-            var res = await request.post('http://39.104.84.131:8100/api/v1/assign/site')
-                .set('Content-Type', 'application/json')
-                .send({"id":id})
-                .send({"tenantId":tenantId})
-                .send({"name":name})
-                .send({"siteId":siteId})
-                .timeout({
-                    response: 5000,
-                    deadline: 5000,
-                });
+            var data = await instance.get('/deviceaccess/data/allKeys/'+deviceId);
+            var info = data.data;
 
-            if (res.text){
-                return res.text;
-            }else{
-                throw new Error('server error!');
-            }
+            return info;
         }catch(e){
             throw e;
         }
+    },
 
-    }
-    
+    getHistoricalData: async (deviceId,newSearch) => {     //获取设备历史数据
+        try{
+            var data = await instance.get('/deviceaccess/data/alldata/'+deviceId+newSearch);
+            var info = data.data;
+
+            return info;
+        }catch(e){
+            throw e;
+        }
+    },
+        
 
 }

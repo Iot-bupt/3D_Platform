@@ -701,6 +701,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
                     $('#deviceDetail').modal('show');     //控制面板触发仅此一行代码
                     $scope.showDetail();
+
+                    
                     
 
                     

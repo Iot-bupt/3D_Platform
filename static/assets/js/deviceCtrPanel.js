@@ -114,7 +114,7 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
     $("#attrSelectInfo option:first").prop("selected","selected");
     var attrDetailObj = $resource("/api/dCtrPanel/getAllDeviceAttr/:deviceId");
     var attrDetailInfo = attrDetailObj.query({deviceId:$scope.deviceInfo.id},function (resp) {
-        console.log(resp);
+        //console.log(resp);
         if(attrDetailInfo.length != 0){
             num = Math.ceil(attrDetailInfo.length / 5);
             size = 5;
@@ -165,7 +165,7 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
         for(var i=(pageNo-1)*size; i<((pageNo-1)*size+pageSize); i++) {
             // console.log(i+"|"+Number((pageNo-1)*size+pageSize));
             var item = attrDetailInfo[i];
-            console.log(attrDetailInfo[i]);
+            //console.log(attrDetailInfo[i]);
             var latestTs = formatDate(new Date(attrDetailInfo[i].lastUpdateTs));
             html += '<tr>'+'<td class="list-item">'+latestTs+'</td>'+'<td class="list-item">'+item.key+'</td>'+'<td class="list-item">'+item.value+'</td>'+'</tr>';
         }
@@ -252,7 +252,7 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
                 var allKey;
                 // console.log(allKey);
                 $.ajax({
-                    url:"/api/data/allKeys/"+$scope.deviceInfo.id,
+                    url:"/api/dCtrPanel/getAllKeys/"+$scope.deviceInfo.id,
                     type:"GET",
                     dataType:"json",
                     async:false,
@@ -278,7 +278,7 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
 
                     // console.log("/api/data/getHistoricalData/"+$scope.deviceInfo.id+"?key="+allKey[i]+"&startTs="+startStamp+"&endTs="+endStamp+"&limit=1000");
                     $.ajax({
-                        url:"/api/data/getHistoricalData/"+$scope.deviceInfo.id+"?key="+allKey[i]+"&startTs="+startStamp+"&endTs="+endStamp+"&limit=1000",
+                        url:"/api/dCtrPanel/getHistoricalData/"+$scope.deviceInfo.id+"?key="+allKey[i]+"&startTs="+startStamp+"&endTs="+endStamp+"&limit=1000",
                         dataType:"json",
                         async:false,
                         type:"GET",
@@ -362,7 +362,7 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
     var serviceName = new Array();//用于记录所有的serviceName
     var methodName = new Array();//用于记录所有的methodName
     $('#control_panel').empty();//每次将控制面板清空再渲染
-    var controlObject = $resource("/api/v1/ability/:manufacturerName/:deviceTypeName/:modelName");
+    var controlObject = $resource("/api/dCtrPanel/getCtrPanel/:manufacturerName/:deviceTypeName/:modelName");
     $scope.controlInfo = controlObject.query({manufacturerName:$scope.deviceInfo.manufacture,deviceTypeName:$scope.deviceInfo.deviceType,modelName:$scope.deviceInfo.model});
     $scope.controlInfo.$promise.then(function (value) {
 
@@ -408,22 +408,22 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
                     console.log("1:"+temp[1]);*/
                     /*var leftStatus = true;
                     var rightStatus = false;*/
-                    $('#ctrlDiv' + i).append('<div class="form-group"><label class="col-sm-3 control-label" style="text-align: left;">' + key +  '</label><div class="col-sm-9"><image src="static/thingsManage/assets/img/off.png" id="param'+i+j+ '" style="cursor: pointer; width: 80px; height: 30px; margin: 0 10px;"></image></div></div>');
+                    $('#ctrlDiv' + i).append('<div class="form-group"><label class="col-sm-3 control-label" style="text-align: left;">' + key +  '</label><div class="col-sm-9"><image src="static/assets/img/off.png" id="param'+i+j+ '" style="cursor: pointer; width: 80px; height: 30px; margin: 0 10px;"></image></div></div>');
                 /* var img = document.getElementById("param"+i+j);
                     img.setAttribute('on', true);
                     img.setAttribute('off', false);*/
                     $("#param"+i+j).click(function () {
-                        if($(this).attr("src") == "static/thingsManage/assets/img/off.png"){
+                        if($(this).attr("src") == "static/assets/img/off.png"){
                             console.log("off->on");
                         /* $(this).removeClass();
                             $(this).addClass("true");*/
-                            $(this).attr("src","static/thingsManage/assets/img/on.png");
+                            $(this).attr("src","static/assets/img/on.png");
 
                         }else{
                             console.log("on->off");
                         /*  $(this).removeClass();
                             $(this).addClass("false");*/
-                            $(this).attr("src","static/thingsManage/assets/img/off.png");
+                            $(this).attr("src","static/assets/img/off.png");
                         }
 
                     });
@@ -469,10 +469,10 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
 
                     if(params[j].type == 2){
 
-                        if($("#param"+i+j).attr("src") == "static/thingsManage/assets/img/off.png"){
+                        if($("#param"+i+j).attr("src") == "static/assets/img/off.png"){
                             valueArr[i][j] = false;
                         }
-                        else if($("#param"+i+j).attr("src") == "static/thingsManage/assets/img/on.png"){
+                        else if($("#param"+i+j).attr("src") == "static/assets/img/on.png"){
                             valueArr[i][j] = true;
                         }
                     }
@@ -505,9 +505,9 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
                 var type = document.getElementById("param"+index+i).tagName;
                 if(type == "IMG"){
                     var tag = $("#param"+index+i).attr("src");
-                    if(tag == "static/thingsManage/assets/img/off.png"){
+                    if(tag == "static/assets/img/off.png"){
                         valueArr[index][i] = false;
-                    }else if(tag == "static/thingsManage/assets/img/on.png"){
+                    }else if(tag == "static/assets/img/on.png"){
                         valueArr[index][i] = true;
                     }
                 }
@@ -529,7 +529,7 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
             var subInfo = subObj.save({deviceId:$scope.deviceInfo.id},json);
             console.log(subInfo);*/
             $.ajax({
-                url:"/api/shadow/control/"+$scope.deviceInfo.id,
+                url:"/api/dCtrPanel/sendControl/"+$scope.deviceInfo.id,
                 data:json,
                 contentType: "application/json; charset=utf-8",//post请求必须
                 dataType:"text",

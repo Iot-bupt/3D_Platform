@@ -1,5 +1,5 @@
 
-$("#_deviceDetail").load("static/assets/html/deviceDetail.html");
+// $("#_deviceDetail").load("static/assets/html/deviceDetail.html");
 
 var mainApp = angular.module("mainApp",["ngResource"]);
 
