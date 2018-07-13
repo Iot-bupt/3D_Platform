@@ -76,10 +76,10 @@ module.exports = {
         ctx.rest(res);
     },
 
-    'POST /api/assignDevice/site': async (ctx,next) => {
+    'PUT /api/assignDevice/site': async (ctx,next) => {
         
         var body = ctx.request.body;
-        var s = await devices.assignDevicetoSite(body.id,body.tenantId,body.name,body.siteId);
+        var s = await devices.assignDevicetoSite(body.id,body.siteId);
         if (s) {
             ctx.rest(s);
         } else {
@@ -89,42 +89,6 @@ module.exports = {
 
 
     
-
-    // 'GET /api/tenantscenes/:id': async (ctx,next)=>{
-    //     var tenantId = ctx.params.id;
-    //     var res = await scenes.getSceneByTenentId(tenantId);
-
-    //     ctx.rest({
-    //         scenes: res
-    //     });
-    // },
-
-
-    // 'POST /api/scenes': async (ctx, next) => {     //创建场景
-    //     var res = await scenes.createScene(ctx.request.body.name, ctx.request.body.tenantId);
-    //     ctx.rest(res);
-    // },
-
-    // 'DELETE /api/scenes/:id': async (ctx, next) => {   //删除场景，失败res=0,成功=1
-    //     console.log(`delete scene ${ctx.params.id}...`);
-    //     var s = await scenes.deleteScene(ctx.params.id);
-    //     if (s) {
-    //         ctx.rest(s);
-    //     } else {
-    //         throw new APIError('scene:not_found', 'scene not found by id.');
-    //     }
-    // },
-
-    // 'PUT /api/scenes/:id': async (ctx,next) => {
-    //     console.log(`update scenename ${ctx.params.id}...`);
-    //     var s = await scenes.renameScene(ctx.params.id,ctx.request.body.name);
-    //     if (s[0] === 1) {
-    //         ctx.rest(s);
-    //     } else {
-    //         throw new APIError('scene:not_found', 'scene not found by id.');
-    //     }
-    // },
-
     /*  参数：即url后面/:id部分，一个/test/中间只有一个参数，？后面接的是query串，在ctx.query里面
        可以拿到url中的query参数和值。*/
     // 'GET /api/test/:id': async (ctx,next) =>{

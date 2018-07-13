@@ -183,13 +183,11 @@ module.exports = {
     },
 
 
-    assignDevicetoSite: async(id,tenantId,name,siteId) =>{
+    assignDevicetoSite: async(id,siteId) =>{
         try{
-            var res = await request.post('http://39.104.189.84:30080/api/v1/deviceaccess/assign/site')
+            var res = await request.put('http://39.104.189.84:30080/api/v1/deviceaccess/device')
                 .set('Content-Type', 'application/json')
                 .send({"id":id})
-                .send({"tenantId":tenantId})
-                .send({"name":name})
                 .send({"siteId":siteId})
                 .timeout({
                     response: 5000,
