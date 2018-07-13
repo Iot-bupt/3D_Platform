@@ -3,7 +3,7 @@ const request = require('superagent');
 
 var instance = axios.create({
     baseURL: 'http://39.104.189.84:30080/api/v1/deviceaccess',
-    timeout: 2000,
+    timeout: 10000,
   });
 
 global.requestId = 100000;
@@ -68,8 +68,8 @@ module.exports = {
                 .send({"uid":uid})
                 .send({"status":status})
                 .timeout({
-                    response: 3000,
-                    deadline: 5000,
+                    response: 5000,
+                    deadline: 10000,
                 });
             
             console.log(res.text);
@@ -107,8 +107,8 @@ module.exports = {
                 .send({"uid":uid})
                 .send({"status":status})
                 .timeout({
-                    response: 3000,
-                    deadline: 5000,
+                    response: 5000,
+                    deadline: 10000,
                 });
             
             console.log(res.text);
@@ -193,7 +193,7 @@ module.exports = {
                 .send({"siteId":siteId})
                 .timeout({
                     response: 5000,
-                    deadline: 5000,
+                    deadline: 10000,
                 });
 
             if (res.text){

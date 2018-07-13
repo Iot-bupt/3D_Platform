@@ -84,7 +84,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     };
     var _sceneLoca;
     var initScene = function(){
-        var siteId = 133;
+        var siteId = 133;      //应该从url中读取siteId
             $.ajax({
                 url: '/api/sites/' + siteId,
                 type: 'GET',
@@ -93,7 +93,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                     _sceneLoca =  res.sites[0].sceneModelLoca;
                 },
                 error: function(e){
-                    $.alert('场景模型初始位置信息获取失败！'+ e.message);
+                    $.alert('场景模型初始位置信息获取失败！请刷新重试'+ e.message);
                 }
             });
             return _sceneLoca;
