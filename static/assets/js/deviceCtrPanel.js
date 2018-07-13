@@ -11,6 +11,23 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
         var second=now.getSeconds();
         return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
     }
+
+    /*  补零函数  */
+
+    function PrefixInteger(num, length) {
+        return (Array(length).join('0') + num).slice(-length);
+       }
+
+    /*  UTC时间  */
+    function getUTC(now) {
+        var year=now.getFullYear();
+        var month=PrefixInteger((now.getMonth()+1),2);
+        var date=PrefixInteger(now.getDate(),2);
+        var hour=PrefixInteger(now.getHours(),2);
+        var minute=PrefixInteger(now.getMinutes(),2);
+        return year+"-"+month+"-"+date+"T"+hour+":"+minute;
+    }
+
     // 判断元素是否在数组中
     function inArray(value, array) {
         var i = array.length;
@@ -105,10 +122,17 @@ mainApp.controller("deviceCtrPanel",["$scope","$resource",function($scope,$resou
     var num;//页数
     var size;//每页显示的数据个数，如果不设置，则最后一页少于pageSize后,再往前翻就只显示最后一页的数据个数
     $scope.showDetail = function () {
+
+        //  终止时间默认是当前时间  
+        var currentTime = Date.now();
+        var currentUTC = getUTC(new Date(currentTime));
+        $("#endTime").val(currentUTC);
+        //   end  
+
     $("#historyEcharts").removeAttr("_echarts_instance_");//echarts表格重新加载前清除之前的init
     $("#historyEcharts").empty();//清空历史数据表
-    $("#startTime").val("");//清空起始时间
-    $("#endTime").val("");//清空终止时间
+    //$("#startTime").val("");//清空起始时间
+    //$("#endTime").val("");//清空终止时间
     $("#searchKey").val("");//清空搜索框
     $(".pagination li,#attrDisplay tr").remove();//清空属性展示列表和分页按钮
     $("#attrSelectInfo option:first").prop("selected","selected");

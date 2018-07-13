@@ -3,7 +3,7 @@ const request = require('superagent');
 
 var instance = axios.create({
     baseURL: 'http://39.104.189.84:30080/api/v1',
-    timeout: 5000,
+    timeout: 10000,
   });
 
 global.requestId = 100000;
@@ -41,8 +41,8 @@ module.exports = {
                 .set('Content-Type', 'application/json; charset=utf-8')
                 .send(body)
                 .timeout({
-                    response: 3000,
-                    deadline: 5000,
+                    response: 5000,
+                    deadline: 10000,
                 });
             
             console.log(res.text);
