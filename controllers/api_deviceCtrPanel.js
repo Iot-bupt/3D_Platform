@@ -62,8 +62,12 @@ module.exports = {
         try{
             var deviceId = ctx.params.deviceId;
             var search = ctx.search;
+
+            var query = ctx.query;
+            var limit = query.limit;
+            var interval = (Number(query.endTs) - Number(query.startTs))/limit;
             
-            var newSearch = search + "&aggregation=NONE&interval=100";
+            var newSearch = search + "&aggregation=AVG&interval=" + interval;
         
             var res = await deviceCtrPanel.getHistoricalData(deviceId,newSearch);    
             ctx.rest(res);

@@ -3,7 +3,7 @@ const request = require('superagent');
 
 var instance = axios.create({
     baseURL: 'http://39.104.189.84:30080/api/v1',
-    timeout: 2000,
+    timeout: 5000,
   });
 
 global.requestId = 100000;
