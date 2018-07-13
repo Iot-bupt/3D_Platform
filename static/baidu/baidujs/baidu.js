@@ -662,6 +662,7 @@ function addModel()
         if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {        
             //siteId.value=reqArray[i].id;
             $('#siteId').val(reqArray[i].id);
+            $('#siteName').val(reqArray[i].name);
             }
     }
 }
