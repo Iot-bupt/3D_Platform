@@ -136,7 +136,7 @@ $scope.packSearchMenu = function(){
     //当前场景下的id：/api/3d815/siteDevicePaging/2/133?limit=6&idOffset=&textOffset=
 //默认设备列表/api/3d815/paging/2?limit=6&idOffset=&textOffset=
     jQuery.ajax({
-        url:"/api/3d815/siteDevicePaging/2/133?limit=6&idOffset=&textOffset=",
+        url:"/api/3d815/siteDevicePaging/2/"+siteId+"?limit=6&idOffset=&textOffset=",
         contentType: "application/json; charset=utf-8",
         async: false,
         type:"GET",
@@ -474,7 +474,7 @@ $scope.searchDeviceInfo = function(){
     //返回设备列表首页
     $scope.backList = function () {
         jQuery.ajax({
-            url:"/api/3d815/siteDevicePaging/2/133?limit=6&idOffset=&textOffset=",
+            url:"/api/3d815/siteDevicePaging/2/"+siteId+"?limit=6&idOffset=&textOffset=",
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -523,7 +523,7 @@ $scope.searchDeviceInfo = function(){
         console.log(JSONBody);
 
         jQuery.ajax({
-            url: '/api/dModel/createModel/2/133',
+            url: '/api/dModel/createModel/2/'+siteId,
             dataType: 'json',
             method: 'POST',
             data: {
@@ -765,7 +765,7 @@ $scope.uploadModel = function(){
     }
     console.log(JSONBody);
     jQuery.ajax({
-        url: '/api/dModel/createModel/2/133',
+        url: '/api/dModel/createModel/2/'+siteId,
         dataType: 'json',
         method: 'POST',
         data: {

@@ -40,7 +40,7 @@ class AddModel{
                 allModel = res.dModels;
             },
             error: function(e){
-                alert("场景模型添加失败！可能是数据库问题"+e.message);
+                $.alert("场景模型添加失败！可能是数据库问题"+e.message);
             }
         });
 

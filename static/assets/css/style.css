@@ -16,6 +16,13 @@ body {
     padding: 5px;
     margin: 0px;
 }
+#title {
+    color:#017afc;
+    position: absolute;
+    top: 0px; width: 100%;
+    padding: 5px;
+    margin: 0px;
+}
 
 #Loading {
     color:#fff;

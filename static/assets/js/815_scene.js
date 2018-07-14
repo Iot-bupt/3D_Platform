@@ -93,6 +93,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     var _sceneLoca;    //场景位置信息
     var _sceneUrl;     //场景模型url
     var siteId;        //站点ID 
+    var siteName;
     var initScene = function(){
         siteId = getQueryString("siteId");   //从url中读取siteId
         if(siteId === null){
@@ -107,11 +108,14 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                 success: function(res){
                     _sceneLoca =  res.sites[0].sceneModelLoca;
                     _sceneUrl = res.sites[0].sceneUrl;
+                    siteName = res.sites[0].name;
                 },
                 error: function(e){
                     $.alert('场景模型初始位置信息获取失败！请刷新重试'+ e.message);
                 }
             });
+
+            $("#title").html("站点名称:  "+siteName);
             return _sceneLoca;
     }
     initScene();
@@ -621,13 +625,13 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         //场景模型控制
         var scectr = gui.addFolder("场景模型变换");
-        scectr.add(sceneCtrl,"平移-x",0, 20);
-        scectr.add(sceneCtrl,"平移-y",0, 20);
-        scectr.add(sceneCtrl,"平移-z",0, 20);
+        scectr.add(sceneCtrl,"平移-x",-30, 30);
+        scectr.add(sceneCtrl,"平移-y",-30,30 );
+        scectr.add(sceneCtrl,"平移-z",-30, 30);
         scectr.add(sceneCtrl,"旋转-x",0, 2*Math.PI);
         scectr.add(sceneCtrl,"旋转-y",0, 2*Math.PI);
         scectr.add(sceneCtrl,"旋转-z",0, 2*Math.PI);
-        scectr.add(sceneCtrl,"缩放",0,5);
+        scectr.add(sceneCtrl,"缩放",0,2);
 
         //控制方式
         var transctrl = gui.addFolder("场景控制方式");
@@ -656,7 +660,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         //fun2cgq('sensor_center.stl',-1.0, 4.228, -6.5,"窗帘1关_uid3_off");
         //fun2cgq('sensor_center.stl',0.0,4.96,18,"温湿2_uid4");
         
-        addmodel.addAllModel(133);    //加载场景ID133的所有设备模型
+        addmodel.addAllModel(siteId);    //加载场景ID133的所有设备模型
         
         
         
