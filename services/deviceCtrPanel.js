@@ -35,6 +35,9 @@ module.exports = {
     sendControl: async (deviceId,body)=>{
 
         try{
+            if(requestId < 10){
+                global.requestId = 100000;
+            }
             requestId--;
             
             var res = await request.post('http://39.104.189.84:30080/api/v1/deviceaccess/rpc/'+deviceId+'/'+requestId)

@@ -82,15 +82,31 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         bulbPower: Object.keys(bulbLuminousPowers)[2],
         hemiIrradiance: Object.keys(hemiLuminousIrradiances)[3]
     };
-    var _sceneLoca;
+
+    //获取search中的参数
+    function getQueryString(name) { 
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+        var r = window.location.search.substr(1).match(reg); 
+        if (r != null) return unescape(r[2]); return null; 
+        } 
+
+    var _sceneLoca;    //场景位置信息
+    var _sceneUrl;     //场景模型url
+    var siteId;        //站点ID 
     var initScene = function(){
-        var siteId = 133;      //应该从url中读取siteId
+        siteId = getQueryString("siteId");   //从url中读取siteId
+        if(siteId === null){
+            siteId = 133;      //默认是demo中的815场景
+        }
+        
+         //获取站点场景模型的初始位置信息
             $.ajax({
                 url: '/api/sites/' + siteId,
                 type: 'GET',
                 async:false,
                 success: function(res){
                     _sceneLoca =  res.sites[0].sceneModelLoca;
+                    _sceneUrl = res.sites[0].sceneUrl;
                 },
                 error: function(e){
                     $.alert('场景模型初始位置信息获取失败！请刷新重试'+ e.message);
@@ -99,7 +115,21 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             return _sceneLoca;
     }
     initScene();
-    _sceneLoca = JSON.parse(_sceneLoca);
+
+    if(_sceneUrl === "" || _sceneUrl === null){
+        $.alert("您未上传任何场景模型，请返回地图界面进行上传。");
+    }
+
+    if(_sceneLoca === null || _sceneLoca === ""){
+        _sceneLoca ={
+            position:{},
+            rotation:{},
+            scale:{},
+        };
+    }else{
+        _sceneLoca = JSON.parse(_sceneLoca);
+    }
+    
     var sceneCtrl = {
         
         "平移-x": Number(_sceneLoca.position.x) || 5 ,
@@ -156,7 +186,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                         opacity:params.opacity.toFixed(6)
                     };
         
-                    var siteId = 133;
+                    //var siteId = 133;
         
                     $.ajax({
                         url:'/api/sites/sceneModelLoca/'+ siteId,
@@ -173,7 +203,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                             }
                         },
                         error: function(e){
-                            alert("更新位置失败！可能是数据库问题~"+e.message);
+                            $.alert("更新位置失败！可能是数据库问题~"+e.message);
                         }
                     });
                 }
@@ -208,7 +238,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                 trballctr.addEventListener( 'change', render );
 
         },
-        "行走漫游": function(){   //未搞定
+        "行走漫游": function(){   //搞定
                 //==================18.7.4test======================
                 var blocker = document.getElementById( 'blocker' );
                 var instructions = document.getElementById( 'instructions' );
@@ -537,33 +567,39 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             }
             }
         };
-        var onError = function(xhr) {};
+        var onError = function(xhr) {
+            $.alert("找不到该站点模型文件\n  错误信息:"+xhr.target.statusText);
+            
+        };
 
-        dracoLoader.load( 'static/gis_815/models/mydrc/lab_524drc.drc', function ( geometry ) {
+        //原路径：static/gis_815/models/mydrc/lab_524drc.drc
+        
+            dracoLoader.load( _sceneUrl, function ( geometry ) {
+                
+            geometry.computeVertexNormals();
 
-        geometry.computeVertexNormals();
+            var material = new THREE.MeshStandardMaterial( { vertexColors: THREE.VertexColors } );
+            var mesh = new THREE.Mesh( geometry, material );
+            
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            //mesh.material.side = THREE.DoubleSide;
 
-        var material = new THREE.MeshStandardMaterial( { vertexColors: THREE.VertexColors } );
-        var mesh = new THREE.Mesh( geometry, material );
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        //mesh.material.side = THREE.DoubleSide;
+            mesh.scale.x = 0.5;
+            mesh.scale.y = 0.5;     /*  改变几何的比例*/ 
+            mesh.scale.z = 0.5;
+            mesh.position.x = 5;
+            mesh.position.y = 2;     /*  改变几何的位置*/ 
+            mesh.position.z = 0;
+            mesh.material.transparent = true;
+            mesh.material.opacity = params.opacity;
+            // console.log(mesh.getWorldPosition());
+            firstScene = mesh;
+            scene.add( mesh );
 
-        mesh.scale.x = 0.5;
-        mesh.scale.y = 0.5;     /*  改变几何的比例*/ 
-        mesh.scale.z = 0.5;
-        mesh.position.x = 5;
-        mesh.position.y = 2;     /*  改变几何的位置*/ 
-        mesh.position.z = 0;
-        mesh.material.transparent = true;
-        mesh.material.opacity = params.opacity;
-        // console.log(mesh.getWorldPosition());
-        firstScene = mesh;
-        scene.add( mesh );
-
-        // Release the cached decoder module.
-        THREE.DRACOLoader.releaseDecoderModule();
-        },onProgress, onError);
+            // Release the cached decoder module.
+            THREE.DRACOLoader.releaseDecoderModule();
+            },onProgress, onError);
 
         //
         window.addEventListener('resize', onWindowResize, false);
