@@ -136,7 +136,7 @@ $scope.packSearchMenu = function(){
     //当前场景下的id：/api/3d815/siteDevicePaging/2/133?limit=6&idOffset=&textOffset=
 //默认设备列表/api/3d815/paging/2?limit=6&idOffset=&textOffset=
     jQuery.ajax({
-        url:"/api/3d815/siteDevicePaging/2/"+siteId+"?limit=6&idOffset=&textOffset=",
+        url:"/api/3d815/siteDevicePaging/"+tenantId+"/"+siteId+"?limit=6&idOffset=&textOffset=",
         contentType: "application/json; charset=utf-8",
         async: false,
         type:"GET",
@@ -164,12 +164,12 @@ $scope.packSearchMenu = function(){
         console.log(hasNext);
         if(hasNext){
             jQuery.ajax({
-                url:"/api/3d815/paging/2?limit=6&idOffset="+idOffset+"&textOffset="+textOffset,
+                url:"/api/3d815/siteDevicePaging/"+tenantId+"/"+siteId+"?limit=6&idOffset="+idOffset+"&textOffset="+textOffset,
                 contentType: "application/json; charset=utf-8",
                 async: false,
                 type:"GET",
                 success:function(msg) {
-                    console.log("/api/3d815/paging/2?limit=6&idOffset="+idOffset+"&textOffset="+textOffset);
+                    console.log("/api/3d815/siteDevicePaging/"+tenantId+"/"+siteId+"?limit=6&idOffset="+idOffset+"&textOffset="+textOffset);
                     jQuery("#showDevice tr").remove();
                     pageNum++;
                     $scope.deviceList = msg.data;
@@ -200,7 +200,7 @@ $scope.packSearchMenu = function(){
         }
         else if(pageNum == 2){
             jQuery.ajax({
-                url:"/api/3d815/paging/2?limit=6&idOffset=&textOffset=",
+                url:"/api/3d815/siteDevicePaging/"+tenantId+"/"+siteId+"?limit=6&idOffset=&textOffset=",
                 contentType: "application/json; charset=utf-8",
                 async: false,
                 type:"GET",
@@ -223,7 +223,7 @@ $scope.packSearchMenu = function(){
             });
         }else{
             jQuery.ajax({
-                url:"/api/3d815/paging/2?limit=6&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+                url:"/api/3d815/siteDevicePaging/"+tenantId+"/"+siteId+"?limit=6&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
                 contentType: "application/json; charset=utf-8",
                 async: false,
                 type:"GET",
@@ -288,10 +288,7 @@ $scope.searchDeviceInfo = function(){
 /*搜索*/
     $scope.searchDeviceInfo = function(){
         jQuery('#backList').css({'display':''});
-        var temp= window.location.search;
-        var tenantId = temp.split("=");
-        console.log(tenantId[1]);
-        tenantId[1] = 2;//用于测试
+        
         var textSearch = jQuery("#searchDevice").val();
         if(jQuery("#allDevice").css("display") == "none"){
             jQuery("#allDevice").slideDown();
@@ -299,7 +296,7 @@ $scope.searchDeviceInfo = function(){
         }
         if(textSearch == ""){
             jQuery.ajax({
-                url:"/api/3d815/paging/2?limit=6&idOffset=&textOffset=",
+                url:"/api/3d815/siteDevicePaging/"+tenantId+"/"+siteId+"?limit=6&idOffset=&textOffset=",
                 contentType: "application/json; charset=utf-8",
                 async: false,
                 type:"GET",
@@ -320,7 +317,7 @@ $scope.searchDeviceInfo = function(){
             });
         }else{
             jQuery.ajax({
-                url:"/api/3d815/search/"+tenantId[1]+"?limit=1000&textSearch="+textSearch,
+                url:"/api/3d815/search/"+tenantId+"?limit=6&textSearch="+textSearch,
                 contentType: "application/json; charset=utf-8",
                 async: false,
                 type:"GET",
@@ -474,7 +471,7 @@ $scope.searchDeviceInfo = function(){
     //返回设备列表首页
     $scope.backList = function () {
         jQuery.ajax({
-            url:"/api/3d815/siteDevicePaging/2/"+siteId+"?limit=6&idOffset=&textOffset=",
+            url:"/api/3d815/siteDevicePaging/"+tenantId+"/"+siteId+"?limit=6&idOffset=&textOffset=",
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -523,7 +520,7 @@ $scope.searchDeviceInfo = function(){
         console.log(JSONBody);
 
         jQuery.ajax({
-            url: '/api/dModel/createModel/2/'+siteId,
+            url: '/api/dModel/createModel/'+tenantId+'/'+siteId,
             dataType: 'json',
             method: 'POST',
             data: {
@@ -765,7 +762,7 @@ $scope.uploadModel = function(){
     }
     console.log(JSONBody);
     jQuery.ajax({
-        url: '/api/dModel/createModel/2/'+siteId,
+        url: '/api/dModel/createModel/'+tenantId+'/'+siteId,
         dataType: 'json',
         method: 'POST',
         data: {

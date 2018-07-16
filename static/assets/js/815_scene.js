@@ -93,11 +93,16 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     var _sceneLoca;    //场景位置信息
     var _sceneUrl;     //场景模型url
     var siteId;        //站点ID 
-    var siteName;
+    var siteName;      //站点名称
+    var tenantId;      //租户ID
     var initScene = function(){
         siteId = getQueryString("siteId");   //从url中读取siteId
-        if(siteId === null){
+        tenantId = getQueryString("id");
+        if(siteId === null || siteId === ""){
             siteId = 133;      //默认是demo中的815场景
+        }
+        if(tenantId === null || tenantId === ""){
+            tenantId = 2;      //默认tenantId = 2
         }
         
          //获取站点场景模型的初始位置信息
@@ -421,7 +426,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         var container = document.getElementById('container');
         // stats = new Stats();
         // container.appendChild(stats.dom);
-        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.x = 0;
         camera.position.z = 15;
         camera.position.y = 8;
@@ -445,7 +450,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             metalness: 0.2,
             bumpScale: 0.0005,
         });
-        var floorGeometry = new THREE.PlaneBufferGeometry(60, 60);
+        var floorGeometry = new THREE.PlaneBufferGeometry(500, 500);
         var floorMesh = new THREE.Mesh(floorGeometry, floorMat);
         floorMesh.receiveShadow = true;
         floorMesh.rotation.x = -Math.PI / 2.0;
@@ -625,9 +630,9 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         //场景模型控制
         var scectr = gui.addFolder("场景模型变换");
-        scectr.add(sceneCtrl,"平移-x",-30, 30);
+        scectr.add(sceneCtrl,"平移-x",-50, 50);
         scectr.add(sceneCtrl,"平移-y",-30,30 );
-        scectr.add(sceneCtrl,"平移-z",-30, 30);
+        scectr.add(sceneCtrl,"平移-z",-50, 50);
         scectr.add(sceneCtrl,"旋转-x",0, 2*Math.PI);
         scectr.add(sceneCtrl,"旋转-y",0, 2*Math.PI);
         scectr.add(sceneCtrl,"旋转-z",0, 2*Math.PI);
