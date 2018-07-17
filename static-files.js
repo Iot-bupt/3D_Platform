@@ -4,7 +4,9 @@ const fs = require('mz/fs');
 
 function staticFiles(url, dir) {
     return async (ctx, next) => {
-        let rpath = ctx.request.path;
+        let temp_rpath = ctx.request.path;
+        let rpath = decodeURI(temp_rpath);
+      
         if (rpath.startsWith(url)) {
             let fp = path.join(dir, rpath.substring(url.length));
             if (await fs.exists(fp)) {

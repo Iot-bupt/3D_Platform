@@ -17,9 +17,9 @@ module.exports = {
                 
                 var tmpath = item.path;  
                 if (which === 's'){
-                    var newpath =path.join('public/upload/scenes', generateId()+'%'+item.name);  
+                    var newpath =path.join('public/upload/scenes', generateId()+'~'+item.name);  
                 }else if(which === 'd'){
-                    var newpath =path.join('public/upload/devices', generateId()+'%'+item.name); 
+                    var newpath =path.join('public/upload/devices', generateId()+'~'+item.name); 
                 }
                 console.log(newpath); 
                 const defaults = {
