@@ -672,7 +672,7 @@ function intoScence()
 {
     for (var i = 0; i < reqArray.length; i++) {
         if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {        
-             location.href="/demo?siteId="+reqArray[i].id;
+             location.href="/demo?tenantId="+tenantId+"&siteId="+reqArray[i].id;
             }
     }
 }
@@ -965,7 +965,7 @@ function lookDevice(e)
         }
         else
         {
-            location.href="/demo?siteId="+idArray[nameArray.indexOf(td[4].innerHTML)]+"&deviceId="+td[0].innerHTML;
+            location.href="/demo?tenantId="+tenantId+"&siteId="+idArray[nameArray.indexOf(td[4].innerHTML)]+"&deviceId="+td[0].innerHTML;
         }
          
       }         

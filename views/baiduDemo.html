@@ -5,7 +5,7 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 	<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-	<script type="text/javascript" src="../static/baidu/baidujs/area.js"></script>
+	<!-- <script type="text/javascript" src="../static/baidu/baidujs/area.js"></script> -->
 	<!-- <script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script> -->
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
@@ -40,25 +40,22 @@
 <section class="sec-menu" >
     <div class="container"  style="margin: 0;width:100%;">
         <div class="row" id="head-menu">
-            <div class="col-md-1 col-sm-1">
+            <div class="col-xs-1 col-md-1 col-sm-1">
                                 <span class="menu-open-icon">
                                     <i class="fa fa-bars pull-left fa-2x b-clr"></i>
                                 </span>
                             </div>
-                        <div class="col-md-7 col-sm-12" >
-                            <i class="pull-left"> 欢迎来到3DGIS平台 &nbsp;&nbsp;</i>
+                        <div class="col-xs-5 col-md-5 col-sm-5" >
+                            <i class="pull-left"> 欢迎来到3DGIS平台 </i>
                         </div>
-                        <div class="">
-                <span id="time" style=" font-family:'黑体'; font-size:20px;">2015年1月1日 11:11  星期一</span>
+                        <div class="col-xs-5 col-md-5 col-sm-5">
+                <span id="time" style="float:right; font-family:'黑体'; font-size:20px;">2015年1月1日 11:11 星期一
+                </span>
             </div>
-            <div class="col-md-1 col-sm-12">
+            <div class="col-xs-1 col-md-1 col-sm-1">
                 <input type="button" class="btn btn-danger" value="返回首页" id="quit" onclick="window.location.href= '/?id='+tenantId"/>
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col-md-12">
-            </div>
-        </div> -->
     </div>
 </section>
 

@@ -5,7 +5,7 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
         p{margin:5px; font-size:14px;height:100%}
 /*fieldset { border: 1px solid gray;; }*/
 /*body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}*/
-.demo_content { padding: 10px; margin-bottom: 10px; border: solid 1px gray;height:105%;}
+.demo_content { padding: 10px; margin-bottom: 10px; border: solid 1px gray;height:105%;width: 102%}
 .providerAdd{
             display:none;            /* 默认对话框隐藏 */
             margin:auto;
@@ -43,7 +43,7 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
     /*float:right;*/
 }
 .anjian {
-    width:125px;
+    width:100%;
     height:30px;
     line-height:24px;
     border: 1px solid #7ba92c;
@@ -133,6 +133,9 @@ progress
 }
 .firstTr th {
     border-right: 2px solid rgba(209, 218, 223, 0.4);
+}
+#deviceListTh{
+    font-size:20px;
 }
 
 /*---------------------------------------自定义样式---------------------------------------------*/
