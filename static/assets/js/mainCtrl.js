@@ -4,6 +4,23 @@
 var mainApp = angular.module("mainApp",["ngResource"]);
 
 mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
+    //==================当前场景设备模型数量============
+    $scope.dModelNum = objects.length;
+    //=======================end======================
+
+     //===============当前站点所有设备模型对应deviceID集合(数组)==========
+     var dModelDeviceId = new Array();
+        objects.forEach(element => {
+            dModelDeviceId.push(element.deviceId);
+        });
+    
+
+     $scope.checkModel = function(data){
+        
+         return $.inArray(data.id,dModelDeviceId);
+     }
+
+    //===================================================
 
 //============设备列表动画============
     jQuery("#searchDevice").on("focus",function(){
@@ -96,6 +113,7 @@ $scope.changeIcon = function(){
         jQuery("#searchBanner").animate({width:"470px"},500);
         jQuery("#icon").attr("class","fa fa-angle-double-up");
         jQuery("#allDevice").slideDown();
+
     }
     /*
 $scope.packSearchMenu = function(){

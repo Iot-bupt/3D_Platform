@@ -134,8 +134,8 @@
         <span class="centerMove">加载本地模型</span>
     </div>
     <div class="active">
-        <i class="fa fa-unlink"></i>
-        <span class="centerMove">扩展功能</span>
+        <i class="fa fa-tags"></i>
+        <span class="centerMove">设备模型数:[{{dModelNum}}]</span>
     </div>
     <div class="active">
         <i class="fa fa-paperclip"></i>
@@ -149,7 +149,10 @@
         <thead>
             <tr>
                 <td style="font-weight: bold;">设备id</td>
-                <td style="font-weight: bold;">设备名称<span id="backList" ng-click="backList()" title="返回设备列表"><i class="fa fa-mail-reply"></i></span></td>
+                <td style="font-weight: bold;">设备名称</td>
+                <td style="font-weight: bold;">设备模型</td>
+                <span id="backList" ng-click="backList()" title="返回设备列表"><i class="fa fa-mail-reply"></i></span>
+                
             </tr>
 <!--div id ="allDevice">
     <table id="allDeviceTable" class="table table-hover">
@@ -182,6 +185,8 @@
         <tr ng-repeat="data in deviceList" ng-click="show(data)">
             <td>{{data.id}}</td>
             <td>{{data.name}}</td>
+            <td ng-if="checkModel(data)"><i class="fa fa-check"></i></td>
+            <td ng-if="!checkModel(data)"><i class="fa fa-close"></i></td>
         </tr>
         </tbody>
     </table>

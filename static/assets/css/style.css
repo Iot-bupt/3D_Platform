@@ -81,7 +81,7 @@ body {
     border-radius:12px;
 }
 #allDeviceTable tr td{
-    width: 50%;
+    width: 33.3%;
     cursor: pointer;
 }
 #searchDeviceDiv{
@@ -181,6 +181,9 @@ body {
     margin-right: 12px;
     cursor: pointer;
     color: white;
+    position: absolute;
+    right: 0px;
+    top: 9px;
 
 }
 .fontColor{
