@@ -10,12 +10,16 @@ module.exports = {
         var tenantId = ctx.query.tenantId;
         var siteId = ctx.query.siteId;
         
-        var res = await upload.uploadScene(files,'s',tenantId,siteId);
-        if (res){
-            ctx.rest(res);   
-                
-        }else{
-            throw new APIError('upload:have no files', 'have no file accepted');
+        try{
+            var res = await upload.uploadScene(files,'s',tenantId,siteId);
+            if (res){
+                ctx.rest(res);   
+                    
+            }else{
+                throw new APIError('upload:have no files', 'have no file accepted');
+            }
+        }catch(e){
+            throw new APIError('upload:failed', e.message);
         }
         
         },
@@ -25,13 +29,16 @@ module.exports = {
         var files = ctx.request.files;
         var tenantId = ctx.query.tenantId;
         var siteId = ctx.query.siteId;
-
-        var res = await upload.uploadScene(files,'d',tenantId,siteId);
-        if (res){
-            ctx.rest(res);   
-                
-        }else{
-            throw new APIError('upload:have no files', 'have no file accepted');
+        try{
+            var res = await upload.uploadScene(files,'d',tenantId,siteId);
+            if (res){
+                ctx.rest(res);   
+                    
+            }else{
+                throw new APIError('upload:have no files', 'have no file accepted');
+            }
+        }catch(e){
+            throw new APIError('upload:failed', e.message);
         }
         
         },
