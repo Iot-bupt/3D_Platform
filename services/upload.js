@@ -19,39 +19,53 @@ module.exports = {
                 if (which === 's'){
                     var tenantPath = "public/upload/scenes/"+tenantId+"/";
                     var tenantSitePath = "public/upload/scenes/"+tenantId+"/"+siteId+"/";
-                    fs.exists(tenantPath, function (exists) {
+                    var fileFullPath = "public/upload/scenes/"+tenantId+"/"+siteId+"/" + item.name;
+                    fs.exists(tenantSitePath, function (exists) {
                         if (!exists) {
-                            fs.mkdirSync(tenantPath);
+                            fs.exists(tenantPath,function(exists){
+                                if (!exists) {
+                                    fs.mkdirSync(tenantPath);
+                                    fs.mkdirSync(tenantSitePath);
+                                } else{
+                                    fs.mkdirSync(tenantSitePath);
+                                }
+                                
+                                });
+                        }    
+                    });
+
+                    fs.exists(fileFullPath, function(exists) {
+                        if(exists){
+                            throw new Error("文件已经存在！");
                         }
-                        
-                        fs.exists(tenantSitePath,function(exists){
-                            if (!exists) {
-                                fs.mkdirSync(tenantSitePath);
-                            }
-                            
-                        });
-                        
                     });
                     
-                    var newpath =path.join('public/upload/scenes/'+tenantId+'/'+siteId, generateId()+'~'+item.name);  
+                    var newpath =path.join('public/upload/scenes/'+tenantId+'/'+siteId, '~'+item.name);  
                 }else if(which === 'd'){
                     var tenantPath = "public/upload/devices/"+tenantId+"/";
                     var tenantSitePath = "public/upload/devices/"+tenantId+"/"+siteId+"/";
-                    fs.exists(tenantPath, function (exists) {
+                    var fileFullPath = "public/upload/devices/"+tenantId+"/"+siteId+"/" + item.name;
+                    fs.exists(tenantSitePath, function (exists) {
                         if (!exists) {
-                            fs.mkdirSync(tenantPath);
-                        }
-                        
-                        fs.exists(tenantSitePath,function(exists){
-                            if (!exists) {
-                                fs.mkdirSync(tenantSitePath);
-                            }
-                            
-                        });
-                        
+                            fs.exists(tenantPath,function(exists){
+                                if (!exists) {
+                                    fs.mkdirSync(tenantPath);
+                                    fs.mkdirSync(tenantSitePath);
+                                } else{
+                                    fs.mkdirSync(tenantSitePath);
+                                }
+                                
+                                });
+                        }    
                     });
 
-                    var newpath =path.join('public/upload/devices/'+tenantId+'/'+siteId, generateId()+'~'+item.name); 
+                    fs.exists(fileFullPath, function(exists) {
+                        if(exists){
+                            throw new Error("文件已经存在！");
+                        }
+                    });
+
+                    var newpath =path.join('public/upload/devices/'+tenantId+'/'+siteId, '~'+item.name); 
                 }
                 console.log(newpath); 
                 const defaults = {
