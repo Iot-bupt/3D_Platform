@@ -7,7 +7,10 @@ module.exports = {
     'POST /api/uploadScene': async (ctx, next) => {
         
         var files = ctx.request.files;
-        var res = await upload.uploadScene(files,'s');
+        var tenantId = ctx.query.tenantId;
+        var siteId = ctx.query.siteId;
+        
+        var res = await upload.uploadScene(files,'s',tenantId,siteId);
         if (res){
             ctx.rest(res);   
                 
@@ -20,7 +23,10 @@ module.exports = {
     'POST /api/uploadDevice': async (ctx, next) => {
     
         var files = ctx.request.files;
-        var res = await upload.uploadScene(files,'d');
+        var tenantId = ctx.query.tenantId;
+        var siteId = ctx.query.siteId;
+
+        var res = await upload.uploadScene(files,'d',tenantId,siteId);
         if (res){
             ctx.rest(res);   
                 

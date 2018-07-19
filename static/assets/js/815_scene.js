@@ -97,7 +97,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     var tenantId;      //租户ID
     var initScene = function(){
         siteId = getQueryString("siteId");   //从url中读取siteId
-        tenantId = getQueryString("id");
+        tenantId = getQueryString("tenantId");
         if(siteId === null || siteId === ""){
             siteId = 133;      //默认是demo中的815场景
         }

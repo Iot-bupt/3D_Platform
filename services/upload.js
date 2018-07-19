@@ -11,15 +11,15 @@ function generateId() {
 
 module.exports = {
 
-    uploadScene: async (files,which) => {
+    uploadScene: async (files,which,tenantId,siteId) => {
         if(files.length>0){  
             for(var item of files){  
                 
                 var tmpath = item.path;  
                 if (which === 's'){
-                    var newpath =path.join('public/upload/scenes', generateId()+'~'+item.name);  
+                    var newpath =path.join('public/upload/scenes/'+tenantId+'/'+siteId, generateId()+'~'+item.name);  
                 }else if(which === 'd'){
-                    var newpath =path.join('public/upload/devices', generateId()+'~'+item.name); 
+                    var newpath =path.join('public/upload/devices'+tenantId+'/'+siteId, generateId()+'~'+item.name); 
                 }
                 console.log(newpath); 
                 const defaults = {
