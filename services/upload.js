@@ -23,7 +23,7 @@ module.exports = {
                 }else if(which === 'd'){
                     fs.mkdirSync("public/upload/devices/"+tenantId+"/");
                     fs.mkdirSync("public/upload/devices/"+tenantId+"/"+siteId+"/");
-                    var newpath =path.join('public/upload/devices'+tenantId+'/'+siteId, generateId()+'~'+item.name); 
+                    var newpath =path.join('public/upload/devices/'+tenantId+'/'+siteId, generateId()+'~'+item.name); 
                 }
                 console.log(newpath); 
                 const defaults = {
