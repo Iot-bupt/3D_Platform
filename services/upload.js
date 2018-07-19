@@ -17,8 +17,12 @@ module.exports = {
                 
                 var tmpath = item.path;  
                 if (which === 's'){
+                    fs.mkdirSync("public/upload/scenes/"+tenantId+"/");
+                    fs.mkdirSync("public/upload/scenes/"+tenantId+"/"+siteId+"/");
                     var newpath =path.join('public/upload/scenes/'+tenantId+'/'+siteId, generateId()+'~'+item.name);  
                 }else if(which === 'd'){
+                    fs.mkdirSync("public/upload/devices/"+tenantId+"/");
+                    fs.mkdirSync("public/upload/devices/"+tenantId+"/"+siteId+"/");
                     var newpath =path.join('public/upload/devices'+tenantId+'/'+siteId, generateId()+'~'+item.name); 
                 }
                 console.log(newpath); 
