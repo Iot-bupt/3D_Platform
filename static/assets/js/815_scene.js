@@ -95,7 +95,9 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
     var siteId;        //站点ID 
     var siteName;      //站点名称
     var tenantId;      //租户ID
+
     var initScene = function(){
+
         siteId = getQueryString("siteId");   //从url中读取siteId
         tenantId = getQueryString("tenantId");
         if(siteId === null || siteId === ""){
@@ -114,6 +116,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
                     _sceneLoca =  res.sites[0].sceneModelLoca;
                     _sceneUrl = res.sites[0].sceneUrl;
                     siteName = res.sites[0].name;
+                    
+                    addmodel.addAllModel(siteId);    //加载场景ID133的所有设备模型
                 },
                 error: function(e){
                     $.alert('场景模型初始位置信息获取失败！请刷新重试'+ e.message);
@@ -665,7 +669,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         //fun2cgq('sensor_center.stl',-1.0, 4.228, -6.5,"窗帘1关_uid3_off");
         //fun2cgq('sensor_center.stl',0.0,4.96,18,"温湿2_uid4");
         
-        addmodel.addAllModel(siteId);    //加载场景ID133的所有设备模型
+        
         
         
         
