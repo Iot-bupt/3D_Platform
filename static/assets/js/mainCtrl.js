@@ -733,7 +733,7 @@ $scope.updateFile = function(){
             data.append('fileToUpload', document.getElementById('fileToUpload').files[0]);
             console.log(data);
             $.ajax({
-                url: "/api/uploadDevice"+"?tenantId="+tenantId+"&siteId="siteId,
+                url: "/api/uploadDevice"+"?tenantId="+tenantId+"&siteId="+siteId,
                 type: 'POST',
                 data: data,
                 cache: false,
