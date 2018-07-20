@@ -12,6 +12,11 @@ function generateId() {
 module.exports = {
 
     uploadScene: async (files,which,tenantId,siteId) => {
+
+        if((tenantId === undefined || tenantId === "") || (siteId === undefined || siteId === "")){
+            throw new Error("无法鉴别租户或站点，没有权限上传！");
+        }
+
         if(files.length>0){  
             for(var item of files){  
                 
