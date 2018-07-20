@@ -712,11 +712,15 @@ $scope.updateFile = function(){
       var index = file.name.lastIndexOf(".");
       var fileType = file.name.substring(index + 1, file.name.length);
       console.log("文件类型："+fileType);
-      if(file.size>1024*1024*100)
+      if(file.name.indexOf("%") != -1)
+      {
+        alert('文件名中不得包含%')
+      }
+      else if(file.size>1024*1024*100)
       {
            alert('请上传小于100M文件')
       }
-      if(fileType != "drc"&&fileType !="obj"&&fileType !="max"&&fileType !="glft" ) 
+      else if(fileType != "drc"&&fileType !="obj"&&fileType !="max"&&fileType !="glft" ) 
       {
            alert("请上传正确格式文件")
       }
@@ -729,7 +733,7 @@ $scope.updateFile = function(){
             data.append('fileToUpload', document.getElementById('fileToUpload').files[0]);
             console.log(data);
             $.ajax({
-                url: '/api/uploadDevice',
+                url: "/api/uploadDevice"+"?tenantId="+tenantId+"&siteId="siteId,
                 type: 'POST',
                 data: data,
                 cache: false,

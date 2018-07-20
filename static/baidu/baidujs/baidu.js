@@ -73,16 +73,7 @@ var styleJson =[                     //个性化地图
                     }
           }
 ]
-      // var MAX = 1000;
 
-      //  var pt = null;
-      //  var i = 0;
-      //  for (; i < MAX; i++) {
-      //      pt = new BMap.Point(Math.random() * 40 + 85, Math.random() * 30 + 21);
-      //      markers.push(new BMap.Marker(pt));
-
-      //      map.addOverlay(new BMap.Marker(pt));
-      //  }
 map.setMapStyle({styleJson:styleJson});
 map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);  // 初始化地图,设置中心点坐标和地图级别
 //添加地图类型控件
@@ -459,7 +450,7 @@ function (){
                  { getSites();
                  var content =addContent(tenantId,req.id,req.name,req.longtitude,req.latitude,year,month,date)
                  var marker =addMarkers(req.id,req.longtitude,req.latitude,true)
-                 map.centerAndZoom(new BMap.Point(req.longtitude, req.latitude), 12);
+                 map.centerAndZoom(new BMap.Point(req.longtitude, req.latitude), map.getZoom());
                  //addMarkers(req.id,req.longtitude,req.latitude)
                  addClickHandler(content,marker);
                  //addMarkers(tenantId,req.id,req.name,req.longtitude,req.latitude,year,month,date)        
@@ -628,7 +619,26 @@ $(btn).click(function(){
             {
                 
                 point=new BMap.Point(req.sites[0].longtitude,req.sites[0].latitude);
-                map.centerAndZoom(point, 22);
+                map.centerAndZoom(point, 20);
+                var allOverlay = map.getOverlays();
+                console.log(allOverlay)
+                console.log(req.sites[0].id)
+                for (var i = 1; i < allOverlay.length ; i++){                   
+                        console.log(allOverlay[i].toString())
+                        if(allOverlay[i].toString()=="[object Marker]")
+                        {
+                            console.log(allOverlay[i].getLabel())
+                            if(allOverlay[i].getLabel().content)
+                            {
+                                if(allOverlay[i].getLabel().content == req.sites[0].id)
+                                {
+                                    //allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+                                    //return false;
+                                } 
+                            }
+                            
+                        }
+                }
             }
             else
             {

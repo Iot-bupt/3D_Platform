@@ -90,10 +90,10 @@ progress
 
 
 /*设备列表*/
-.deviceList 
+.deviceListPage 
 {
     display: block;
-    height: 100%;
+    height: 85%;
     overflow-y: scroll;
 }
 
