@@ -31,8 +31,6 @@ var pageNum = 1;//记录当前页面
             alert('失败');
         },
         success: function(req) {
-            //console.log(req.sites);
-            //console.log(req.data);
             //请求成功时处理
             idArray=[];
             nameArray=[];

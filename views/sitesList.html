@@ -76,7 +76,7 @@
             <input type="text" id="searchValue"  onkeyup="deviceSearch1()" placeholder="请输入设备名称"/>
             <input type="button" id='keyup' value="查询" " onclick="deviceSearch()" />
         </div>
-        <div id="deviceList">
+        <div id="deviceListPage">
 
         <table id ="myTable1" class="table table-striped" style=" font-size:15px;">
             <tr class="firstTr" id="deviceListTh">
@@ -94,7 +94,7 @@
             <button class="btn btn-primary" style="margin-left: 30px" id="next" onclick="nextPage()">下一页</button>
         </div>
     </div>
-
+</section>
 <div class="modal fade" tabindex="-1" role="dialog" name="addSites" id="addSites">
         <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
         <div class="modal-dialog" role="document">
@@ -136,7 +136,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-</section>
+
 </body>
 
 <script type="text/javascript" src="../static/baidu/baidujs/sitesList.js"></script>

@@ -2,7 +2,7 @@
 var file
 function fileSelected() {  
  file= document.getElementById('fileToUpload').files[0];  
-if (file) {  
+ if (file) {  
     $("#modelName").val(file.name);  
  }  
 }
@@ -13,13 +13,17 @@ function uploadFile() {
   var index = file.name.lastIndexOf(".");
   var fileType = file.name.substring(index + 1, file.name.length);
   console.log("文件类型："+fileType);
-  if(file.size>1024*1024*200)
+  if(file.name.indexOf("%") != -1)
+  {
+    alert('文件名中不得包含%')
+  }
+  else if(file.size>1024*1024*200)
   {
     alert('请上传小于200M文件')
   }
-  if(fileType != "drc"&&fileType !="obj"&&fileType !="max"&&fileType !="glft") 
+  else if(fileType != "drc"&&fileType !="obj"&&fileType !="max"&&fileType !="glft") 
   {
-      alert("请上传drc、obj、max或gltf文件")
+    alert("请上传drc、obj、max或gltf文件")
   }
   else
   {
@@ -27,9 +31,9 @@ function uploadFile() {
     fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]); 
     console.log(fd) 
     $.ajax({  
-                url: "/api/uploadScene",  
+                url: "/api/uploadScene"+"?tenantId="+tenantId+"&siteId="+$('#siteId') .val(),  
                 type: "POST",  
-                data: fd,  
+                data:fd,
                 contentType: false,//必须false才会自动加上正确的Content-Type  
                 processData: false,//必须false才会避开jQuery对 formdata 的默认处理  
                 xhr: function(){ //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数    
