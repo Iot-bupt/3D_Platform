@@ -1,32 +1,18 @@
 ﻿/*---------------------------------------公共样式(请勿修改)---------------------------------------------*/
 /*body { margin: 0; font-family: "Helvetica,Arial,FreeSans"; color: #000000; font-size: 12px; }*/
 body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
-        #allmap{width:100%;height:95%;}
-        p{margin:5px; font-size:14px;height:100%}
+#allmap{width:100%;height:95%;}
+/*p{margin:10px 5px 15px 20px; font-size:14px;}*/
 /*fieldset { border: 1px solid gray;; }*/
 /*body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}*/
 .demo_content { padding: 10px; margin-bottom: 10px; border: solid 1px gray;height:105%;width: 102%}
-.providerAdd{
-            display:none;            /* 默认对话框隐藏 */
-            margin:auto;
-        }
-/*
-.right1{
-            display:none;             默认对话框隐藏 
-            margin:auto;
-        }*/
-.providerAdd.show{display:block;}
 
-#div1{width: 350px;height: 250px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
-#div2{width: 350px; height: 170px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
-#nav {width: 350px;height: 220px; border-radius: 8px solid #D4CD49; background-color:white; position:fixed;left:30%;top:30%;margin-left:width/2;margin-top:height/2;}
-
-.nav li{   
+/*.nav li{   
  padding: 8px 15px;    
  float: right;   
  list-style: none;   
  color:#fff;  
-} 
+}*/ 
 #btn {
     float:right;
     width: 100px;
@@ -54,12 +40,9 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
 }
 
 progress
-{
-        
+{    
     width: 250px;
-    height: 25px;
-    
-        
+    height: 25px;      
 }
 /*进度条*/
 .progressNumber
@@ -90,7 +73,7 @@ progress
 
 
 /*设备列表*/
-.deviceListPage 
+#deviceListPage 
 {
     display: block;
     height: 85%;

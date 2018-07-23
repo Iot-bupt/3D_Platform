@@ -41,6 +41,7 @@ var hasNext;//判断是否存在下一页
 var preDeviceId = [];//用于查找上一页
 var preDeviceName = [];//用于查找上一页
 var pageNum = 1;//记录当前页面
+
 var map = new BMap.Map("allmap");    // 创建Map实例
 var markerClusterer 
 var styleJson =[                     //个性化地图
