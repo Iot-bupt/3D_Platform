@@ -41,6 +41,7 @@ var hasNext;//判断是否存在下一页
 var preDeviceId = [];//用于查找上一页
 var preDeviceName = [];//用于查找上一页
 var pageNum = 1;//记录当前页面
+
 var map = new BMap.Map("allmap");    // 创建Map实例
 var markerClusterer 
 var styleJson =[                     //个性化地图
@@ -627,15 +628,14 @@ $(btn).click(function(){
                         console.log(allOverlay[i].toString())
                         if(allOverlay[i].toString()=="[object Marker]")
                         {
-                            console.log(allOverlay[i].getLabel())
-                            if(allOverlay[i].getLabel().content)
-                            {
+                            console.log(allOverlay[i])
+                            
                                 if(allOverlay[i].getLabel().content == req.sites[0].id)
                                 {
-                                    //allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+                                    allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
                                     //return false;
                                 } 
-                            }
+                            
                             
                         }
                 }
@@ -666,7 +666,6 @@ function loadPlace(longitude, latitude, level) {
 //添加模型
 function addModel()
 {
-    //document.getElementById("div1").style.display="block";
     $('#addSences').modal('show');
     for (var i = 0; i < reqArray.length; i++) {
         if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {        
@@ -690,7 +689,6 @@ function intoScence()
 //关闭窗口
 function closeWin()
 {
-    //document.getElementById("nav").style.display='none';
     $('#addSites').modal('hide');
     map.removeEventListener("click",getPoint);
     map.setDefaultCursor("url(http://api0.map.bdimg.com/images/openhand.cur) 8 8,default");
@@ -820,7 +818,7 @@ function showTable(req)
 function deviceSearch() {
     if($("#searchDevice").val()!='')
     {
-        jQuery.ajax({
+        $.ajax({
                 url:"/api/3d815/search/"+tenantId+"?limit=2000&textSearch="+$("#searchDevice").val(),
                 contentType: "application/json; charset=utf-8",
                 async: false,
@@ -1015,7 +1013,7 @@ function geocodeSearch(pt){
         var appElement = document.querySelector('[ng-controller=myCtrl1]');
         //获取$scope变量
         var $scope = angular.element(appElement).scope();
-        //调用msg变量，并改变msg的值
+        //调用names变量，并改变names的值
         $scope.names= rs.surroundingPois
         //新建names，如果想同步到Angular控制器中，则需要调用$apply()方法即可
         $scope.$apply();

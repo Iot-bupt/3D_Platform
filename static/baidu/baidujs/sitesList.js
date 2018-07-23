@@ -167,7 +167,8 @@ function siteDistribute()
                 {"id":deviceID,"siteId":idArray[nameArray.indexOf($('#siteId2 option:selected') .text())]},
         dataType: 'json',
         // contentType: 'application/json;charset=UTF-8',
-        error:function(){
+        error:function(error){
+            console.log(error)
             alert('失败');
         },
         success: function(req) {
@@ -178,7 +179,6 @@ function siteDistribute()
             //获取表格中的所有行      
             var rows = tableObj.getElementsByTagName("tr");
             var td = rows[rowIdx].getElementsByTagName("td");
-            //console.log(rows[rowIdx].getElementsByTagName("td"))
             td[5].innerHTML=nameArray[idArray.indexOf(parseInt(req.siteId))]
          }  
        });
@@ -275,7 +275,7 @@ function delectSite()
                                 {"id":td[0].innerText,"siteId":-1},
                         dataType: 'json',
                         // contentType: 'application/json;charset=UTF-8',
-                        error:function(){
+                        error:function(error){
                             alert('取消失败');
                         },
                         success: function(req) {
@@ -295,14 +295,15 @@ function delectSite()
                         type: 'DELETE',
                         async : false,
                         dataType: 'json',
-                        error:function(){
+                        error:function(error){
+                            console.log(error)
                             //alert('失败');
                         },
                         success: function(req) {
                             console.log(req);
                          }  
                        });
-}
+                    }
                     }
                     else if(mymessage==false)
                     {
@@ -324,7 +325,6 @@ function deviceSearch() {
                 }
             });
     }
-
 }
 
 // ///////////////文本框-表格搜索/////////////
