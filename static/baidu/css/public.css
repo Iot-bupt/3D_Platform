@@ -139,8 +139,11 @@ li{
     border-bottom: 1px solid rgba(212,212,212,0.5) ;
 }
 .btn-group-vertical{
-    margin-left: 10px;
+    width: 90%; 
+    margin-left: 5%; 
+    margin-right:5%;
 }
+
 
 
 /*.list li:nth-child(1){
