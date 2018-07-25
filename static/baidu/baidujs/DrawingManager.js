@@ -1122,7 +1122,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
         var preDeviceName = [];//用于查找上一页
         var pageNum = 1;//记录当前页面
         function showTable(req)
-{
+        {
                 $("#myTable2  tr:not(:first)").empty(""); 
                 for (var i = 0; i < req.data.length; i++) {
                 var table = document.getElementById("myTable2");
@@ -1136,12 +1136,19 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
                 var cell5 = row.insertCell(5);
                 cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>'
                 cell1.innerHTML = req.data[i].tenantId;
-                cell2.innerHTML = req.data[i].customerId;
+                if(req.data[i].customerId==1)
+                {
+                    cell2.innerHTML = "未分配"
+                }
+                else
+                {
+                    cell2.innerHTML = req.data[i].customerId;
+                }
                 cell3.innerHTML = req.data[i].name;
                 cell4.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)] 
                 cell5.innerHTML = '<input type="button" class="btn btn-primary" value="进入站点" onclick="lookDevice(2)"/>'
             }
-}
+        }
 
 var app = angular.module("myApp", []);
 app.controller("myCtrl", function($scope) {

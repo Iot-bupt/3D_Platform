@@ -65,12 +65,14 @@ function uploadFile() {
                             }
                            });
                     }, 
-                error: function () {  
-                    alert("上传失败！","提示","确定");  
+                error: function (error) {  
+                    alert(error.responseJSON.message);  
                 }  
         }); 
-        } 
-
+        }
+        // $('#modelName').val("");
+        // $('#fileToUpload').val("");
+        // $('#progressNumber').val("");
 }
 //上传进度 
 function uploadProgress(evt) {  

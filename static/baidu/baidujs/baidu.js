@@ -807,7 +807,14 @@ function showTable(req)
                 var cell5 = row.insertCell(5);
                 cell0.innerHTML = '<td id=row.id>'+req.data[i].id+'</td>'
                 cell1.innerHTML = req.data[i].tenantId;
-                cell2.innerHTML = req.data[i].customerId;
+                if(req.data[i].customerId==1)
+                {
+                    cell2.innerHTML ="未分配"
+                }
+                else
+                {
+                    cell2.innerHTML = req.data[i].customerId; 
+                }
                 cell3.innerHTML = req.data[i].name;
                 cell4.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)] 
                 cell5.innerHTML = '<input type="button" class="btn btn-primary" value="进入站点" onclick="lookDevice(1)"/>'

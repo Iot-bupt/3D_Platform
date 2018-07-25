@@ -1,6 +1,6 @@
 ﻿/*---------------------------------------公共样式(请勿修改)---------------------------------------------*/
 /*body { margin: 0; font-family: "Helvetica,Arial,FreeSans"; color: #000000; font-size: 12px; }*/
-body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
+body,html {width: 100%;height: 100%;overflow: hidden;margin:0;}
 #allmap{width:100%;height:95%;}
 /*p{margin:10px 5px 15px 20px; font-size:14px;}*/
 /*fieldset { border: 1px solid gray;; }*/
@@ -15,7 +15,7 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
 }*/ 
 #btn {
     float:right;
-    width: 100px;
+    width: 8%;
     padding: 0 20px;
     height: 25px;
     border: 1px solid #7ba92c;
@@ -25,7 +25,7 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
 #address {
     /*left: 80px;*/
     position:absolute;
-    right:11%;
+    right:10%;
     /*float:right;*/
 }
 .anjian {
@@ -39,38 +39,17 @@ body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
     /*padding-left:24px;*/
 }
 
-progress
+/*progress
 {    
     width: 250px;
     height: 25px;      
-}
+}*/
 /*进度条*/
-.progressNumber
+#progressNumber
 {
-    width: 250px;
+    width: 65%;
     height: 25px;
-   margin: auto;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    right: 0;
-    bottom: 0; 
 }
-
-.progressNumber1
-{
-    width: 250px;
-    height: 5px;
-    margin:0 auto;
-    position: absolute;
-    /*top: 0;*/
-    left: 0;
-    right: 0;
-    bottom: 0; 
-        /*left: 50%;
-    top: 50%;*/
-}
-
 
 /*设备列表*/
 #deviceListPage 

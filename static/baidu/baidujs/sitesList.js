@@ -203,7 +203,14 @@ function showTable(req)
 
                 cell0.innerHTML = '<td >'+req.data[i].id+'</td>' ;
                 cell1.innerHTML = req.data[i].tenantId;
-                cell2.innerHTML = req.data[i].customerId;
+                if(req.data[i].customerId==1)
+                {
+                    cell2.innerHTML = "未分配客户"
+                }
+                else
+                {
+                    cell2.innerHTML = req.data[i].customerId;
+                }
                 cell3.innerHTML = req.data[i].name;
                 cell4.innerHTML = req.data[i].parentDeviceId;
                 if(req.data[i].siteId==-1||req.data[i].siteId==null)
@@ -296,8 +303,8 @@ function delectSite()
                         async : false,
                         dataType: 'json',
                         error:function(error){
+                            //alert(error.responseJSON.message);
                             console.log(error)
-                            //alert('失败');
                         },
                         success: function(req) {
                             console.log(req);
