@@ -26,7 +26,7 @@ class AddModel{
 
             scene.add(mesh);
             objects.push(mesh);
-            //console.log(objects)
+            console.log(objects)
         });
     }
 
@@ -43,6 +43,8 @@ class AddModel{
                 $.alert("场景模型添加失败！可能是数据库问题"+e.message);
             }
         });
+
+        objects = [];
 
         allModel.forEach(element => {
             var name = element.name;
