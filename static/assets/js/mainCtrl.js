@@ -4,20 +4,29 @@
 var mainApp = angular.module("mainApp",["ngResource"]);
 
 mainApp.controller("mainCtrl",["$scope","$resource",function($scope,$resource){
-    //==================当前场景设备模型数量============
-    $scope.dModelNum = objects.length;
-    //=======================end======================
 
      //===============当前站点所有设备模型对应deviceID集合(数组)==========
      var dModelDeviceId = new Array();
+     $(document).ready(function(){
+         //==================当前场景设备模型数量============
+            $scope.dModelNum = objects.length;
+        //=======================end======================
+        
         objects.forEach(element => {
             dModelDeviceId.push(element.deviceId);
         });
-    
+        console.log(dModelDeviceId);
+
+     });    
 
      $scope.checkModel = function(data){
-        
-         return $.inArray(data.id,dModelDeviceId);
+         var check = $.inArray(data.id,dModelDeviceId);
+         if(check === -1){
+            return false;
+         }else{
+             return true;
+         }
+         
      }
 
     //===================================================
@@ -83,6 +92,7 @@ $scope.changeIcon = function(){
 }
     $scope.packSearchMenu = function(){
         jQuery("#menu").css("display","block");
+        $scope.dModelNum = objects.length;
     }
 //动态显示导航栏
     $scope.packSearchMenu = function(){

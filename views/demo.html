@@ -185,8 +185,11 @@
         <tr ng-repeat="data in deviceList" ng-click="show(data)">
             <td>{{data.id}}</td>
             <td>{{data.name}}</td>
-            <td ng-if="checkModel(data)"><i class="fa fa-check"></i></td>
-            <td ng-if="!checkModel(data)"><i class="fa fa-close"></i></td>
+            <td>
+                <i ng-if="checkModel(data)" class="fa fa-check"></i>
+                <i ng-if="!checkModel(data)" class="fa fa-close"></i>
+            </td>
+            <!-- <td ng-if="!checkModel(data)"><i class="fa fa-close"></i></td> -->
         </tr>
         </tbody>
     </table>

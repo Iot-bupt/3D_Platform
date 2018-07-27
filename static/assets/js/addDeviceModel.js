@@ -26,7 +26,7 @@ class AddModel{
 
             scene.add(mesh);
             objects.push(mesh);
-            console.log(objects)
+            //console.log(objects)
         });
     }
 
