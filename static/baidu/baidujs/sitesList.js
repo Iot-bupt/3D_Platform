@@ -43,6 +43,48 @@ var pageNum = 1;//记录当前页面
 
        });
 
+function showTable(req)
+{
+    $("#myTable1  tr:not(:first)").empty(""); 
+    for (var i = 0; i < req.data.length; i++) {
+    var table = document.getElementById("myTable1");
+    var row = table.insertRow(i+1);
+    row.id = (i + 1);
+    var cell0 = row.insertCell(0);
+    var cell1 = row.insertCell(1);
+    var cell2 = row.insertCell(2);
+    var cell3 = row.insertCell(3);
+    var cell4 = row.insertCell(4);
+    var cell5 = row.insertCell(5);
+    var cell6 = row.insertCell(6);
+
+    cell0.innerHTML = '<td >'+req.data[i].id+'</td>' ;
+    cell1.innerHTML = req.data[i].tenantId;
+    if(req.data[i].customerId==1)
+    {
+        cell2.innerHTML = "未分配客户"
+    }
+    else
+    {
+        cell2.innerHTML = req.data[i].customerId;
+    }
+    cell3.innerHTML = req.data[i].name;
+    cell4.innerHTML = req.data[i].parentDeviceId;
+    if(req.data[i].siteId==-1||req.data[i].siteId==null)
+    {
+        cell5.innerHTML ="未分配";
+    }
+    else
+    {
+        cell5.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)]
+    }
+    cell6.innerHTML =  
+        '<a onclick=look();><img style="width:30px;" src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+        '<a onclick=distributeSite();><img style="width:30px;" src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+        '<a onclick=delectSite();><img style="width:30px;" src="../static/baidu/img/schu.png" alt="取消站点" title="取消站点"/></a>'
+   }
+}
+
 init();
 function init()
 {
@@ -66,8 +108,7 @@ jQuery.ajax({
                 // console.log(hasNext);
                 preDeviceId.push(idOffset);
                 preDeviceName.push(textOffset);
-             }
-            
+             }   
         }
     }
 });
@@ -156,78 +197,7 @@ function prePage(){
     }
 }
 
-
-function siteDistribute()
-{
-  $.ajax({
-        url: '/api/assignDevice/site',
-        type: 'PUT',
-        // async : false,
-        data:
-                {"id":deviceID,"siteId":idArray[nameArray.indexOf($('#siteId2 option:selected') .text())]},
-        dataType: 'json',
-        // contentType: 'application/json;charset=UTF-8',
-        error:function(error){
-            console.log(error)
-            alert('失败');
-        },
-        success: function(req) {
-            console.log(req);
-            //请求成功时处理
-            alert('分配成功')
-            var tableObj = document.getElementById("myTable1");
-            //获取表格中的所有行      
-            var rows = tableObj.getElementsByTagName("tr");
-            var td = rows[rowIdx].getElementsByTagName("td");
-            td[5].innerHTML=nameArray[idArray.indexOf(parseInt(req.siteId))]
-         }  
-       });
-
-}
-
-
-function showTable(req)
-{
-                $("#myTable1  tr:not(:first)").empty(""); 
-                for (var i = 0; i < req.data.length; i++) {
-                var table = document.getElementById("myTable1");
-                var row = table.insertRow(i+1);
-                row.id = (i + 1);
-                var cell0 = row.insertCell(0);
-                var cell1 = row.insertCell(1);
-                var cell2 = row.insertCell(2);
-                var cell3 = row.insertCell(3);
-                var cell4 = row.insertCell(4);
-                var cell5 = row.insertCell(5);
-                var cell6 = row.insertCell(6);
-
-                cell0.innerHTML = '<td >'+req.data[i].id+'</td>' ;
-                cell1.innerHTML = req.data[i].tenantId;
-                if(req.data[i].customerId==1)
-                {
-                    cell2.innerHTML = "未分配客户"
-                }
-                else
-                {
-                    cell2.innerHTML = req.data[i].customerId;
-                }
-                cell3.innerHTML = req.data[i].name;
-                cell4.innerHTML = req.data[i].parentDeviceId;
-                if(req.data[i].siteId==-1||req.data[i].siteId==null)
-                {
-                    cell5.innerHTML ="未分配";
-                }
-                else
-                {
-                    cell5.innerHTML = nameArray[idArray.indexOf(req.data[i].siteId)]
-                }
-                cell6.innerHTML =  
-                    '<a onclick=look();><img style="width:30px;" src="../static/baidu/img/read.png" alt="查看" title="查看"/></a>'+'&nbsp;&nbsp;&nbsp;&nbsp;'+
-                    '<a onclick=distributeSite();><img style="width:30px;" src="../static/baidu/img/xiugai.png" alt="分配站点" title="分配站点"/></a>'+'&nbsp;&nbsp;&nbsp;&nbsp;'+
-                    '<a onclick=delectSite();><img style="width:30px;" src="../static/baidu/img/schu.png" alt="取消站点" title="取消站点"/></a>'
-               }
-}
-
+///////////////分配站点///////////
 function distributeSite()
 {
    $('#addSites').modal('show');
@@ -250,75 +220,153 @@ function distributeSite()
     deviceName=td[3].innerText;
     $('#deviceName').val(td[3].innerText);
     $('#tenantId1').val(tenantId);
-  for (i=0;i < idArray.length; i++) {
-   document.getElementById("siteId2").options[i] = new Option(nameArray[i],i);
-   }
+    for (i=0;i < idArray.length; i++) {
+        document.getElementById("siteId2").options[i] = new Option(nameArray[i],i);
+    }
+  }
 }
-}   
 
-function delectSite()
+function siteDistribute()
 {
-   var mymessage=confirm("确认取消站点分配？");
-                    if(mymessage==true)
+  $.ajax({
+        url: '/api/assignDevice/site',
+        type: 'PUT',
+        // async : false,
+        data:
+                {"id":deviceID,"siteId":idArray[nameArray.indexOf($('#siteId2 option:selected') .text())]},
+        dataType: 'json',
+        // contentType: 'application/json;charset=UTF-8',
+        error:function(error){
+            console.log(error)
+            alert('失败');
+        },
+        success: function(req) {
+            $.ajax({
+                url:'/api/dModel/getSitedModelByDid/'+deviceID,
+                type:'GET',
+                dataType:'json',
+                error:function(error)
+                {
+                    console.log(error);
+                },
+                success:function(req)
+                {
+                    console.log(req);
+                    if(req.dModels!="")
                     {
-                        var tableObj = document.getElementById("myTable1");
-                        //获取表格中的所有行      
-                        var rows = tableObj.getElementsByTagName("tr");
-                        //给tr绑定click事件
-                        for( i in rows)
-                        {
-                          rows[i].onclick = rowClick;
-                        }                      
-                      function rowClick(e)
-                      {
-                        var td = this.getElementsByTagName("td");
-                        rowIdx = $(td).parent()[0].rowIndex ;
-                        //console.log(rowIdx)
-                    $.ajax({
-                        url: '/api/assignDevice/site',
-                        type: 'PUT',
-                        // async : false,
-                        data:
-                                {"id":td[0].innerText,"siteId":-1},
-                        dataType: 'json',
-                        // contentType: 'application/json;charset=UTF-8',
-                        error:function(error){
-                            alert('取消失败');
-                        },
-                        success: function(req) {
-                            console.log(req);
-                            //请求成功时处理
-                            alert('取消成功')
-                            var tableObj = document.getElementById("myTable1");
-                            //获取表格中的所有行      
-                            var rows = tableObj.getElementsByTagName("tr");
-                            var td = rows[rowIdx].getElementsByTagName("td");
-                            td[5].innerHTML="未分配"
-                         }  
-                       });
-                ////删除对应场景模型
-                     $.ajax({
-                        url: '/api/dModel/dModelDelete/'+td[0].innerHTML,
+                        $.ajax({
+                        url: '/api/dModel/dModelDelete/'+deviceID,
                         type: 'DELETE',
                         async : false,
                         dataType: 'json',
                         error:function(error){
-                            //alert(error.responseJSON.message);
+                            alert(error.responseJSON.message);
                             console.log(error)
                         },
                         success: function(req) {
                             console.log(req);
+                            alert('删除原模型成功')
                          }  
                        });
                     }
-                    }
-                    else if(mymessage==false)
-                    {
-                       
-                    }
+                }
+            });
+            console.log(req);
+            //请求成功时处理
+            alert('分配成功')
+            var tableObj = document.getElementById("myTable1");
+            //获取表格中的所有行      
+            var rows = tableObj.getElementsByTagName("tr");
+            var td = rows[rowIdx].getElementsByTagName("td");
+            td[5].innerHTML=nameArray[idArray.indexOf(parseInt(req.siteId))]
+         }  
+       });
+
+}
+
+/////////////取消站点分配//////////
+function delectSite()
+{
+    var mymessage=confirm("确认取消站点分配？");
+    if(mymessage==true)
+    {
+
+        var tableObj = document.getElementById("myTable1");
+        //获取表格中的所有行      
+        var rows = tableObj.getElementsByTagName("tr");
+        //给tr绑定click事件
+        for( i in rows)
+        {
+          rows[i].onclick = rowClick;
+        }                      
+       function rowClick(e)
+       {
+        var td = this.getElementsByTagName("td");
+        rowIdx = $(td).parent()[0].rowIndex ;
+        //console.log(rowIdx)
+        $.ajax({
+            url: '/api/assignDevice/site',
+            type: 'PUT',
+            // async : false,
+            data:
+                    {"id":td[0].innerText,"siteId":-1},
+            dataType: 'json',
+            // contentType: 'application/json;charset=UTF-8',
+            error:function(error){
+                alert('取消失败');
+            },
+            success: function(req) {
+                console.log(req);
+                //请求成功时处理
+                alert('取消成功')
+                var tableObj = document.getElementById("myTable1");
+                //获取表格中的所有行      
+                var rows = tableObj.getElementsByTagName("tr");
+                var td = rows[rowIdx].getElementsByTagName("td");
+                td[5].innerHTML="未分配"
+             }  
+        });
+        ////删除对应场景模型
+        $.ajax({
+            url:'/api/dModel/getSitedModelByDid/'+td[0].innerText,
+            type:'GET',
+            dataType:'json',
+            error:function(error)
+            {
+                console.log(error);
+            },
+            success:function(req)
+            {
+                console.log(req);
+                if(req.dModels!="")
+                {
+                    $.ajax({
+                    url: '/api/dModel/dModelDelete/'+td[0].innerText,
+                    type: 'DELETE',
+                    async : false,
+                    dataType: 'json',
+                    error:function(error){
+                        alert(error.responseJSON.message);
+                        console.log(error)
+                    },
+                    success: function(req) {
+                        console.log(req);
+                        alert('删除原模型成功')
+                     }  
+                   });
+                }
+            }
+        });
+    }
+    }
+    else if(mymessage==false)
+    {
+       
+    }
     
 }  
 
+////////设备搜索////////
 function deviceSearch() {
     if($("#searchValue").val()!='')
     {
