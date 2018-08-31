@@ -65,7 +65,7 @@ function createWebSocketServer(server){
     
     var onMessage = function (message) {
         
-        var tenantId = message.tenantId;
+        var tenantId = JSON.parse(message).tenantId;
         if (tenantId) {
             let msg = '已经收到tenantId: ' + tenantId;
             this.tenantId = tenantId;
@@ -93,3 +93,4 @@ function createWebSocketServer(server){
 
 
 module.exports = createWebSocketServer;
+
