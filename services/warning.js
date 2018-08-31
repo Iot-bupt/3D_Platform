@@ -43,7 +43,25 @@ module.exports = {
             var res = await Warning.findAll({
                 where:{
                     tenantId: tenantId,
-                    deviceId: deviceId
+                    deviceId: deviceId,
+                    status:true
+                }
+            });
+            return res;
+        
+        }catch(e){
+            throw e;
+        }
+
+    },
+
+    getTenantWarning: async (tenantId) => {
+
+        try{
+            var res = await Warning.findAll({
+                where:{
+                    tenantId: tenantId,
+                    status:true
                 }
             });
             return res;

@@ -35,6 +35,18 @@ module.exports = {
         
     },
 
+    'GET /api/warning/getTenantWarning/:tenantId': async (ctx, next) => {
+        try{
+            var tenantId = ctx.params.tenantId;
+        
+            var res = await warning.getTenantWarning(tenantId);    
+            ctx.rest(res);
+        }catch(e){
+            throw new APIError('warning: failed','get warning failed!' + e.message);
+        }
+        
+    },
+
     'GET /api/warning/readWarning/:id': async(ctx,next) => {
         try{
             var id = ctx.params.id;
