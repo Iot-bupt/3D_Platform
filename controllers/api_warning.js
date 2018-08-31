@@ -22,4 +22,29 @@ module.exports = {
         } 
     },
 
+    'GET /api/warning/getWarning/:tenantId/:deviceId': async (ctx, next) => {
+        try{
+            var tenantId = ctx.params.tenantId;
+            var deviceId = ctx.params.deviceId;
+        
+            var res = await warning.getWarning(tenantId,deviceId);    
+            ctx.rest(res);
+        }catch(e){
+            throw new APIError('warning: failed','get warning failed!' + e.message);
+        }
+        
+    },
+
+    'GET /api/warning/readWarning/:id': async(ctx,next) => {
+        try{
+            var id = ctx.params.id;
+            var res = await warning.readWarning(id);
+
+            ctx.rest(res);
+        }catch(e){
+            throw new APIError('warning: failed','read the warning failed!' + e.message);
+        }
+
+    }
+
 };

@@ -17,7 +17,7 @@ module.exports = {
             var warnObj = new newWarning(tenantId,deviceId,content);
             var warning = await Warning.create(warnObj);
         
-        return warning;
+            return warning;
         }catch(e){
             throw e;
         }
@@ -35,6 +35,53 @@ module.exports = {
             throw e;
         }
 
+    },
+
+    getWarning: async (tenantId,deviceId) => {
+
+        try{
+            var res = await Warning.findAll({
+                where:{
+                    tenantId: tenantId,
+                    deviceId: deviceId
+                }
+            });
+            return res;
+        
+        }catch(e){
+            throw e;
+        }
+
+    },
+
+    readWarning: async (id) => {
+        try{
+            var res = await Warning.update(
+                {
+                    status:false,
+                    updatedAt:Date.now(),
+                },
+                {
+                    where:{
+                        id:id
+                    }
+                });
+            
+            if(res[0] === 1){
+                return {
+                    status:false,
+                    message:"报警信息已阅读"
+                };
+            }else{
+                return {
+                    status:true,
+                    message:"报警信息未阅读"
+                }
+            }
+            
+        }catch(e){
+            throw e;
+        }
     }
 };
 
