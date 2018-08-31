@@ -10,7 +10,11 @@ const templating = require('./templating');
 
 const rest = require('./rest');
 
+const websocket = require('./websocket');
+
+
 const app = new Koa();
+
 
 // log request URL:
 app.use(async (ctx, next) => {
@@ -45,5 +49,10 @@ app.use(rest.restify());
 app.use(controller());
 
 
-app.listen(8800);
+let server = app.listen(8800);
+
+app.wss = websocket(server);
+
+global.wss = app.wss;
+
 console.log('app started at port 8800...');   //这是一个注释A

@@ -31,6 +31,9 @@
         "koa-better-body": "3.0.4",
         "path": "0.12.7",
         "moment": "2.22.1",
-        "superagent": "3.8.3"
+        "superagent": "3.8.3",
+        "ws": "6.0.0",
+        "url": "0.11.0",
+        "cookies": "0.7.1"
     }
 }
