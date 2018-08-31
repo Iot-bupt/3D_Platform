@@ -64,15 +64,19 @@ function createWebSocketServer(server){
     }
     
     var onMessage = function (message) {
-        
-        var tenantId = JSON.parse(message).tenantId;
-        if (tenantId) {
-            let msg = '已经收到tenantId: ' + tenantId;
-            this.tenantId = tenantId;
-            this.send(msg);
-        }else{
-            let msg = '没有收到tenantId!，或解析失败，请注意json格式';
-            this.send(msg);
+        try{
+            var tenantId = JSON.parse(message).tenantId;
+            if (tenantId) {
+                let msg = '已经收到tenantId: ' + tenantId;
+                this.tenantId = tenantId;
+                this.send(msg);
+            }else{
+                let msg = '没有收到tenantId!，或解析失败，请注意json格式';
+                this.send(msg);
+            }
+        }catch(e){
+            var errormsg = "请发送json字符串，否则无法解析"
+            this.send(errormsg);
         }
 
         
