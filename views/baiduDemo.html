@@ -5,6 +5,7 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 	<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script> -->
 	<!-- <script type="text/javascript" src="../static/baidu/baidujs/area.js"></script> -->
 	<!-- <script type="text/javascript" src="../static/baidu/baidujs/areaDemo.js"></script> -->
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mmDe8x697yXU4Xx4D59Kp2nkE0Szww48"></script>
@@ -18,11 +19,13 @@
     <script type="text/javascript" src="../static/baidu/baidujs/DrawingManager.js"></script>
     <script type="text/javascript" src="../static/baidu/baidujs/MarkerClusterer_min.js"></script>
     <script type="text/javascript" src="../static/baidu/baidujs/CityList_min.js"></script>
+    <script type="text/javascript" src="../static/baidu/baidujs/toastr.js"></script>
     
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
     <link rel="stylesheet" href="../static/baidu/css/demo.css"/>
     <link rel="stylesheet" href="../static/baidu/css/public.css"/>
     <link rel="stylesheet" href="../static/baidu/css/style1.css"/>
+    <link rel="stylesheet" href="../static/baidu/css/toastr.css"/>
     <link rel="stylesheet" href="../static/baidu/css/bootstrap.css"/>
     <link rel="stylesheet" href="../static/baidu/css/font-awesome.css"/>
     <!-- <link rel="stylesheet" href="../static/baidu/css/style.css"/> -->
@@ -106,6 +109,7 @@
                 <li><input type="button" class="anjian" data-toggle="modal" value="点击添加标注"  onclick="mark2();" /></li>
                 <li><input type="button" class="anjian" value="框选搜索" id ="jiexi" onclick="draw()" /></li>
                 <li><input type="button" class="anjian" value="设备搜索" id ="deviceSearch1"  data-toggle="modal"           data-target="#deviceSearch" onclick="deviceSearchBox()" /></li>
+                <li><input type="button" class="anjian" value="查看报警事件" id ="warning"  data-toggle="modal" onclick="warningEvent()" /></li>
             </ul>
         </nav>
     </div>
@@ -217,9 +221,11 @@
                         <tr>
                         <td class="attName">进度：</td>
                             <td>
-                                <!-- <div class="progressNumber1" id="progressNumber1"> -->
-                                <progress max="100" value="0" id="progressNumber"></progress> 
-                                <!-- </div> -->
+                                <!-- <progress max="100" value="0" id="progressNumber" ></progress> -->
+                                <div  class="progress" id="progressBar">
+                                    <div id="progressNumber" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
+                                    </div>
+                                </div>
                             </td>
                         </tr>                    
                         </tbody>
@@ -364,8 +370,9 @@
     </div><!-- /.modal -->
 
 {% raw %}
+<div ng-app="myApp1">
 <div class="modal fade" tabindex="-1" role="dialog" id="addressList">
-    <div class="modal-dialog" role="document"  style="width:900px" ng-app="myApp1" ng-controller="myCtrl1" >
+    <div class="modal-dialog" role="document"  style="width:900px"  ng-controller="myCtrl1" >
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
@@ -386,7 +393,7 @@
             <td>({{ x.point.lng }},{{ x.point.lat }})</td>
             <td ><input type="button" class="btn btn-primary" value="查看详情" ng-click="a1($index)" /></td>
         </tr>
-</table>
+        </table>
                 </div>
                 <!-- <div class="modal-footer">
                     <button type="button" class="btn btn-default"  id="modalClose1" onclick="nextPage()">上一页</button>
@@ -397,10 +404,40 @@
     </div><!-- /.modal -->
 {% endraw %}
 
+{% raw %}
+<div class="modal fade" tabindex="-1" role="dialog" id="warningList">
+    <div class="modal-dialog" role="document"  style="width:900px"  ng-controller="myCtrl2" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" style="font-weight: bold;">报警事件</h4>
+                </div>
+                <div class="modal-body"  style="height: 500px;overflow-y: scroll";>
+        <table class="table table-striped"  id="myTable5" cellpadding="0" cellspacing="0" style="width:100%" >
+        <tr class="firstTr" id="tr1">
+                <th width="10%">事件ID</th>
+                <th width="30%">设备ID</th>
+                <th width="40%">事件描述</th>
+                <th width="20%">操作</th>   
+        </tr>
+        <tr ng-repeat="x in req" >
+            <td>{{ x.id }}</td>
+            <td>{{ x.deviceId }}</td>
+            <td>{{ x.content}}</td>
+            <td ><input type="button" class="btn btn-primary" value="查看详情" ng-click="statusChange($index)" /></td>
+        </tr>
+        </table>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+{% endraw %}
 
 </body>
 
 <script type="text/javascript" src="../static/baidu/baidujs/baidu.js"></script>
+<script type="text/javascript" src="../static/baidu/baidujs/webSocket.js"></script>
 <script type="text/javascript" src="../static/baidu/baidujs/time.js"></script>
 <script type="text/javascript" src="../static/baidu/baidujs/upLoadFile.js"></script>
 <script type="text/javascript" src="../static/baidu/baidujs/menuCtrl.js"></script>

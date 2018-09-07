@@ -45,7 +45,7 @@ body,html {width: 100%;height: 100%;overflow: hidden;margin:0;}
     height: 25px;      
 }*/
 /*进度条*/
-#progressNumber
+#progressBar
 {
     width: 65%;
     height: 25px;

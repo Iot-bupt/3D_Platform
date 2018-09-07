@@ -28,7 +28,7 @@ var pageNum = 1;//记录当前页面
         contentType: 'application/json;charset=UTF-8',
 
         error:function(){
-            alert('失败');
+            toastr.error('失败');
         },
         success: function(req) {
             //请求成功时处理
@@ -140,11 +140,11 @@ function nextPage(){
                 }
             },
             error:function(err){
-                alert("当前已是最后一页！");
+                toastr.error("当前已是最后一页！");
             }
         });
     }else{
-        alert("当前已是最后一页！");
+        toastr.warning("当前已是最后一页！");
     }
     
    
@@ -153,7 +153,7 @@ function nextPage(){
 //上一页
 function prePage(){
     if(pageNum == 1){
-        alert("当前已是第一页！");
+        toastr.warning("当前已是第一页！");
     }
     else if(pageNum == 2){
         jQuery.ajax({
@@ -238,7 +238,7 @@ function siteDistribute()
         // contentType: 'application/json;charset=UTF-8',
         error:function(error){
             console.log(error)
-            alert('失败');
+            toastr.error('失败');
         },
         success: function(req) {
             $.ajax({
@@ -260,12 +260,12 @@ function siteDistribute()
                         async : false,
                         dataType: 'json',
                         error:function(error){
-                            alert(error.responseJSON.message);
+                            toastr.error(error.responseJSON.message);
                             console.log(error)
                         },
                         success: function(req) {
                             console.log(req);
-                            alert('删除原模型成功')
+                            toastr.warning('删除原模型成功')
                          }  
                        });
                     }
@@ -273,7 +273,7 @@ function siteDistribute()
             });
             console.log(req);
             //请求成功时处理
-            alert('分配成功')
+            toastr.warning('分配成功')
             var tableObj = document.getElementById("myTable1");
             //获取表格中的所有行      
             var rows = tableObj.getElementsByTagName("tr");
@@ -313,12 +313,12 @@ function delectSite()
             dataType: 'json',
             // contentType: 'application/json;charset=UTF-8',
             error:function(error){
-                alert('取消失败');
+                toastr.error('取消失败');
             },
             success: function(req) {
                 console.log(req);
                 //请求成功时处理
-                alert('取消成功')
+                toastr.warning('取消成功')
                 var tableObj = document.getElementById("myTable1");
                 //获取表格中的所有行      
                 var rows = tableObj.getElementsByTagName("tr");
@@ -346,12 +346,12 @@ function delectSite()
                     async : false,
                     dataType: 'json',
                     error:function(error){
-                        alert(error.responseJSON.message);
+                        toastr.error(error.responseJSON.message);
                         console.log(error)
                     },
                     success: function(req) {
                         console.log(req);
-                        alert('删除原模型成功')
+                        toastr.warning('删除原模型成功')
                      }  
                    });
                 }
@@ -417,7 +417,7 @@ function look()
         var td = this.getElementsByTagName("td");
         if(td[5].innerHTML=="未分配")
         {
-            alert('该设备没有分配站点')
+            toastr.warning('该设备没有分配站点')
         }
          else
          {

@@ -15,15 +15,15 @@ function uploadFile() {
   console.log("文件类型："+fileType);
   if(file.name.indexOf("%") != -1)
   {
-    alert('文件名中不得包含%')
+    toastr.warning('文件名中不得包含%')
   }
   else if(file.size>1024*1024*200)
   {
-    alert('请上传小于200M文件')
+    toastr.warning('请上传小于200M文件')
   }
   else if(fileType != "drc"&&fileType !="obj"&&fileType !="max"&&fileType !="glft") 
   {
-    alert("请上传drc、obj、max或gltf文件")
+    toastr.warning("请上传drc、obj、max或gltf文件")
   }
   else
   {
@@ -46,7 +46,7 @@ function uploadFile() {
                 },  
                 success: function (evt) { 
                     console.log(evt.url);
-                    alert('上传成功');
+                    toastr.warning('上传成功');
                     $('#addSences').modal('hide');
                     $.ajax({
                             url: '/api/siteUrl/'+$('#siteId') .val(),
@@ -55,9 +55,8 @@ function uploadFile() {
                             type: 'put',//提交方式
                             dataType: 'JSON',//返回字符串，T大写
                             // contentType: 'application/json;',
-
                             error:function(){
-                                alert('失败');
+                                toastr.error('失败');
                             },
                             success: function(req) {
                                 console.log(req);
@@ -66,7 +65,7 @@ function uploadFile() {
                            });
                     }, 
                 error: function (error) {  
-                    alert(error.responseJSON.message);  
+                    toastr.error(error.responseJSON.message);  
                 }  
         }); 
         }
@@ -78,14 +77,14 @@ function uploadFile() {
 function uploadProgress(evt) {  
 if (evt.lengthComputable) {  
   var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-  var pg=document.getElementById('progressNumber');  
+  var pg=document.getElementById('progressNumber');
   //console.log(percentComplete);
   //document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%'; 
-      if(pg.value!=100) pg.value=percentComplete.toString();//进度条
-      else pg.value=0; 
+  if(pg.style.width!="100%") pg.style.width = Math.round(evt.loaded / evt.total * 100) + "%";//进度条
+  else pg.style.width=0; 
 }  
 else {  
-    alert('无法上传');
+    toastr.warning('无法上传');
 }  
 }
 

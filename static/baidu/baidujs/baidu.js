@@ -236,7 +236,7 @@ function removeMarker(e,ee,marker){
             {
                 map.removeOverlay(marker);
                 markerClusterer.removeMarker(marker); //删除标记从聚合点中删除
-                //alert(reqArray[i].id);
+                //toastr.warning(reqArray[i].id);
                 $.ajax({
                     url:'/api/sites/'+reqArray[i].id,
                     type:'DELETE',//提交方式
@@ -245,16 +245,16 @@ function removeMarker(e,ee,marker){
                     {
                         if(req!='')
                         {
-                            alert('删除成功');
+                            toastr.warning('删除成功');
                         }
                         else
                         {
-                            alert('删除失败');
+                            toastr.warning('删除失败');
                         }
                     },
                     error:function(error)
                     {
-                        alert(error.message);
+                        toastr.warning(error.message);
                     },
                     complete:function()
                     {
@@ -343,7 +343,7 @@ function getSites()
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         error:function(){
-            alert('失败');
+            toastr.warning('失败');
         },
         success: function(req) {
             //请求成功时处理
@@ -378,7 +378,7 @@ function (){
         contentType: 'application/json;charset=UTF-8',
 
         error:function(){
-            alert('失败');
+            toastr.warning('失败');
         },
         success: function(req) {
             console.log(req.sites);
@@ -405,13 +405,13 @@ function (){
             }
         }, complete: function() {
             //请求完成的处理
-            alert('连接完成');
+            toastr.success('连接完成');
             ///////////////////////////列表跳转///////////////////////////////////////
             
             if(loc.indexOf("&listID=")!=-1)
             {
               var id = loc.substr(loc.indexOf("&")+8)//从=号后面的内容
-              //alert(id);
+              //toastr.warning(id);
                var a=idArray.indexOf(parseInt(id));
                 if(a!=-1)
                 {
@@ -420,7 +420,7 @@ function (){
                 }
                 else
                 {
-                    alert('跳转失败');
+                    toastr.warning('跳转失败');
                 }
             }
         }
@@ -455,13 +455,13 @@ function (){
                  //addMarkers(req.id,req.longtitude,req.latitude)
                  addClickHandler(content,marker);
                  //addMarkers(tenantId,req.id,req.name,req.longtitude,req.latitude,year,month,date)        
-                    alert ("添加成功 ");}
+                    toastr.warning ("添加成功 ");}
                 else
-                    {alert("添加失败");}
+                    {toastr.warning("添加失败");}
             },
 			error:function(error)
 			{
-				alert('错误');
+				toastr.error('错误');
 			},
             complete:function()
             {
@@ -471,12 +471,12 @@ function (){
         }
         else
         {
-            alert('输入不能为空！')
+            toastr.warning('输入不能为空！')
         }
     }
     else
     {
-        alert('该站点名已存在')
+        toastr.warning('该站点名已存在')
     }
     $('#name1').val("");  
     $('#longitude').val("");  
@@ -519,7 +519,7 @@ function mark2()
     }
     map.setDefaultCursor("crosshair");
     map.addEventListener("click",getPoint);
-    //alert(map.getDefaultCursor());
+    //toastr.warning(map.getDefaultCursor());
  }
 
 ///////////////////////修改站点//////////////////////////
@@ -555,15 +555,15 @@ function renameSite() {
                 //console.log(req)
                 //$('#renameSite').modal('hide')
                 if (req != '') {
-                    alert('修改完成');
+                    toastr.warning('修改完成');
                     getSites();
                 }
                 else {
-                    alert('修改失败');
+                    toastr.warning('修改失败');
                 }
             },
             error: function (error) {
-                alert(error.message);
+                toastr.error(error.message);
             },
             complete:function()
             {
@@ -579,12 +579,12 @@ function renameSite() {
     }
         else
         {
-            alert('输入不能为空！')
+            toastr.warning('输入不能为空！')
         } 
     }
         else
         {
-            alert('该站点名已存在');
+            toastr.warning('该站点名已存在');
         }
     $('#siteNewName').val("");    
 }
@@ -592,7 +592,7 @@ function renameSite() {
 ///////////////////////查找站点//////////////////
 $(btn).click(function(){
     //console.log(nameArray)
-//console.log($.inArray(address.value, nameArray));
+    //console.log($.inArray(address.value, nameArray));
     // var a=nameArray.indexOf(address.value);
     // if(a!=-1)
     // {
@@ -603,7 +603,7 @@ $(btn).click(function(){
     // }
     // else
     // {
-    //     alert('没有发现该站点')
+    //     toastr.warning('没有发现该站点')
     // }
     $.ajax({
         url:'/api/sites/'+$(address).val(),
@@ -614,7 +614,7 @@ $(btn).click(function(){
             
             if(req.sites=='')
             {
-                alert('该站点不存在');
+                toastr.warning('该站点不存在');
             }
             else if(req.sites[0].tenantId==tenantId)
             {
@@ -629,26 +629,47 @@ $(btn).click(function(){
                         if(allOverlay[i].toString()=="[object Marker]")
                         {
                             console.log(allOverlay[i])
-                            
+                            console.log(allOverlay[i].getLabel())
+                            if(allOverlay[i].getLabel()!=null)
+                            {
+                                //toastr.warning('跳动')
                                 if(allOverlay[i].getLabel().content == req.sites[0].id)
                                 {
-                                    allOverlay[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-                                    //return false;
+                                    var myIcon = new BMap.Icon(src="../static/baidu/img/008h.gif", new BMap.Size(25, 40), {anchor: new BMap.Size(15, 25), imageOffset: new BMap.Size(0, 0),imageSize:new BMap.Size(30, 30)}); // 指定定位位置  });
+                                    allOverlay[i].setIcon(myIcon);
+                                    // setInterval(function()
+                                    // { 
+                                    //     //console.log(i)
+                                    //     //console.log(allOverlay[1].getIcon())
+                                    //     switch(allOverlay[i-1].getIcon().imageUrl)
+                                    //     {
+                                    //     case "http://api.map.baidu.com/library/MarkerTool/1.2/src/images/us_mk_icon.png":
+                                    //       allOverlay[i-1].setIcon(myIcon1);
+                                    //       break;
+                                    //     case "http://api0.map.bdimg.com/images/marker_red_sprite.png":
+                                    //       allOverlay[i-1].setIcon(myIcon);
+                                    //       break;
+                                    //     default:
+                                          
+                                    //     }                  
+                                    // },500); //每隔500毫秒执行一次test()函数，执行无数次。
+                                    // var myIcon = new BMap.Icon(src="../static/baidu/img/gif031.gif", new BMap.Size(25, 40), {anchor: new BMap.Size(15, 25), imageOffset: new BMap.Size(0, 0),imageSize:new BMap.Size(30, 30)}); // 指定定位位置  });
+                                    // var myIcon1 = new BMap.Icon("http://api0.map.bdimg.com/images/marker_red_sprite.png", new BMap.Size(19,25),{anchor:new BMap.Size(10, 25)});
+                                    
                                 } 
-                            
-                            
+                            }                            
                         }
                 }
             }
             else
             {
-                alert('没有发现该站点');
+                toastr.warning('没有发现该站点');
             }
             
         },
         error:function(error)
         {
-            alert(error.message);
+            toastr.error(error.message);
         }
     });
 });
@@ -765,24 +786,6 @@ function clearAll() {
     label.length=0;
 }
 
-// function deviceSearch()
-// {
-//   var input = document.getElementById("searchDevice");
-//   var filter = input.value.toUpperCase();//转换为大写
-//   var table = document.getElementById("myTable2");
-//   var tr = table.getElementsByTagName("tr");
-//   // 循环表格每一行，查找匹配项
-//   for (i = 0; i < tr.length; i++) {
-//     td = tr[i].getElementsByTagName("td")[3];
-//     if (td) {
-//       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-//         tr[i].style.display = "";
-//       } else {
-//         tr[i].style.display = "none";
-//       }
-//     } 
-//   }
-// }
 
 ////////设备搜索///////
 function deviceSearchBox()
@@ -876,11 +879,11 @@ function deviceSearch() {
 //                 }
 //             },
 //             error:function(err){
-//                 alert("当前已是最后一页！");
+//                 toastr.warning("当前已是最后一页！");
 //             }
 //         });
 //     }else{
-//         alert("当前已是最后一页！");
+//         toastr.warning("当前已是最后一页！");
 //     }
     
    
@@ -889,7 +892,7 @@ function deviceSearch() {
 // //上一页
 // function prePage(){
 //     if(pageNum == 1){
-//         alert("当前已是第一页！");
+//         toastr.warning("当前已是第一页！");
 //     }
 //     else if(pageNum == 2){
 //         jQuery.ajax({
@@ -971,12 +974,12 @@ function lookDevice(e)
           rows[i].onclick = rowClick;
         }
       function rowClick(e){ 
-        //alert(this.rowIndex); //显示所点击的行的索引
+        //toastr.warning(this.rowIndex); //显示所点击的行的索引
         //console.log(this );
         var td = this.getElementsByTagName("td");
         if(td[4].innerHTML=="undefined")
         {
-            alert('该设备没有分配站点')
+            toastr.warning('该设备没有分配站点')
         }
         else
         {
@@ -1001,6 +1004,26 @@ app.controller("myCtrl1", function($scope) {
     };
 });
 
+app.controller("myCtrl2", function($scope) {
+    $scope.show = function () {
+     $('#warningList').modal('show');
+    };
+    $scope.statusChange = function ($index) {
+        $.ajax({
+        url: 'api/warning/readWarning/'+$("#myTable5").find("tr").eq($index+1).find("td").eq(0).prevObject[0].innerHTML,
+        type: 'get',
+        async : false,
+        dataType: 'json',
+        error:function(){
+            toastr.error('失败');
+        },
+        success: function(req) {
+           }
+       });
+    };
+});
+
+/////////逆解析////
 function bdGEO(){
     for (var i = 0; i < reqArray.length; i++) {
         if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {        
@@ -1008,9 +1031,9 @@ function bdGEO(){
             var pt = openIfoID.point;
             }
     }
-    geocodeSearch(pt);
-    
+    geocodeSearch(pt);  
 }
+
 function geocodeSearch(pt){
     var myGeo = new BMap.Geocoder();
     myGeo.getLocation(pt, function(rs){
@@ -1028,3 +1051,26 @@ function geocodeSearch(pt){
         $scope.show();     
     });
 }
+
+//////报警事件/////
+function warningEvent(){
+    var appElement = document.querySelector('[ng-controller=myCtrl2]');
+    var $scope = angular.element(appElement).scope();            
+    $.ajax({
+        url: 'api/warning/getTenantWarning/'+tenantId,
+        type: 'get',
+        async : false,
+        dataType: 'json',
+        contentType: 'application/json;',
+
+        error:function(){
+            toastr.error('失败');
+        },
+        success: function(req) {
+            $scope.req=req;
+            $scope.$apply();
+            $scope.show();
+           }
+       });
+}
+

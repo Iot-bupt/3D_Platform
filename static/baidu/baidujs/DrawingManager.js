@@ -1183,7 +1183,7 @@ app.controller("myCtrl", function($scope) {
         contentType: 'application/json;',
 
         error:function(){
-            alert('失败');
+            toastr.error('失败');
         },
         success: function(req) {
             //console.log(req)
@@ -1232,11 +1232,11 @@ app.controller("myCtrl", function($scope) {
                 }
             },
             error:function(err){
-                alert("当前已是最后一页！错误");
+                toastr.error("当前已是最后一页！错误");
             }
         });
     }else{
-        alert("当前已是最后一页！");
+        toastr.warning("当前已是最后一页！");
     }
     
    
@@ -1245,7 +1245,7 @@ app.controller("myCtrl", function($scope) {
 //上一页
 $scope.prePage=function() {
     if(pageNum == 1){
-        alert("当前已是第一页！");
+        toastr.warning("当前已是第一页！");
     }
     else if(pageNum == 2){
         jQuery.ajax({
