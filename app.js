@@ -12,8 +12,16 @@ const rest = require('./rest');
 
 const websocket = require('./websocket');
 
+const session = require('koa-session');
+
+const CONFIG = require( './config' );
+
 
 const app = new Koa();
+
+app.keys = ['BUPT 3DPlatform BY CJX'];
+
+app.use(session(CONFIG.session,app));
 
 
 // log request URL:

@@ -34,6 +34,7 @@
         "superagent": "3.8.3",
         "ws": "6.0.0",
         "url": "0.11.0",
-        "cookies": "0.7.1"
+        "cookies": "0.7.1",
+        "koa-session": "5.9.0"
     }
 }
