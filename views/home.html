@@ -44,6 +44,7 @@
 	<body>
 
 		<script src="https://cdn.bootcss.com/three.js/92/three.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 		<script src="../static/gis_815/js/libs/stats.min.js"></script>
 		
 			<div class="btn-group navi" role="group" aria-label="navigation">
@@ -53,6 +54,25 @@
 			</div>
 		
 		</div>
+		<script>
+			var token = undefined;
+			var jsessionid = $.cookie('JSESSIONID');
+			console.log(jsessionid);
+			$.ajax({
+                        url:'http://39.104.84.131/api/user/authorize',
+                        type:'GET',
+                        async:false,
+                        success: function(res){
+							token = res;
+							console.log(token);
+                        },
+                        error: function(e){
+                            console.log(e.message);
+                        }
+                    });
+			
+		
+		</script>
 
 			<script>
 

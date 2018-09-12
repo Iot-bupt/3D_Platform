@@ -12,13 +12,15 @@ module.exports = {
             // ctx.body = { success: true, msg: '登录成功！' }; 
             // console.log(ctx.session);
             // if(!ctx.session.atoken){
-            var token =  await index.getToken();
-            if(!token){
-                ctx.response.redirect('http://39.104.84.131/signin');
-            }else{
+            // var token =  await index.getToken();
+            // if(!token){
+            //     ctx.response.redirect('http://39.104.84.131/signin');
+            // }else{
 
-            }
             // }
+            // }
+
+            //ctx.response.redirect('http://39.104.84.131/api/user/authorize')
             
             ctx.render('home.html',{
                 tenantId:tenantId
