@@ -34,21 +34,30 @@ function getDeviceId(id){
 
 module.exports = {
   
-    searchByText:async (tid,sText,limit)=>{
-        var data =await instance.get('/tenant/devices/'+tid+'?limit='+limit+'&textSearch='+sText);
+    searchByText:async (tid,sText,limit,access_token)=>{
+        var data =await instance.get('/tenant/devices/'+tid+'?limit='+limit+'&textSearch='+sText,{
+            headers: {
+                'Authorization': 'Bearer ' + access_token,
+            }
+        });
 
         return data.data;
         console.log(data.data);
     },
 
-    getDeviceData: async (id)=>{
+    getDeviceData: async (id,access_token)=>{
         var deviceId = getDeviceId(id);
-        var data = await instance.get('/data/alllatestdata/'+deviceId);
+        var data = await instance.get('/data/alllatestdata/'+deviceId,{
+            headers: {
+                'Authorization': 'Bearer ' + access_token,
+            }
+        });
         var yaoce = data.data
 
         return yaoce;
     },
 
+    /**下面接口不用 */
     controlSwitch: async (id,turn)=>{
         var deviceId = getDeviceId(id);
         var status = false;
@@ -128,14 +137,24 @@ module.exports = {
         }
     },
 
-    devicesPaging: async (tid,limit,idOffset,textOffset) => {
+    /**end */
+
+    devicesPaging: async (tid,limit,idOffset,textOffset,access_token) => {
         try{
             if ((idOffset) || (textOffset)){
-            var data = await instance.get('/tenant/devices/'+tid+'?limit='+limit+'&idOffset='+idOffset+'&textOffset='+textOffset);
+            var data = await instance.get('/tenant/devices/'+tid+'?limit='+limit+'&idOffset='+idOffset+'&textOffset='+textOffset,{
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                }
+            });
             var res = data.data;
 
             }else if (!(idOffset) && !(textOffset)){
-                var data = await instance.get('/tenant/devices/'+tid+'?limit='+limit);
+                var data = await instance.get('/tenant/devices/'+tid+'?limit='+limit,{
+                    headers: {
+                        'Authorization': 'Bearer ' + access_token,
+                    }
+                });
                 var res = data.data;
             }
             return res;
@@ -144,9 +163,13 @@ module.exports = {
         }
     },
 
-    getDeviceInfo: async (id) => {     //获取设备属性信息
+    getDeviceInfo: async (id,access_token) => {     //获取设备属性信息
         try{
-            var data = await instance.get('/device/'+id);
+            var data = await instance.get('/device/'+id,{
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                }
+            });
             var info = data.data;
 
             return info;
@@ -155,14 +178,22 @@ module.exports = {
         }
     },
 
-    siteDevicesPaging: async (tid,siteId,limit,idOffset,textOffset) => {
+    siteDevicesPaging: async (tid,siteId,limit,idOffset,textOffset,access_token) => {
         try{
             if ((idOffset) && (textOffset)){
-            var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit+'&idOffset='+idOffset+'&textOffset='+textOffset);
+            var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit+'&idOffset='+idOffset+'&textOffset='+textOffset,{
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                }
+            });
             var res = data.data;
 
             }else if (!(idOffset) && !(textOffset)){
-                var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit);
+                var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit,{
+                    headers: {
+                        'Authorization': 'Bearer ' + access_token,
+                    }
+                });
                 var res = data.data;
             }
             return res;
@@ -171,9 +202,13 @@ module.exports = {
         }
     },
 
-    siteDevicesSearch: async (tid,siteId,limit,textSearch) => {   //待定,底层接口有问题
+    siteDevicesSearch: async (tid,siteId,limit,textSearch,access_token) => {   //待定,底层接口有问题
         try{
-            var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit+'&textSearch='+textSearch);
+            var data = await instance.get('/sitedevices/'+tid+'/'+siteId+'?limit='+limit+'&textSearch='+textSearch,{
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                }
+            });
             var res = data.data;
      
             return res;
@@ -183,10 +218,11 @@ module.exports = {
     },
 
 
-    assignDevicetoSite: async(id,siteId) =>{
+    assignDevicetoSite: async(id,siteId,access_token) =>{
         try{
             var res = await request.put('http://39.104.189.84:30080/api/v1/deviceaccess/device')
                 .set('Content-Type', 'application/json')
+                .set('Authorization','Bearer '+access_token)
                 .send({"id":id})
                 .send({"siteId":siteId})
                 .timeout({

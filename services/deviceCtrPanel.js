@@ -10,9 +10,37 @@ global.requestId = 100000;
 
 module.exports = {  
 
-    getAllDeviceAttr: async (deviceId) => {     //获取设备所有属性信息
+    getAllDeviceAttr: async (deviceId,access_token) => {     //获取设备所有属性信息
         try{
-            var data = await instance.get('/deviceaccess/allattributes/'+deviceId);
+            var token = 'Bearer '+access_token;
+            var res = await request.get('http://39.104.189.84:30080/api/v1/deviceaccess/allattributes/'+deviceId)
+                .set('Authorization',token)
+                .timeout({
+                    response: 5000,
+                    deadline: 10000,
+                })
+                // .end((err,res)=>{
+                //     if(err){
+                //         console.log(err);
+                //     }else{
+                //         console.log(res.text);
+                //     }
+                // });
+            
+
+            return res.text;
+        }catch(e){
+            throw e;
+        }
+    },
+
+    getCtrPanel: async (manufacturerName,deviceTypeName,modelName,access_token) => {     //获取设备所有属性信息
+        try{
+            var data = await instance.get('/servicemanagement/ability/'+manufacturerName+'/'+deviceTypeName+'/'+modelName,{
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                }
+                });
             var info = data.data;
 
             return info;
@@ -21,18 +49,7 @@ module.exports = {
         }
     },
 
-    getCtrPanel: async (manufacturerName,deviceTypeName,modelName) => {     //获取设备所有属性信息
-        try{
-            var data = await instance.get('/servicemanagement/ability/'+manufacturerName+'/'+deviceTypeName+'/'+modelName);
-            var info = data.data;
-
-            return info;
-        }catch(e){
-            throw e;
-        }
-    },
-
-    sendControl: async (deviceId,body)=>{
+    sendControl: async (deviceId,body,access_token)=>{
 
         try{
             if(requestId < 10){
@@ -42,6 +59,7 @@ module.exports = {
             
             var res = await request.post('http://39.104.189.84:30080/api/v1/deviceaccess/rpc/'+deviceId+'/'+requestId)
                 .set('Content-Type', 'application/json; charset=utf-8')
+                .set('Authorization','Bearer '+access_token)
                 .send(body)
                 .timeout({
                     response: 5000,
@@ -62,9 +80,13 @@ module.exports = {
     },
 
     //历史数据展示使用
-    getAllKeys: async (deviceId) => {     //获取设备主键
+    getAllKeys: async (deviceId,access_token) => {     //获取设备主键
         try{
-            var data = await instance.get('/deviceaccess/data/allKeys/'+deviceId);
+            var data = await instance.get('/deviceaccess/data/allKeys/'+deviceId,{
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                }
+            });
             var info = data.data;
 
             return info;
@@ -73,9 +95,13 @@ module.exports = {
         }
     },
 
-    getHistoricalData: async (deviceId,newSearch) => {     //获取设备历史数据
+    getHistoricalData: async (deviceId,newSearch,access_token) => {     //获取设备历史数据
         try{
-            var data = await instance.get('/deviceaccess/data/alldata/'+deviceId+newSearch);
+            var data = await instance.get('/deviceaccess/data/alldata/'+deviceId+newSearch,{
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                }
+            });
             var info = data.data;
 
             return info;

@@ -1,12 +1,12 @@
 const request = require('superagent');
 
 module.exports = {
-getToken: async ()=>{
+getToken: async (cookie)=>{
 
     try{
-        var token = undefined;
-        
-        request.get('http://39.104.84.131/api/user/authorize')
+         var p = new Promise(function(resolve, reject){
+            request.get('http://39.104.84.131/api/user/authorize')
+            .set('Cookie', cookie)
             .timeout({
                 response: 5000,
                 deadline: 10000,
@@ -14,36 +14,47 @@ getToken: async ()=>{
             .end((err, res) => {
                 if(err){
                     console.log(err);
+                    reject();
                 }else{
-                    token = res;
+                    resolve(res);
                 }
               });
-        
-        return token;
-        
+         }) 
+
+         return p;
+               
     } catch(e){
         throw e;
     }
 },
-sendControl: async (deviceId,body)=>{
+checkToken: async (token)=>{
 
     try{
         
-        var res = await request.post('http://39.104.189.84:30080/api/v1/deviceaccess/rpc/'+deviceId+'/'+requestId)
-            .set('Content-Type', 'application/json; charset=utf-8')
-            .send(body)
+        var p = new Promise(function(resolve, reject){ 
+        request.post('http://39.104.189.84:30080/api/v1/account/check_token')
+            .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
+            .send({
+                token:token
+            })
             .timeout({
                 response: 5000,
                 deadline: 10000,
-            });
+            })
+            .end((err, res) => {
+                if(err){
+                    console.log(err);
+                    reject();
+                }else{
+                    resolve(res);
+                }
+              });
         
-        console.log(res.text);
-        if (res.text.indexOf("de")!=-1){
-            //调用失败
-            return "device is offline" + res.text;
-        }
+        
+        });
+        
 
-        return res.text;
+        return p;
         
     } catch(e){
         throw e;

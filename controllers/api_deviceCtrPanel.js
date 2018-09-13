@@ -9,8 +9,8 @@ module.exports = {
     'GET /api/dCtrPanel/getAllDeviceAttr/:deviceId': async (ctx, next) => {
         try{
             var deviceId = ctx.params.deviceId;
-        
-            var res = await deviceCtrPanel.getAllDeviceAttr(deviceId);    
+            var access_token = ctx.cookies.get('access_token');
+            var res = await deviceCtrPanel.getAllDeviceAttr(deviceId,access_token);    
             ctx.rest(res);
         }catch(e){
             throw new APIError('dCTRPanel: failed','get device allATTR failed.' + e.message);
@@ -23,8 +23,9 @@ module.exports = {
             var manufacturerName = ctx.params.manufacturerName;
             var deviceTypeName = ctx.params.deviceTypeName;
             var modelName = ctx.params.modelName;
+            var access_token = ctx.cookies.get('access_token');
         
-            var res = await deviceCtrPanel.getCtrPanel(manufacturerName,deviceTypeName,modelName);    
+            var res = await deviceCtrPanel.getCtrPanel(manufacturerName,deviceTypeName,modelName,access_token);    
             ctx.rest(res);
         }catch(e){
             throw new APIError('dCTRPanel: failed','get device CtrPanel failed.' + e.message);
@@ -36,8 +37,9 @@ module.exports = {
         try{
             var deviceId = ctx.params.deviceId;
             var body = ctx.request.body;
+            var access_token = ctx.cookies.get('access_token');
 
-            var res = await deviceCtrPanel.sendControl(deviceId,body);
+            var res = await deviceCtrPanel.sendControl(deviceId,body,access_token);
 
             ctx.rest(res);
         }catch(e){
@@ -49,8 +51,9 @@ module.exports = {
     'GET /api/dCtrPanel/getAllKeys/:deviceId': async (ctx, next) => {
         try{
             var deviceId = ctx.params.deviceId;
+            var access_token = ctx.cookies.get('access_token');
         
-            var res = await deviceCtrPanel.getAllKeys(deviceId);    
+            var res = await deviceCtrPanel.getAllKeys(deviceId,access_token);    
             ctx.rest(res);
         }catch(e){
             throw new APIError('dCTRPanel: failed','get device allKeys failed.' + e.message);
@@ -68,8 +71,9 @@ module.exports = {
             var interval = (Number(query.endTs) - Number(query.startTs))/limit;
             
             var newSearch = search + "&aggregation=AVG&interval=" + interval;
+            var access_token = ctx.cookies.get('access_token');
         
-            var res = await deviceCtrPanel.getHistoricalData(deviceId,newSearch);    
+            var res = await deviceCtrPanel.getHistoricalData(deviceId,newSearch,access_token);    
             ctx.rest(res);
         }catch(e){
             throw new APIError('dCTRPanel: failed','get device historyData failed.' + e.message);

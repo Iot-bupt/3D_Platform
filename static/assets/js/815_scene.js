@@ -89,12 +89,30 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         var r = window.location.search.substr(1).match(reg); 
         if (r != null) return unescape(r[2]); return null; 
         } 
+    
+    function screenCoord(position){  //输入物体世界坐标，返回屏幕top，left
+
+        let vec2 = position.project(camera);
+        let halfWidth = window.innerWidth / 2;
+        let halfHeight = window.innerHeight / 2;
+        
+        var result = {
+            top: -vec2.y * halfHeight + halfHeight,
+            left: vec2.x * halfWidth + halfWidth,
+        }
+        return result;
+        }  
+
 
     var _sceneLoca;    //场景位置信息
     var _sceneUrl;     //场景模型url
     var siteId;        //站点ID 
     var siteName;      //站点名称
     var tenantId;      //租户ID
+    var showAllLabel = false;
+    var allLabelDiv = [];
+    
+
 
     var initScene = function(){
 
@@ -165,6 +183,49 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             window.open("/demoupload", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=yes, scrollbars=no, resizable=no, copyhistory=yes, width=400, height=360")
         },  //upload/upload.html,原来.open()中的内容
 
+        "显示/关闭所有标签": function() {
+            if(showAllLabel === false){
+                showAllLabel = true;
+            }else{
+                showAllLabel =false;
+            }
+
+            //clone label div
+            if(allLabelDiv.length === 0){
+                objects.forEach(function(e) {
+                            
+                    let position = e.position.clone();
+                    let result = screenCoord(position);
+                    let top = result.top + 5 + "px";
+                    let left = result.left + 5 + "px";
+                    var tempdiv = $("#tip").clone().css({
+                        left: left,
+                        top: top,
+                        display:"none"
+                    });
+                    let cont = "设备名称:"+e.deviceName+"<br>设备ID:"+e.deviceId+"<br>标签:"+e.label;
+                    tempdiv.html("<p>" + cont + "</p>");
+                    e.tipdiv = tempdiv;
+                    allLabelDiv.push(tempdiv);
+                    console.log(e);
+                    $("body").append(tempdiv);
+                });
+            }
+             //end
+        
+            allLabelDiv.forEach(function(e){
+                if(showAllLabel){
+                    e.css({
+                        display:'block'
+                    });
+                }else{
+                    e.css({
+                        display:'none'
+                    });
+                }
+            });
+            
+        },
         "☆返回首页": function() {
             var search = window.location.search;
             window.location.href= '/'+search;
@@ -651,6 +712,7 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 
         gui.add(newcontrols, '清除物体');
         // gui.add(newcontrols, '上传设备模型');
+        gui.add(newcontrols,'显示/关闭所有标签');
         gui.add(newcontrols,'☆返回首页');
         gui.add(newcontrols,'✔保存场景设置');
         gui.open();
@@ -837,7 +899,8 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             document.body.style.cursor = 'auto';
             //transformcontrol.detach();
             //window.removeEventListener("keydown", changeMode)
-            ToolTip.hidetip();
+            // if(!showAllLabel)
+                ToolTip.hidetip();
             // $('#showDeviceInfo').css({'display':'none'});
         }
     }
@@ -948,6 +1011,24 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
        
         var time = Date.now() * 0.0005;
         var delta = clock.getDelta();
+
+        /*更新所有标签位置 */
+        if(allLabelDiv.length !== 0){
+            objects.forEach(function(e) {
+                    
+                let position = e.position.clone();
+                let result = screenCoord(position);
+                let top = result.top + 5 + "px";
+                let left = result.left + 5 + "px";
+                e.tipdiv.css({
+                    left: left,
+                    top: top,
+                });
+                
+            });
+        }
+        /**end */
+
         renderer.render(scene, camera);
         // stats.update();
     }
