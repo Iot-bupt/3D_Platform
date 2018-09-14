@@ -64,7 +64,8 @@ module.exports = {
 
             })
             .catch(function(){
-                ctx.response.redirect('http://39.104.84.131/signin');
+                // ctx.response.redirect('http://39.104.84.131/signin');
+                ctx.render('demo.html');
                 console.log("err");
                 
             });//耶，用promise，加await成了，第一次用用对了
