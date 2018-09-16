@@ -19,6 +19,18 @@ if ("WebSocket" in window)
                      toastr.info('报警设备：'+JSON.parse(evt.data).deviceId+'&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;'+'报警信息：'+JSON.parse(evt.data).content);
                      //var siteId=122;
                      $.ajax({
+                        url: 'api/warning/readWarning/'+JSON.parse(evt.data).id,
+                        type: 'get',
+                        async : false,
+                        dataType: 'json',
+                        error:function(){
+                            toastr.error('失败');
+                        },
+                        success: function(req) {
+                        }
+                     });
+
+                     $.ajax({
                        url:'api/3d815/getDeviceInfo/'+JSON.parse(evt.data).deviceId,
                        type:'get',//提交方式
                        dataType:'JSON',//返回字符串，T大写
