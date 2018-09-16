@@ -110,6 +110,10 @@ jQuery.ajax({
                 preDeviceName.push(textOffset);
              }   
         }
+    },
+    error:function(error)
+    {
+        console.log(error)
     }
 });
 }

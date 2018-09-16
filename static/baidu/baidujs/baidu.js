@@ -129,10 +129,10 @@ drawingManager = new BMapLib.DrawingManager(map, {
     rectangleOptions: styleOptions //矩形的样式
 });
 //测量事件监听
-map.addEventListener("load",function(){
-    myDis.open();  //开启鼠标测距
-    //myDis.close();  //关闭鼠标测距大
-});
+// map.addEventListener("load",function(){
+//     myDis.open();  //开启鼠标测距
+//     //myDis.close();  //关闭鼠标测距大
+// });
 
 /////////////地点搜索//////
 function G(id) {
@@ -370,6 +370,11 @@ function getSites()
 /////////////////////////////初始化//////////////////
 window.onload=
 function (){
+    //报警弹窗
+    if(warningEvent(false)==false)
+    {
+        $('#warningList').modal('show');
+    }
     $.ajax({
         url: '/api/tenantsites/'+tenantId,
         type: 'get',
@@ -674,16 +679,6 @@ $(btn).click(function(){
     });
 });
 
-///////////////////三级地图加载/////////////////
-function loadPlace(longitude, latitude, level) {
-                if (parseFloat(longitude) > 0 || parseFloat(latitude) > 0) {
-                    level = level || 13;
-                    //绘制地图
-                    var point = new BMap.Point(longitude, latitude); //地图中心点
-                    map.centerAndZoom(point, level); // 初始化地图,设置中心点坐标和地图级别。
-                }
-            }
-
 //添加模型
 function addModel()
 {
@@ -713,7 +708,6 @@ function closeWin()
     $('#addSites').modal('hide');
     map.removeEventListener("click",getPoint);
     map.setDefaultCursor("url(http://api0.map.bdimg.com/images/openhand.cur) 8 8,default");
-
 }
 
 //////拉框//////
@@ -773,8 +767,7 @@ function circleAreaMeasure()
     drawingManager.setDrawingMode(BMAP_DRAWING_CIRCLE);
 }
 
-
-
+//////清除覆盖物/////
 function clearAll() {
     biaozhi=1;
     drawingManager.close();
@@ -965,7 +958,6 @@ function lookDevice(e)
       var tableObj = document.getElementById("myTable2");
       break;
     default:
-
     }
        //获取表格中的所有行      
         var rows = tableObj.getElementsByTagName("tr"); 
@@ -995,10 +987,7 @@ app.controller("myCtrl1", function($scope) {
      $('#addressList').modal('show');
     };
     $scope.a1 = function ($index) {
-        //console.log($index)
         var ePoint=$("#myTable4").find("tr").eq($index+1).find("td").eq(0).prevObject[2].innerHTML;
-        //console.log(ePoint.substring(1, ePoint.indexOf(',')))
-        //console.log(ePoint.substring(ePoint.indexOf(',')+1, ePoint.length-1))
         map.centerAndZoom(new BMap.Point(ePoint.substring(1, ePoint.indexOf(',')),ePoint.substring(ePoint.indexOf(',')+1, ePoint.length-1)), 22);
         $('#addressList').modal('hide');
     };
@@ -1006,19 +995,75 @@ app.controller("myCtrl1", function($scope) {
 
 app.controller("myCtrl2", function($scope) {
     $scope.show = function () {
-     $('#warningList').modal('show');
+        $('#warningList').modal('show');
     };
     $scope.statusChange = function ($index) {
         $.ajax({
-        url: 'api/warning/readWarning/'+$("#myTable5").find("tr").eq($index+1).find("td").eq(0).prevObject[0].innerHTML,
-        type: 'get',
-        async : false,
-        dataType: 'json',
-        error:function(){
-            toastr.error('失败');
-        },
-        success: function(req) {
-           }
+           url:'api/3d815/getDeviceInfo/'+$("#myTable5").find("tr").eq($index+1).find("td").eq(0).prevObject[1].innerHTML,
+           type:'get',//提交方式
+           dataType:'JSON',//返回字符串，T大写
+           success: function(req){
+            //console.log(req)
+            if(req.siteId==-1)
+            {
+               toastr.warning('报警信息已查看。'+'&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;'+'设备没有分配站点，请分配！');
+               //alert('报警信息已查看'+'\r'+'设备没有分配站点，请分配！')
+            }
+            else
+            {
+               $.ajax({
+                  url:'/api/sites/'+req.siteId,
+                  type:'get',//提交方式
+                  dataType:'JSON',//返回字符串，T大写
+                  success: function(req){
+                     console.log(req.sites)                          
+                     if(req.sites[0].tenantId==tenantId)
+                     {                            
+                         point=new BMap.Point(req.sites[0].longtitude,req.sites[0].latitude);
+                         map.centerAndZoom(point, 20);
+                         var allOverlay = map.getOverlays();
+                         //console.log(allOverlay)
+                         for (var i = 1; i < allOverlay.length ; i++){                   
+                                 //console.log(allOverlay[i].toString())
+                                 if(allOverlay[i].toString()=="[object Marker]")
+                                 {
+                                     //console.log(allOverlay[i].getLabel())
+                                     if(allOverlay[i].getLabel()!=null)
+                                     {
+                                         if(allOverlay[i].getLabel().content == req.sites[0].id)
+                                         {
+                                             var myIcon = new BMap.Icon(src="../static/baidu/img/008h.gif", new BMap.Size(25, 40), {anchor: new BMap.Size(15, 25), imageOffset: new BMap.Size(0, 0),imageSize:new BMap.Size(30, 30)}); // 指定定位位置  });
+                                             allOverlay[i].setIcon(myIcon);                                                   
+                                         } 
+                                     }                            
+                                 }
+                         }
+                     }           
+                  },
+                  error:function(error)
+                  {
+                      toastr.error(error.message);
+                  }                       
+               })
+            }                                                                                                    
+           },
+           error:function(error)
+           {
+               toastr.error(error.message);
+           }           
+           
+       })
+
+        $.ajax({
+            url: 'api/warning/readWarning/'+$("#myTable5").find("tr").eq($index+1).find("td").eq(0).prevObject[0].innerHTML,
+            type: 'get',
+            async : false,
+            dataType: 'json',
+            error:function(){
+                toastr.error('失败');
+            },
+            success: function(req) {
+            }
        });
     };
 });
@@ -1053,7 +1098,8 @@ function geocodeSearch(pt){
 }
 
 //////报警事件/////
-function warningEvent(){
+var warning;
+function warningEvent(sign){
     var appElement = document.querySelector('[ng-controller=myCtrl2]');
     var $scope = angular.element(appElement).scope();            
     $.ajax({
@@ -1067,10 +1113,22 @@ function warningEvent(){
             toastr.error('失败');
         },
         success: function(req) {
-            $scope.req=req;
-            $scope.$apply();
-            $scope.show();
+            if(req!='')
+            {
+                warning= false;
+                $scope.req=req;
+                $scope.$apply();
+                $scope.show();                
+            }
+            else
+            {
+                if(sign==true)
+                {
+                   toastr.warning("无报警事件") 
+                }
+                warning= true;
+            }            
            }
        });
+    return warning
 }
-
