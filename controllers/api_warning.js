@@ -14,7 +14,7 @@ module.exports = {
             var deviceId = ctx.params.deviceId;
             var content = JSON.stringify(ctx.request.body);
             var res = await warning.createWarning(tenantId, deviceId,content);
-            var ws = await warning.pushToWs(tenantId,deviceId,content);
+            var ws = await warning.pushToWs(res.id,tenantId,deviceId,content);
 
             ctx.rest(res);
         }catch(e){

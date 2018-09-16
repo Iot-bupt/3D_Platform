@@ -4,7 +4,8 @@ const model = require('../database/model');
 let Warning = model.Warning;
 
 
-function newWarning(tenantId,deviceId,content) {
+function newWarning(id,tenantId,deviceId,content) {
+    this.id = id;
     this.tenantId = tenantId;
     this.deviceId = deviceId;
     this.content = content;
@@ -24,9 +25,9 @@ module.exports = {
 
     },
 
-    pushToWs:async (tenantId,deviceId,content) => {
+    pushToWs:async (id,tenantId,deviceId,content) => {
         try{
-            var warnObj = new newWarning(tenantId,deviceId,content);
+            var warnObj = new newWarning(id,tenantId,deviceId,content);
             var data = JSON.stringify(warnObj);
 
             var wss = global.wss;
