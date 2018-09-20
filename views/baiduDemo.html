@@ -283,7 +283,8 @@
 <!-- 站点模态框 -->
 <!-- 模板引擎与angularjs冲突 -->
 {% raw %}
-    <div class="modal fade" tabindex="-1" role="dialog" id="deviceList" ng-app="myApp"  ng-controller="myCtrl" >
+<div ng-app="myApp"  ng-controller="myCtrl">
+    <div class="modal fade" tabindex="-1" role="dialog" id="deviceList"  >
         <!--.modal:指定为模态框      fade:淡入淡出效果     tabindex="-1":不受tab键控制    role="dialog":指定模态框为对话框-->
         <div class="modal-dialog" role="document" style="width:900px" >
             <div class="modal-content">
@@ -304,7 +305,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-{% endraw %}
+
 
 <!-- 设备列表 -->
     <div class="modal fade" tabindex="-1" role="dialog" id="deviceList1" >
@@ -337,6 +338,8 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    </div>
+{% endraw %}
 
 <!-- 设备搜索 -->
     <div class="modal fade" tabindex="-1" role="dialog" id="deviceSearch">

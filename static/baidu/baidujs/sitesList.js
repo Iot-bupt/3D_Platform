@@ -168,7 +168,6 @@ function prePage(){
             success:function(req) {
                 pageNum--;
                 if(req.data.length != 0){
-
                     showTable(req)
                     idOffset = req.nextPageLink.idOffset;
                     textOffset = req.nextPageLink.textOffset;

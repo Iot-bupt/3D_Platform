@@ -35,12 +35,12 @@ var marker
 var drawingManager
 var biaozhi;
 var sign
-var idOffset;//用于查找下一页
-var textOffset;//用于查找下一页
-var hasNext;//判断是否存在下一页
-var preDeviceId = [];//用于查找上一页
-var preDeviceName = [];//用于查找上一页
-var pageNum = 1;//记录当前页面
+// var idOffset;//用于查找下一页
+// var textOffset;//用于查找下一页
+// var hasNext;//判断是否存在下一页
+// var preDeviceId = [];//用于查找上一页
+// var preDeviceName = [];//用于查找上一页
+// var pageNum = 1;//记录当前页面
 
 var map = new BMap.Map("allmap");    // 创建Map实例
 var markerClusterer 
@@ -843,19 +843,18 @@ function deviceSearch() {
                 }
             });
     }
-
 }
 
 // function nextPage(){
 //     console.log(hasNext);
 //     if(hasNext){
 //         jQuery.ajax({
-//             url:"/api/3d815/search/"+tenantId+"?limit=2&textSearch="+$("#searchDevice").val()+"&idOffset="+idOffset+"&textOffset="+textOffset,
+//             url:"/api/3d815/siteDevicePaging/"+tenantId+"?limit=2"+25+"&idOffset="+idOffset+"&textOffset="+textOffset,
 //             contentType: "application/json; charset=utf-8",
 //             async: false,
 //             type:"GET",
 //             success:function(req) { 
-//                 console.log("/api/3d815/search/"+tenantId+"?limit=2&textSearch="+$("#searchDevice").val()+"&idOffset="+idOffset+"&textOffset="+textOffset)
+//                 console.log("/api/3d815/siteDevicePaging/"+tenantId+"?limit=2&idOffset="+idOffset+"&textOffset="+textOffset)
 //                 console.log(req.res)
 //                 pageNum++;  
 //                 showTable(req.res)
@@ -872,7 +871,9 @@ function deviceSearch() {
 //                 }
 //             },
 //             error:function(err){
-//                 toastr.warning("当前已是最后一页！");
+//                  console.log("/api/3d815/siteDevicePaging/"+tenantId+"?limit=2&idOffset="+idOffset+"&textOffset="+textOffset)
+//                 console.log(err)
+//                 toastr.warning(err.message);
 //             }
 //         });
 //     }else{

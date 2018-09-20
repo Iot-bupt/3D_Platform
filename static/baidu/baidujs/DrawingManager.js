@@ -14,7 +14,12 @@
  */
 
 var BMapLib = window.BMapLib = BMapLib || {};
-
+       var idOffset;//用于查找下一页
+        var textOffset;//用于查找下一页
+        var hasNext;//判断是否存在下一页
+        var preDeviceId = [];//用于查找上一页
+        var preDeviceName = [];//用于查找上一页
+        var pageNum = 1;//记录当前页面
 /**
  * 定义常量, 绘制的模式
  * @final {Number} DrawingType
@@ -1115,12 +1120,7 @@ var BMAP_DRAWING_MARKER    = "marker",     // 鼠标画点模式
         var nameArray=[];
         var siteIdArray=[];
         var deviceArray=[];
-        var idOffset;//用于查找下一页
-        var textOffset;//用于查找下一页
-        var hasNext;//判断是否存在下一页
-        var preDeviceId = [];//用于查找上一页
-        var preDeviceName = [];//用于查找上一页
-        var pageNum = 1;//记录当前页面
+ 
         function showTable(req)
         {
                 $("#myTable2  tr:not(:first)").empty(""); 
@@ -1176,7 +1176,7 @@ app.controller("myCtrl", function($scope) {
         console.log(item.id)
         $('#deviceList1').modal('show');
         $.ajax({
-        url: 'api/3d815/siteDevicePaging/'+tenantId+'/'+item.id+'?limit=1000&idOffset=&textOffset=',
+        url: 'api/3d815/siteDevicePaging/'+tenantId+'/'+item.id+'?limit=9&idOffset=&textOffset=',
         type: 'get',
         async : false,
         dataType: 'json',
@@ -1186,18 +1186,15 @@ app.controller("myCtrl", function($scope) {
             toastr.error('失败');
         },
         success: function(req) {
-            //console.log(req)
-            //showTable(req)
-            //if(req.data.length != 0){
            showTable(req)
              if(req.nextPageLink!=null)
              {
                 idOffset = req.nextPageLink.idOffset;
                 textOffset = req.nextPageLink.textOffset;
                 hasNext = req.hasNext;
-                // console.log(idOffset);
-                // console.log(textOffset);
-                // console.log(hasNext);
+                console.log(idOffset);
+                console.log(textOffset);
+                console.log(hasNext);
                 preDeviceId.push(idOffset);
                 preDeviceName.push(textOffset);
              }
@@ -1216,7 +1213,7 @@ app.controller("myCtrl", function($scope) {
             async: false,
             type:"GET",
             success:function(req) { 
-                console.log("/api/3d815/paging/"+tenantId+"?limit=9&idOffset="+idOffset+"&textOffset="+textOffset);
+                //console.log('api/3d815/siteDevicePaging/'+tenantId+'/'+sitesID+'?limit=9&idOffset='+idOffset+'&textOffset='+textOffset);
                 pageNum++;  
                 showTable(req)
                 if( req.hasNext == true){
@@ -1227,8 +1224,7 @@ app.controller("myCtrl", function($scope) {
                     preDeviceName.push(textOffset);
                     //console.log($scope.deviceList);
                 }else{
-                    hasNext = req.hasNext;
-                    
+                    hasNext = req.hasNext;                   
                 }
             },
             error:function(err){
@@ -1249,14 +1245,13 @@ $scope.prePage=function() {
     }
     else if(pageNum == 2){
         jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+'/'+sitesID+"?limit=9&idOffset=&textOffset=",
+            url:"/api/3d815/siteDevicePaging/"+tenantId+'/'+sitesID+"?limit=9&idOffset=&textOffset=",
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
             success:function(req) {
                 pageNum--;
                 if(req.data.length != 0){
-
                     showTable(req)
                     idOffset = req.nextPageLink.idOffset;
                     textOffset = req.nextPageLink.textOffset;
@@ -1264,11 +1259,15 @@ $scope.prePage=function() {
                     preDeviceId.push(idOffset);
                     preDeviceName.push(textOffset);
                 }
+            },
+            error:function(err){
+                //console.log(err)
+                toastr.error("错误");
             }
         }); 
     }else{
         jQuery.ajax({
-            url:"/api/3d815/paging/"+tenantId+'/'+sitesID+"?limit=9&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
+            url:"/api/3d815/siteDevicePaging/"+tenantId+'/'+sitesID+"?limit=9&idOffset="+preDeviceId[pageNum-3]+"&textOffset="+preDeviceName[pageNum-3],
             contentType: "application/json; charset=utf-8",
             async: false,
             type:"GET",
@@ -1281,6 +1280,10 @@ $scope.prePage=function() {
                 preDeviceId.push(idOffset);
                 preDeviceName.push(textOffset);
                 
+            },
+            error:function(err){
+                //console.log(err)
+                toastr.error("错误");
             }
         });
     }
