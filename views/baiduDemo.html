@@ -152,14 +152,14 @@
                         <tr>
                             <td class="attName">经度:</td>
                             <td>
-                                <input name=txt1 id="longitude" value="116.404" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}" required autocomplete="off">
+                                <input name=txt1 id="longitude" value="116.404" onchange="if(!/^-?(180|1?[0-7]?\d(\.\d{1,6})?)$/g.test(this.value)){toastr.warning('只能输入数字'); this.value='';}" required autocomplete="off">
                             <span>*</span>
                             </td>
                         </tr>
                         <tr>
                             <td class="attName">纬度:</td>
                             <td>
-                   <input name=txt1 id="latitude" value="39.915" onchange="if(/[^\-?\d.]/g.test(this.value)){alert('只能输入数字'); this.value='';}" required autocomplete="off">
+                   <input name=txt1 id="latitude" value="39.915" onchange="if(!/^-?(90|[0-8]?\d(\.\d{1,6})?)$/g.test(this.value)){toastr.warning('只能输入数字'); this.value='';}" required autocomplete="off">
                     <span >*</span>
                     </td>
                         </tr>

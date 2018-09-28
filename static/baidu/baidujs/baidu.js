@@ -435,7 +435,7 @@ function (){
 }
 
 //////////////////////////添加站点///////////////////
-	function markfinish(){
+function markfinish(){
         if($.inArray($('#name1').val(), nameArray)==-1)
         {
         if(name1.value!=""&&longitude.value!=""&&latitude.value!="")
