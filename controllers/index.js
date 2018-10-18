@@ -9,7 +9,7 @@ var tenantId;
 module.exports = {
     'GET /': async (ctx, next) => {
         try{
-            tenantId = ctx.query.id;
+            tenantId = ctx.query.id || ctx.query.tenantId;
             var jsessionId = ctx.query.jsessionId;
             var theToken = ctx.query.token; 
 

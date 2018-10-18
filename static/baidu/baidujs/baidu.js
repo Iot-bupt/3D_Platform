@@ -697,7 +697,7 @@ function intoScence()
 {
     for (var i = 0; i < reqArray.length; i++) {
         if ((openIfoID.point.lat == reqArray[i].latitude) && (openIfoID.point.lng == reqArray[i].longtitude)) {        
-             location.href="/demo?tenantId="+tenantId+"&siteId="+reqArray[i].id;
+             location.href="/demo?id="+tenantId+"&siteId="+reqArray[i].id;
             }
     }
 }
