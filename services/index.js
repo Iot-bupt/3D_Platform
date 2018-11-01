@@ -8,10 +8,10 @@ module.exports = {
             var p = new Promise(function(resolve, reject){
                 request.get('http://39.104.84.131/api/user/authorize/'+ sessionId)
                 .set('Cookie', cookie)
-                .timeout({
-                    response: 20000,
-                    deadline: 20000,
-                })
+                // .timeout({
+                //     response: 20000,
+                //     deadline: 20000,
+                // })
                 .end((err, res) => {
                     if(err){
                         console.log(err);
@@ -38,10 +38,10 @@ module.exports = {
                 .send({
                     token:token
                 })
-                .timeout({
-                    response: 20000,
-                    deadline: 20000,
-                })
+                // .timeout({
+                //     response: 20000,
+                //     deadline: 20000,
+                // })
                 .end((err, res) => {
                     if(err){
                         console.log(err);
