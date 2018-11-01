@@ -10,52 +10,36 @@ module.exports = {
     'GET /': async (ctx, next) => {
         try{
             tenantId = ctx.query.id || ctx.query.tenantId;
-            var jsessionId = ctx.query.jsessionId;
-            var theToken = ctx.query.token; 
-
-            ctx.cookies.set('JSESSIONID',jsessionId,{
-                            path:'/',   //cookie写入的路径
-                            maxAge:1000*60*60*1,
-                        });
+            var sessionId = ctx.query.sessionId;
+            // var theToken = ctx.query.token; 
             
             var cookie = ctx.req.headers.cookie;
             
-            // ctx.session.user = tenantId;
-            // ctx.body = { success: true, msg: '登录成功！' }; 
-            // console.log(ctx.session);
-            // if(!ctx.session.atoken){
-            
-            /**用jsessionId拿token暂时不用 */
-            // await index.getToken(cookie).then(function(res){
-            //     let token = res.text;
-            //     ctx.cookies.set('access_token',token,{
-            //         path:'/',   //cookie写入的路径
-            //         maxAge:1000*60*60*1,
-            //     });
-
-            //     return index.checkToken(token);
-            // })
-            /**end */
-            if( theToken === undefined){
+            if( sessionId === undefined){
                 ctx.render('home.html',{
-                    tenantId:tenantId,
-                    jsessionId:jsessionId
+                    tenantId:tenantId
                     });
             }else{
+                ctx.cookies.set('SESSIONID',sessionId,{
+                    path:'/',   //cookie写入的路径
+                    maxAge:1000*60*60*1,
+                });
 
-                await index.checkToken(theToken)
+                await index.getToken(cookie,sessionId)
+                .then(function(res){
+                    let token = res.text;
+                    ctx.cookies.set('access_token',token,{
+                        path:'/',   //cookie写入的路径
+                        maxAge:1000*60*60*1,
+                    });
+                    return index.checkToken(token);
+                })
                 .then(function(res) {
-
                     var userInfo = JSON.parse(res.text);
                     var tenantId = userInfo.tenant_id;
                     var customerId = userInfo.customer_id;
                     var userId = userInfo.user_id;
                     var userLevel = userInfo.authority;
-
-                    ctx.cookies.set('access_token',theToken,{
-                        path:'/',   //cookie写入的路径
-                        maxAge:1000*60*60*1,
-                    });
                     
                     ctx.cookies.set('tenant_id',tenantId,{
                         path:'/',   //cookie写入的路径
@@ -75,17 +59,15 @@ module.exports = {
                     });
 
                     ctx.render('home.html',{
-                    tenantId:tenantId,
-                    jsessionId:jsessionId
+                    tenantId:tenantId
                     });
 
                 })
-                .catch(function(){
+                .catch(function(err){
                      ctx.response.redirect('http://39.104.84.131/signin');
-                    //ctx.render('demo.html');
-                    console.log("err");
+                    console.log(err);
                     
-                });//耶，用promise，加await成了，第一次用用对了
+                });
             }                   
         
     }catch(e){
