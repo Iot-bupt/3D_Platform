@@ -38,13 +38,12 @@ module.exports = {
                 .send({
                     token:token
                 })
-                // .timeout({
-                //     response: 20000,
-                //     deadline: 20000,
-                // })
+                .timeout({
+                    response: 6000000,
+                    deadline: 6000000,
+                })
                 .end((err, res) => {
                     if(err){
-                        console.log(err);
                         reject(err);
                     }else{
                         resolve(res);

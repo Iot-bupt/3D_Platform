@@ -68,6 +68,7 @@ module.exports = {
                 .catch(function(err){
                      ctx.response.redirect('http://39.104.84.131/signin');
                     console.log(err);
+                    console.log('被catch的错误')
                     
                 });
             }                   
