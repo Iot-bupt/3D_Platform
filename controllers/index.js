@@ -33,38 +33,42 @@ module.exports = {
                         path:'/',   //cookie写入的路径
                         maxAge:1000*60*60*1,
                     });
-                    return index.checkToken(token);
-                })
-                .then(function(res) {
-                    console.log("进入第二个成功回调");
-                    var userInfo = JSON.parse(res.text);
-                    var tenantId = userInfo.tenant_id;
-                    var customerId = userInfo.customer_id;
-                    var userId = userInfo.user_id;
-                    var userLevel = userInfo.authority;
-                    
-                    ctx.cookies.set('tenant_id',tenantId,{
-                        path:'/',   //cookie写入的路径
-                        maxAge:1000*60*60*1,
-                    });
-                    ctx.cookies.set('customerId',customerId,{
-                        path:'/',   //cookie写入的路径
-                        maxAge:1000*60*60*1,
-                    });
-                    ctx.cookies.set('userId',userId,{
-                        path:'/',   //cookie写入的路径
-                        maxAge:1000*60*60*1,
-                    });
-                    ctx.cookies.set('userLevel',userLevel,{
-                        path:'/',   //cookie写入的路径
-                        maxAge:1000*60*60*1,
-                    });
 
                     ctx.render('home.html',{
-                    tenantId:tenantId
-                    });
-
+                            tenantId:tenantId
+                            });
+                    //return index.checkToken(token);
                 })
+                // .then(function(res) {
+                //     console.log("进入第二个成功回调");
+                //     var userInfo = JSON.parse(res.text);
+                //     var tenantId = userInfo.tenant_id;
+                //     var customerId = userInfo.customer_id;
+                //     var userId = userInfo.user_id;
+                //     var userLevel = userInfo.authority;
+                    
+                //     ctx.cookies.set('tenant_id',tenantId,{
+                //         path:'/',   //cookie写入的路径
+                //         maxAge:1000*60*60*1,
+                //     });
+                //     ctx.cookies.set('customerId',customerId,{
+                //         path:'/',   //cookie写入的路径
+                //         maxAge:1000*60*60*1,
+                //     });
+                //     ctx.cookies.set('userId',userId,{
+                //         path:'/',   //cookie写入的路径
+                //         maxAge:1000*60*60*1,
+                //     });
+                //     ctx.cookies.set('userLevel',userLevel,{
+                //         path:'/',   //cookie写入的路径
+                //         maxAge:1000*60*60*1,
+                //     });
+
+                //     ctx.render('home.html',{
+                //     tenantId:tenantId
+                //     });
+
+                // })
                 .catch(function(err){
                      ctx.response.redirect('http://39.104.84.131/signin');
                     console.log(err);
