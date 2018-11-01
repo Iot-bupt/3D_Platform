@@ -9,8 +9,8 @@ module.exports = {
                 request.get('http://39.104.84.131/api/user/authorize/'+ sessionId)
                 .set('Cookie', cookie)
                 .timeout({
-                    response: 5000,
-                    deadline: 10000,
+                    response: 20000,
+                    deadline: 20000,
                 })
                 .end((err, res) => {
                     if(err){
@@ -39,8 +39,8 @@ module.exports = {
                     token:token
                 })
                 .timeout({
-                    response: 5000,
-                    deadline: 10000,
+                    response: 20000,
+                    deadline: 20000,
                 })
                 .end((err, res) => {
                     if(err){
