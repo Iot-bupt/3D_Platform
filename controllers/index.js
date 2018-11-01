@@ -28,6 +28,7 @@ module.exports = {
                 await index.getToken(cookie,sessionId)
                 .then(function(res){
                     let token = res.text;
+                    console.log("进入第一个成功回调")
                     ctx.cookies.set('access_token',token,{
                         path:'/',   //cookie写入的路径
                         maxAge:1000*60*60*1,
@@ -35,6 +36,7 @@ module.exports = {
                     return index.checkToken(token);
                 })
                 .then(function(res) {
+                    console.log("进入第二个成功回调");
                     var userInfo = JSON.parse(res.text);
                     var tenantId = userInfo.tenant_id;
                     var customerId = userInfo.customer_id;
