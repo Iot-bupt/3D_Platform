@@ -39,8 +39,8 @@ module.exports = {
                     token:token
                 })
                 .timeout({
-                    response: 6000000,
-                    deadline: 6000000,
+                    response: 60000,
+                    deadline: 60000,
                 })
                 .end((err, res) => {
                     if(err){
