@@ -35,53 +35,32 @@ module.exports = {
         try{
             
             var p = new Promise(function(resolve, reject){ 
-            axios.post('http://39.104.189.84:30080/api/v1/account/check_token',{
-                token:token
-            })
-            .then((res) => {
-                  resolve(res);
+                request.post('http://39.104.189.84:30080/api/v1/account/check_token')
+                // .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
+                .type('application/x-www-form-urlencoded') 
+                .send({
+                    token:token
                 })
-            .catch((err) => {
-                reject(err);
-            })
+                .timeout({
+                    response: 60000,
+                    deadline: 60000,
+                })
+                .end((err, res) => {
+                    if(err){
+                        reject(err);
+                    }else{
+                        resolve(res);
+                    }
+                });
+            
+            
             });
+            
+
             return p;
             
         } catch(e){
             throw e;
         }
     },
-
-    // checkToken: async (token)=>{
-
-    //     try{
-            
-    //         var p = new Promise(function(resolve, reject){ 
-    //         axios.post('http://39.104.189.84:30080/api/v1/account/check_token')
-    //             .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-    //             .send({
-    //                 token:token
-    //             })
-    //             .timeout({
-    //                 response: 60000,
-    //                 deadline: 60000,
-    //             })
-    //             .end((err, res) => {
-    //                 if(err){
-    //                     reject(err);
-    //                 }else{
-    //                     resolve(res);
-    //                 }
-    //             });
-            
-            
-    //         });
-            
-
-    //         return p;
-            
-    //     } catch(e){
-    //         throw e;
-    //     }
-    // },
 }
