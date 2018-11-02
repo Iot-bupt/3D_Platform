@@ -4,3 +4,6 @@ public/upload/devices/*
 !public/upload/scenes/README.md
 !public/upload/devices/README.md
 
+#node_modules
+node_modules/*
+
