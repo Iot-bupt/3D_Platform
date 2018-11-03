@@ -2,7 +2,7 @@ const axios = require('axios');
 const request = require('superagent');
 
 var instance = axios.create({
-    baseURL: 'http://39.104.189.84:30080/api/v1/deviceaccess',
+    baseURL: 'http://deviceaccess:8100/api/v1/deviceaccess',
     // timeout: 60000,
   });
 
@@ -138,7 +138,7 @@ module.exports = {
 
     assignDevicetoSite: async(id,siteId,access_token) =>{
         try{
-            var res = await request.put('http://39.104.189.84:30080/api/v1/deviceaccess/device')
+            var res = await request.put('http://deviceaccess:8100/api/v1/deviceaccess/device')
                 .set('Content-Type', 'application/json')
                 .set('Authorization','Bearer '+access_token)
                 .send({"id":id})

@@ -35,7 +35,7 @@ module.exports = {
         try{
             
             var p = new Promise(function(resolve, reject){ 
-                request.post('http://39.104.189.84:30080/api/v1/account/check_token')
+                request.post('http://account:8400/api/v1/account/check_token')
                 // .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
                 .type('application/x-www-form-urlencoded') 
                 .send({
