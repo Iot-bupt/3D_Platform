@@ -2,7 +2,7 @@ const axios = require('axios');
 const request = require('superagent');
 
 var instance = axios.create({
-    baseURL: 'http://39.104.189.84:30220/api/v1/deviceaccess',
+    baseURL: 'http://39.104.189.84:30080/api/v1/deviceaccess',
     // timeout: 60000,
   });
 
