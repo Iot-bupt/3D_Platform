@@ -2,7 +2,8 @@ if ("WebSocket" in window)
             {
                //alert("您的浏览器支持 WebSocket!");               
                // 打开一个 web socket
-               var ws = new WebSocket("ws://39.104.189.84:8800/api/warning/webSocket");                
+               //var ws = new WebSocket("ws://39.104.189.84:8800/api/warning/webSocket"); 
+               var ws = new WebSocket("ws://139.159.242.107:8800/api/warning/webSocket");                
                ws.onopen = function(evt)
                {
                   // Web Socket 已连接上，使用 send() 方法发送数据

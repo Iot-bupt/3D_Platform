@@ -7,7 +7,8 @@ module.exports = {
 
         try{
             var p = new Promise(function(resolve, reject){
-                request.get('http://39.104.84.131/api/user/authorize/'+ sessionId)
+                //request.get('http://39.104.84.131/api/user/authorize/'+ sessionId)
+                request.get('http://139.159.242.107/api/user/authorize/'+ sessionId)
                 .set('Cookie', cookie)
                 // .timeout({
                 //     response: 20000,
