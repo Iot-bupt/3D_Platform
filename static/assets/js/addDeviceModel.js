@@ -5,7 +5,8 @@ class AddModel{
 
     addaModel (url,position,scale,rotation,name,deviceId,label){
         var loader = new THREE.STLLoader();
-        loader.load("static/gis_815/models/somedevices/" + url, function(geometry) {
+        //loader.load("static/gis_815/models/somedevices/" + url, function(geometry) {
+        loader.load( url, function(geometry) {
             var material = new THREE.MeshPhongMaterial({
                 color: 0xFF0000,
                 specular: 0x111111,

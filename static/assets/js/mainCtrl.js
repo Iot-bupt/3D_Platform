@@ -555,7 +555,7 @@ $scope.searchDeviceInfo = function(){
                 "deviceId": $scope.deviceInfo.id,
                 "location": JSON.stringify(JSONBody),
                 "name": $scope.deviceInfo.name,
-                "dModelUrl": "sensor_center.stl"
+                "dModelUrl": "public/upload/devices/default/sensor_center.stl"
             },
             success:function(res){
                 $("#addModel").modal("hide");
@@ -682,7 +682,7 @@ $scope.updateDeviceModel = function(){
             "deviceId": $scope.deviceInfo.id,
             "location": JSON.stringify(JSONBody),
             "name": $scope.deviceInfo.name,
-            "dModelUrl": "sensor_center.stl"
+            "dModelUrl": "public/upload/devices/default/sensor_center.stl"
         },
         success:function(res){
             //$("#addModel").modal("hide");

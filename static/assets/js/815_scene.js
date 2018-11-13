@@ -104,11 +104,11 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         }  
 
 
-    var _sceneLoca;    //场景位置信息
-    var _sceneUrl;     //场景模型url
-    var siteId;        //站点ID 
-    var siteName;      //站点名称
-    var tenantId;      //租户ID
+    var _sceneLoca = null;    //场景位置信息
+    var _sceneUrl ;     //场景模型url
+    var siteId = null;        //站点ID 
+    var siteName = null;      //站点名称
+    var tenantId = null;      //租户ID
     var showAllLabel = false;
     var allLabelDiv = [];
     
@@ -119,13 +119,13 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
         siteId = getQueryString("siteId");   //从url中读取siteId
         tenantId = getQueryString("id") || getQueryString("tenantId") || $.cookie("tenant_id");
 
-        if(siteId === null || siteId === ""){
-            siteId = 133;      //默认是demo中的815场景
+        if(siteId === null || siteId === "" || siteId === undefined){
+            siteId = 1;      //默认是demo中的815场景
         }
-        if(tenantId === null || tenantId === ""){
+        if(tenantId === null || tenantId === "" || tenantId === undefined){
             tenantId = 2;      //默认tenantId = 2
         }
-        
+        if( siteId !== null ) {
          //获取站点场景模型的初始位置信息
             $.ajax({
                 url: '/api/sites/' + siteId,
@@ -144,15 +144,16 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
             });
 
             $("#title").html("站点名称:  "+siteName);
-            return _sceneLoca;
+        } 
+        
     }
     initScene();
 
-    if(_sceneUrl === "" || _sceneUrl === null){
+    if(_sceneUrl === "" || _sceneUrl === null || _sceneUrl === undefined){
         $.alert("您未上传任何场景模型，请返回地图界面进行上传。");
     }
 
-    if(_sceneLoca === null || _sceneLoca === ""){
+    if(_sceneLoca === null || _sceneLoca === "" || _sceneLoca === undefined){
         _sceneLoca ={
             position:{},
             rotation:{},
